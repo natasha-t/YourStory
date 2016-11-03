@@ -1,0 +1,9 @@
+## Ignore Mac OS Stuff
+.DS_Store
+
+
+# Thumbnails
+._*
+
+# Node
+node_modules/
