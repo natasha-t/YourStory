@@ -8,11 +8,11 @@ Description here
 ___
 
 ### TEAM
-**product owner:**
+**product owner:** Lizzie Shipton
 
-**scrum master:**
+**scrum master:** Melba Madrigal
 
-**team members:**
+**team members:** Natasha Thapliyal, Bruna Enos
 
 
 ## TABLE OF CONTENTS
