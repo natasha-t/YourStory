@@ -25,6 +25,11 @@
     "eslint-plugin-react": "^6.5.0"
   },
   "dependencies": {
-    "webpack": "^1.13.3"
+    "webpack": "^1.13.3",
+    "eslint-plugin-react": "^6.5.0",
+    "undefined": "^0.1.0"
+  },
+  "dependencies": {
+    "babel-eslint": "^7.1.0"
   }
 }
