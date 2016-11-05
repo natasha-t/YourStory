@@ -1,1 +1,3 @@
-console.log("inside app.js");
+const hello = () => { console.log('inside app.js'); };
+
+hello();
