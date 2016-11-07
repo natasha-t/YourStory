@@ -35,7 +35,4 @@
     "eslint-plugin-react": "^6.5.0",
     "undefined": "^0.1.0"
   },
-  "dependencies": {
-    "babel-eslint": "^7.1.0"
-  }
 }
