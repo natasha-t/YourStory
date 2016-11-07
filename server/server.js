@@ -7,7 +7,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('../client/public'));
+app.use(express.static(__dirname + 'client'));
 
 
 routes.router(app);

@@ -28,6 +28,8 @@
     "babel-eslint": "^7.1.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "pg": "^6.1.0",
+    "sequelize": "^3.24.8",
     "webpack": "^1.13.3"
   }
 }
