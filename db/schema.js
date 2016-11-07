@@ -32,3 +32,5 @@ const Url = db.define('url', {
  url: Sequelize.STRING
 });
 
+
+
