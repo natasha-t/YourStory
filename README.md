@@ -1,5 +1,9 @@
-# **THESIS**
-Description here
+# **YourStory**
+How much time do you *really* spend on Facebook?
+
+YourStory is a Chrome Extension, written in React-Redux, that tracks your browsing
+history and provides clear, beautiful data visualizations of your online habits.
+
 
 [www.deploy.com](www.parachute9001.com)
 
@@ -52,7 +56,7 @@ starting terminal commands
 
 ### Contribution Guide
 
-  [View Our Contribution Style Guide](/contributionStyleGuide)
+  [View Our Contribution Style Guide](/_CONTRIBUTING.md)
 ``
 
 # BACKLOG
