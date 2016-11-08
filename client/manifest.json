@@ -6,11 +6,17 @@
   "permissions": [
     "history"
   ],
-  "browser_action": {
-    "default-title": "Test React Popup",
-    "default-popup": "index.html"
-  },
   "background": {
     "scripts": ["public/bundle.js"]
-  }
+  },
+    "browser_action": {
+    "default_popup": "public/index.html"
+  },
+  "content_scripts":[ //entry point to browser background page dom?
+    {
+      "matches":["*://*/*"], //injects script in all pages 
+      "css": [],
+      "js":["public/bundle.js"]
+    }
+  ]
 }
