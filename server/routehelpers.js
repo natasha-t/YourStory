@@ -9,3 +9,6 @@ db.authenticate().then(function(err) {
   console.log('Unable to connect: ', err);
 });
 
+module.exports = {
+	
+}
