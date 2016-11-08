@@ -50,12 +50,12 @@ User.belongsToMany(Domain, { through: UserDomain, foreignKey: 'domainId' });
 User.hasMany(Url);
 Url.belongsTo(User);
 
-//create tables in database
+//  create tables in database
 db
   .sync({force: false})
   .then(function() {
     console.log('Tables created');
-    //Create user and domain
+    // Create user and domain
       // User.create({ username: 'nat' }).then(function() {
      	// console.log('Created new user');
    	  // });
@@ -74,11 +74,7 @@ db
       //  Domain.create({ domain: 'yahoo' }).then(function(){
       // 	console.log('created yahoo domain')
       // })
-
-
-
-
-    //Add domain to user
+    // Add domain to user
 	    // User.findOne({ where: { username: 'Fred' }, include: [Domain] }).then(function(user){
 	    //   	console.log('FOUND USER', user);
 	    //   	Domain.create({ domain: 'weather' }).then(function(domain){
