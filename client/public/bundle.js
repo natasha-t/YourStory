@@ -44,9 +44,23 @@
 /* 0 */
 /***/ function(module, exports) {
 
-	const hello = () => { console.log('inside app.js'); };
+	// import React, {Component} from 'react';
 
-	hello();
+	// class App extends Component {
+	//   constructor(props){
+	//     super(props);
+	//   }
+
+	//   render() {
+	//     return (
+	//       <div>
+	//         Your story
+	//       </div>
+	//     );
+	//   }
+	// }
+
+	// export default App;
 
 
 /***/ }
