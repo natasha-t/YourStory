@@ -2,11 +2,5 @@ const routeHelpers = require('./routehelpers');
 
 
 module.exports.router = (app) => {
-
-	//routes 
-
-	
-
-
-
-}
+  app.post('/history', routeHelpers.postHistory);
+};

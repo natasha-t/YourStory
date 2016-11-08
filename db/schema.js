@@ -1,69 +1,65 @@
-const pg = require('pg');
 const Sequelize = require('sequelize');
 const db = require('./config');
 
 
 db
  .authenticate()
- .then(function(err) {
+ .then(() => {
    console.log('Connection established from schema');
  })
- .catch(function(err) {
+ .catch((err) => {
    console.log('Unable to connect: ', err);
  });
 
+<<<<<<< a277df43534c9460ad091b1e61fd156f70cae915
 
+=======
+>>>>>>> [fix] rebasing!
 const User = db.define('user', {
- id: {
-   type: Sequelize.INTEGER,
-   primaryKey: true,
-   autoIncrement: true,
-   timestamps: false,
- },
- username: Sequelize.STRING,
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  username: Sequelize.STRING,
 });
 
 const Url = db.define('url', {
   id: {
-   type: Sequelize.INTEGER,
-   primaryKey: true,
-   autoIncrement: true,
- },
- url: Sequelize.STRING,
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  url: Sequelize.STRING,
 });
 
 
 const Domain = db.define('domain', {
- id: {
-   type: Sequelize.INTEGER,
-   primaryKey: true,
-   autoIncrement: true,
- },
- domain: Sequelize.STRING,
-})
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  domain: Sequelize.STRING,
+});
 
 
 const UserDomain = db.define('user_domain', {
-	count: Sequelize.INTEGER,
+  count: Sequelize.INTEGER,
 });
 
-//foreign keys
 Domain.belongsToMany(User, { through: UserDomain, foreignKey: 'userId' });
 User.belongsToMany(Domain, { through: UserDomain, foreignKey: 'domainId' });
 
-
-
-
 User.hasMany(Url);
 Url.belongsTo(User);
-
 
 //create tables in database
 db
   .sync({force: false})
   .then(function() {
     console.log('Tables created');
-    //Create user and domain 
+    //Create user and domain
       // User.create({ username: 'nat' }).then(function() {
      	// console.log('Created new user');
    	  // });
@@ -110,7 +106,3 @@ db
   .catch(function(err){
   	console.log(err);
   })
-
-
-
-
