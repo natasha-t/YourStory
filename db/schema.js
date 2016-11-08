@@ -11,10 +11,6 @@ db
    console.log('Unable to connect: ', err);
  });
 
-<<<<<<< a277df43534c9460ad091b1e61fd156f70cae915
-
-=======
->>>>>>> [fix] rebasing!
 const User = db.define('user', {
   id: {
     type: Sequelize.INTEGER,
