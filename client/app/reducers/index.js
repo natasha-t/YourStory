@@ -8,7 +8,9 @@ import App from '../components/app.jsx';
 // const anchor = document.createElement('div');
 // anchor.id = 'yourstory-anchor';
 
+// export default combineReducers({
+//   history,
+// });
 
-export default combineReducers({
-  history,
-});
+export default history
+
