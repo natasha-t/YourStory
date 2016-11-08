@@ -44,7 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var _react = __webpack_require__(1);
 
@@ -23195,12 +23195,17 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _dec, _class;
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(172);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23210,36 +23215,142 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var App = function (_Component) {
-	  _inherits(App, _Component);
+	var App = (_dec = (0, _reactRedux.connect)(function (store) {
+	  return {
+	    visData: store.visData
+	  };
+	}), _dec(_class = function (_React$Component) {
+	  _inherits(App, _React$Component);
 
-	  function App(props) {
+	  function App() {
 	    _classCallCheck(this, App);
 
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
 	  }
 
 	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
+	      return;
+	      _react2.default.createElement(
 	        'div',
 	        null,
-	        'Hello World from app.jsx'
+	        this.props
 	      );
 	    }
 	  }]);
 
 	  return App;
-	}(_react.Component);
+	}(_react2.default.Component)) || _class);
+
+	// class App extends Component {
+	//   constructor(props) {
+	//     super(props);
+	//   }
+
+	//   render() {
+	//     return (
+	//      <div>Hello World from app.jsx</div>
+	//     );
+	//   }
+	// }
+
+	// export default App;
 
 	exports.default = App;
 
 /***/ },
 /* 203 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _redux = __webpack_require__(179);
+
+	var _reducers = __webpack_require__(204);
+
+	var _reducers2 = _interopRequireDefault(_reducers);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = (0, _redux.createStore)(_reducers2.default);
+
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _redux = __webpack_require__(179);
+
+	var _history = __webpack_require__(205);
+
+	var _app = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/app.jsx\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _app2 = _interopRequireDefault(_app);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var anchor = document.createElement('div');
+	anchor.id = 'yourstory-anchor';
+
+	exports.default = (0, _redux.combineReducers)({
+	  history: _history.history
+	});
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _axios = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"axios\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _manifest = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../manifest.json\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _manifest2 = _interopRequireDefault(_manifest);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var initialState = { visData: [] };
+
+	exports.default = function () {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+
+	  var oneMinute = 1000 * 60;
+	  var oneMinuteAgo = new Date().getTime() - oneMinute;
+
+	  return _manifest2.default.history.search({
+	    text: '', // Return every history item....
+	    startTime: oneMinuteAgo }, function (historyItems) {
+	    _axios2.default.post('/api/history', historyItems).then(function (res) {
+	      console.log(res);
+	      return _extends({}, state, { visData: res.body.dummyData });
+	    });
+	  });
+	};
 
 /***/ }
 /******/ ]);
