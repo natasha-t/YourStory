@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2, // TODO: need to confirm this is the correct version
+  "name": "Your Story", 
+  "description": "Visualize Your Browsing History",
+  "version": "1.0.1", // TODO: need to confirm this is the correct version
+  "permissions": [
+    "history"
+  ],
+  "browser_action": {
+    "default-title": "Test React Popup",
+    "default-popup": "index.html"
+  },
+  "background": {
+    "scripts": ["public/bundle.js"]
+  }
+}
