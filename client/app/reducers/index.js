@@ -3,10 +3,10 @@ import {render} from 'react-dom';
 import { combineReducers } from 'redux';
 import { history } from './history';
 
-import App from './components/app.jsx';
+import App from '../components/app.jsx';
 
-const anchor = document.createElement('div');
-anchor.id = 'yourstory-anchor';
+// const anchor = document.createElement('div');
+// anchor.id = 'yourstory-anchor';
 
 
 export default combineReducers({
