@@ -1,5 +1,6 @@
-import React from 'react';
+// import React from 'react';
 import { connect } from 'react-redux';
+import React, {Component} from 'react';
 
 // @connect((store) => {
 //   return {
@@ -30,4 +31,3 @@ class App extends Component {
 }
 
 export default App;
-
