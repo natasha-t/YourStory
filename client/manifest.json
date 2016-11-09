@@ -4,19 +4,16 @@
   "description": "Visualize Your Browsing History",
   "version": "1.0.1", // TODO: need to confirm this is the correct version
   "permissions": [
-    "history"
+    "history", "tabs"
   ],
   "background": {
     "scripts": ["public/bundle.js"]
   },
-    "browser_action": {
-    "default_popup": "public/index.html"
-  },
-  "content_scripts":[ //entry point to browser background page dom?
-    {
-      "matches":["*://*/*"], //injects script in all pages 
-      "css": [],
-      "js":["public/bundle.js"]
-    }
-  ]
+  
+  // "browser_action": {
+  //   "default_popup": "public/index.html"
+  // },
+  "chrome_url_overrides" : {
+    "newtab": "public/index.html"
+  }
 }
