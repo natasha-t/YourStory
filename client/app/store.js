@@ -8,7 +8,7 @@ const createStoreWithMiddleware = applyMiddleware(
   ReduxThunk
 )(createStore);
 
-const store = createStoreWithMiddleware(historyReducer, { visData: 'hello' });
+const store = createStoreWithMiddleware(historyReducer, { visData: 'hello from store' });
 
 export default store;
 

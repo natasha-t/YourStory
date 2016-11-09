@@ -21,7 +21,8 @@ export default class App extends React.Component {
 	 const { visData } = this.props;
 	 console.log('vis data in app component', visData);
 	 return <div>
-		{ visData[0].domain }
+	    Hello from app
+		{ visData }
 	 </div>
 	}
 }
