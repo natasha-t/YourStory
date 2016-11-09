@@ -1,6 +1,9 @@
 // import React from 'react';
 import { connect } from 'react-redux';
 import React, {Component} from 'react';
+import fetchVisData from '../actions/actions';
+import store from '../store';
+
 
 @connect((store) => {
   return {
@@ -8,26 +11,19 @@ import React, {Component} from 'react';
   };
 })
 
+// @store.dispatch(fetchVisData())
+
 export default class App extends React.Component {
-  render() {
-    return
-    <div>
-      {this.props}
-    </div>
-  }
+	componentDidMount() {
+		this.props.dispatch(fetchVisData());
+	}
+
+	render() {
+	 const { visData } = this.props;
+	 console.log('vis data in app component', visData);
+	 return <div>
+		{ visData[0].domain }
+	 </div>
+	}
 }
 
-
-// class App extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-
-//   render() {
-//     return (
-//      <div>Hello World from app.jsx</div>
-//     );
-//   }
-// }
-
-// export default App;

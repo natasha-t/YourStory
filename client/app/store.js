@@ -1,4 +1,12 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import promiseMiddleware from 'redux-promise';
+import ReduxThunk from 'redux-thunk'
 import historyReducer from './reducers';
 
-export default createStore(historyReducer, {visData: 'hello'});
+const createStoreWithMiddleware = applyMiddleware(
+  ReduxThunk
+)(createStore);
+
+const store = createStoreWithMiddleware(historyReducer, { visData: 'hello' });
+
+export default store;
