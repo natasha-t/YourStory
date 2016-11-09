@@ -9,7 +9,5 @@ const app = document.getElementById('app');
 ReactDOM.render(
   <Provider store={store}>
     <App />
-  </Provider>, app);
-
-
+  </Provider>, app);}
 

@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import promiseMiddleware from 'redux-promise';
-import ReduxThunk from 'redux-thunk'
+import ReduxThunk from 'redux-thunk';
 import historyReducer from './reducers';
 
 

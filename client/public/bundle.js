@@ -23138,7 +23138,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-			value: true
+		value: true
 	});
 
 	var _axios = __webpack_require__(198);
@@ -23149,37 +23149,22 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// export default function() {
-	// 	const request =  axios.post('/api/history', {data: 'data'})
-	// 		.then((res) => {
-	// 			console.log('response from server', res);
-	// 			return res.data.dummyData;
-	// 		});
-
-	// 	return {
-	// 		type: "FETCH_VIS_DATA",
-	// 		payload: request
-	// 	}
-
-
-	// }
-
 	exports.default = (0, _reduxAction.createAction)('FETCH_VIS_DATA', function () {
-			//  return axios.post('/api/history', {data: 'data'})
-			// .then((res) => {
-			// 	console.log('response from server', res);
+		//  return axios.post('/api/history', {data: 'data'})
+		// .then((res) => {
+		// 	console.log('response from server', res);
 
-			// 		return Promise.resolve(res.data.dummyData);
-			// });
+		// 		return Promise.resolve(res.data.dummyData);
+		// });
 
-			var microsecondsPerDay = 1000 * 60 * 60 * 24;
-			var oneDayAgo = new Date().getTime() - microsecondsPerDay;
-			chrome.history.search({
-					'text': '', // Return every history item....
-					'startTime': oneDayAgo // that was accessed less than one week ago.
-			}, function (array) {
-					console.log('chrome history', array);
-			});
+		var microsecondsPerDay = 1000 * 60 * 60 * 24;
+		var oneDayAgo = new Date().getTime() - microsecondsPerDay;
+
+		chrome.history.search({
+			'text': '', // Return every history item....
+			'startTime': oneDayAgo }, function (array) {
+			console.log('chrome history', array);
+		});
 	});
 
 /***/ },
