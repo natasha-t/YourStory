@@ -1,33 +1,21 @@
-// import React from 'react';
-import { connect } from 'react-redux';
-import React, {Component} from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
+import store from '../store';
 
-// @connect((store) => {
-//   return {
-//     visData: store.visData,
-//   };
-// })
+@connect((store) => {
+  return {
+    visData: store.visData,
+  };
+})
 
-// export default class App extends React.Component {
-//   render() {
-//     return
-//     <div>
-//       {this.props}
-//     </div>
-//   }
-// }
-
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+export default class App extends React.Component {
   render() {
+    const { visData } = this.props;
     return (
-     <div>Hello World from app.jsx</div>
+      <div>
+       Hello World from app.jsx
+       {visData}
+      </div>
     );
   }
 }
-
-export default App;
