@@ -1,9 +1,10 @@
 import React from 'react';
-import { render } from 'react-dom';
 import { combineReducers } from 'redux';
-import { history } from './history';
-import App from '../components/app.jsx';
+import historyReducer from './history';
 
-export default combineReducers({
-  history,
-});
+// export default combineReducers({
+//   history,
+// });
+
+export default historyReducer;
+
