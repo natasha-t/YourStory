@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 
+
 module.exports = {
   entry: path.join(__dirname, 'client/app/index.jsx'),
   output: {
@@ -9,10 +10,24 @@ module.exports = {
   },
   module: {
     loaders: [{
-      exclude: /node_modules/,
+      test: /\.json$/,
+      loader: 'ignore-loader',
+    },
+    {
+      test: /\.jsx$/,
+      exclude: /(node_modules)/,
       loader: 'babel',
       query: {
         presets: ['react', 'es2015', 'stage-1'],
+        plugins: ['transform-decorators-legacy'],
+      },
+    },
+    {
+      test: /\.js$/,
+      exclude: /(node_modules)/,
+      loader: 'babel',
+      query: {
+        presets: ['es2015', 'stage-1'],
         plugins: ['transform-decorators-legacy'],
       },
     }],
