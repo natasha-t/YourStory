@@ -3,6 +3,11 @@ import { connect } from 'react-redux';
 import fetchVisData from '../actions/actions';
 import store from '../store';
 
+// setInterval(() => {
+// 	store.dispatch(fetchVisData())
+// }, 2000);
+
+store.dispatch(fetchVisData());
 
 @connect((store) => {
   return {
@@ -10,19 +15,13 @@ import store from '../store';
   };
 })
 
-// @store.dispatch(fetchVisData())
-
 export default class App extends React.Component {
-	componentDidMount() {
-		this.props.dispatch(fetchVisData());
-	}
 
 	render() {
 	 const { visData } = this.props;
 	 console.log('vis data in app component', visData);
 	 return <div>
 	    Hello from app
-		{ visData }
 	 </div>
 	}
 }
