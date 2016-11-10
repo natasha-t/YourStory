@@ -6,22 +6,33 @@ export default function fetchVisData() {
 	const oneDayAgo = (new Date).getTime() - microsecondsPerDay;
 
 
-	 chrome.history.search({
-		'text': '',              // Return every history item....
-		'startTime': oneDayAgo, // that was accessed less than one week ago.
-	  }, (array) => {
-	 		 console.log('chrome history', array);
+	 // chrome.history.search({
+		// 'text': '',              // Return every history item....
+		// 'startTime': oneDayAgo, // that was accessed less than one week ago.
+	 //  }, (array) => {
+	 // 		 console.log('chrome history', array);
 	 		 
-	 		const request = axios({
-				method: 'post',
-				url: 'http://yourstory-app.herokuapp.com/api/history',
-				data: {history: array},
-			})
+	 // 		const request = axios({
+		// 		method: 'post',
+		// 		url: 'http://yourstory-app.herokuapp.com/api/history',
+		// 		data: {history: array},
+		// 	})
 
-			return {
-				type: 'FETCH_VIS_DATA',
-				payload: request,
-			}
-	 });
+		// 	return {
+		// 		type: 'FETCH_VIS_DATA',
+		// 		payload: request,
+		// 	}
+	 // });
+
+	 const request = axios({
+	 	method: 'post',
+	 	url: 'http://yourstory-app.herokuapp.com/api/history',
+	 	data: { data: 'blah blah blah' },
+	 })
+
+	 return {
+	 	type: 'FETCH_VIS_DATA',
+	 	payload: request,
+	 }
 
 }
