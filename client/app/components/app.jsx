@@ -16,7 +16,6 @@ store.dispatch(fetchVisData());
 })
 
 export default class App extends React.Component {
-
 	render() {
 	 const { visData } = this.props;
 

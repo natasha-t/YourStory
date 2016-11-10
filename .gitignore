@@ -10,3 +10,6 @@ node_modules/
 
 # npm debug
 npm-debug.log
+
+# bundle
+/client/public/bundle.js
