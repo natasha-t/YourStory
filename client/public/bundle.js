@@ -23116,7 +23116,6 @@
 					value: function render() {
 							var visData = this.props.visData;
 
-							console.log('vis data in app component', visData);
 
 							var data = [];
 
