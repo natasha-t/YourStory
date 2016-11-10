@@ -23117,10 +23117,31 @@
 							var visData = this.props.visData;
 
 							console.log('vis data in app component', visData);
+
+							var data = [];
+
+							for (var i = 0; i < visData.length; i++) {
+									data.push(_react2.default.createElement(
+											'div',
+											null,
+											_react2.default.createElement(
+													'span',
+													null,
+													' Domain: ',
+													visData[i].domain,
+													' Count: ',
+													visData[i].visits,
+													' '
+											)
+									));
+							}
+
+							console.log(data);
+
 							return _react2.default.createElement(
 									'div',
 									null,
-									'Hello from app'
+									data
 							);
 					}
 			}]);
@@ -23148,37 +23169,34 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function fetchVisData() {
-		var microsecondsPerDay = 1000 * 60 * 60 * 24;
-		var oneDayAgo = new Date().getTime() - microsecondsPerDay;
-
-		// chrome.history.search({
-		// 'text': '',              // Return every history item....
-		// 'startTime': oneDayAgo, // that was accessed less than one week ago.
-		//  }, (array) => {
-		// 		 console.log('chrome history', array);
-
-		// 		const request = axios({
-		// 		method: 'post',
-		// 		url: 'http://yourstory-app.herokuapp.com/api/history',
-		// 		data: {history: array},
-		// 	})
-
-		// 	return {
-		// 		type: 'FETCH_VIS_DATA',
-		// 		payload: request,
-		// 	}
-		// });
-
-		var request = (0, _axios2.default)({
-			method: 'post',
-			url: 'http://yourstory-app.herokuapp.com/api/history',
-			data: { data: 'blah blah blah' }
-		});
-
+	function loadVisDataUponResponse(data) {
 		return {
 			type: 'FETCH_VIS_DATA',
-			payload: request
+			payload: data
+		};
+	}
+
+	function fetchVisData() {
+
+		return function (dispatch) {
+			var microsecondsPerDay = 1000 * 60 * 60 * 24;
+			var oneDayAgo = new Date().getTime() - microsecondsPerDay;
+
+			chrome.history.search({
+				'text': '', // Return every history item....
+				'startTime': oneDayAgo }, function (array) {
+				console.log('chrome history', array);
+
+				(0, _axios2.default)({
+					method: 'post',
+					url: 'http://yourstory-app.herokuapp.com/api/history',
+					data: { history: array }
+				}).then(function (response) {
+					dispatch(loadVisDataUponResponse(response));
+				});
+			});
+
+			return null;
 		};
 	}
 
@@ -27179,8 +27197,8 @@
 	  switch (action.type) {
 	    case 'FETCH_VIS_DATA':
 	      {
-	        console.log('action payload', action.payload);
-	        return _extends({}, state, { visData: action.payload });
+	        console.log('action payload', action.payload.data);
+	        return _extends({}, state, { visData: action.payload.data });
 	        break;
 	      }
 	  }

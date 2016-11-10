@@ -1,21 +1,21 @@
 
-// {
-//   "manifest_version": 2, // TODO need to confirm this is the correct version
-//   "name": "Your Story",
-//   "description": "Visualize Your Browsing History",
-//   "version": "1.0.1", // TODO: need to confirm this is the correct version
-//   "permissions": [
-//     "history", "tabs", "http://*/"
-//   ],
-//   "background": {
-//     "scripts": ["public/bundle.js"]
-//   },
+{
+  "manifest_version": 2, // TODO need to confirm this is the correct version
+  "name": "Your Story",
+  "description": "Visualize Your Browsing History",
+  "version": "1.0.1", // TODO: need to confirm this is the correct version
+  "permissions": [
+    "history", "tabs", "http://*/"
+  ],
+  "background": {
+    "scripts": ["public/bundle.js"]
+  },
   
-//   // "browser_action": {
-//   //   "default_popup": "public/index.html"
-//   // },
-//   "chrome_url_overrides" : {
-//     "newtab": "public/index.html"
-//   }
-// }
+  // "browser_action": {
+  //   "default_popup": "public/index.html"
+  // },
+  "chrome_url_overrides" : {
+    "newtab": "public/index.html"
+  }
+}
 
