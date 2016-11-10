@@ -13,7 +13,12 @@ module.exports = {
 
   // tested with Postman. will not post to DB but should return dummy array
   postHistory: (req, res) => {
-    console.log('FROM SERVER', req.body);
+    console.log('inside routehelpers.js postHistory API');
+    const allData = req.body.history; //array of all data
+    console.log('====FROM SERVER====', allData.map((historyItem) => {
+      return historyItem;
+    }));
+
     const dummyData = [
                        { domain: 'google', visits: 50 },
                        { domain: 'facebook', visits: 30 },
