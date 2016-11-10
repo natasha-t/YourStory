@@ -12,7 +12,7 @@ function loadVisDataUponResponse(data) {
 
 export default function fetchVisData() {
   return function(dispatch) {
-    // getToken();
+    getToken();
     const microsecondsPerDay = 1000 * 60 * 60 * 24;
     const oneDayAgo = (new Date).getTime() - microsecondsPerDay;
 

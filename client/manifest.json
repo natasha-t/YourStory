@@ -13,7 +13,7 @@
     "newtab": "public/index.html"
   },
   "oauth2": {
-    "client_id": "799894733477-pept7gm20n0gj8n9ul98nmago3s2fpk9.apps.googleusercontent.com",
+    "client_id": "1053327019332-2pj5i4bvha46bfbstc2e5asqjqikrafq.apps.googleusercontent.com",
     "scopes": [
                 "https://www.googleapis.com/auth/userinfo.email"
         ]
