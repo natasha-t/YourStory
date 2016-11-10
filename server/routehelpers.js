@@ -13,6 +13,7 @@ module.exports = {
 
   // tested with Postman. will not post to DB but should return dummy array
   postHistory: (req, res) => {
+    console.log('FROM SERVER', req.body);
     const dummyData = [
                        { domain: 'google', visits: 50 },
                        { domain: 'facebook', visits: 30 },
