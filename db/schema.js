@@ -53,7 +53,7 @@ Url.belongsTo(User)
 
 //  create tables in database
 db
-  .sync({force: true})
+  .sync({force: false})
   .then(function () {
     console.log('Tables created')
     // Create user and domain

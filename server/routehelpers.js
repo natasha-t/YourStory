@@ -15,9 +15,8 @@ module.exports = {
   postHistory: (req, res) => {
     console.log('inside routehelpers.js postHistory API')
     const allData = req.body.history // array of all data
-    console.log('====FROM SERVER====', allData.map((historyItem) => {
-      return historyItem
-    }))
+    // console.log('====FROM SERVER====', allData.map((historyItem) => {
+    //   return historyItem
 
     const dummyData = [
       { domain: 'google', visits: 50 },
@@ -31,14 +30,14 @@ module.exports = {
   postUser: (req, res) => {
     console.log('inside routehelpers.js postUser API')
     // save to the session object the chrome id
-    req.session.user = req.body.id
+    req.session.user = req.body.chromeID
     // find or create user in the db
-    User.findOrCreate({where: {chrome_id: req.session.user}, defaults: {username: req.body.name}})
+    User.findOrCreate({where: {chrome_id: req.session.user}, defaults: {username: req.body.username}})
       .spread(function (user, created) {
         console.log(user.get({
           plain: true
         }))
-        console.log(created)
+        console.log('user_created:', created)
         // send back to the client unique client identifier(Chrome_id)
         res.send(req.session.user)
       })
