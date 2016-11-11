@@ -48,7 +48,7 @@ module.exports = {
       { domain: 'facebook', visits: 30 },
       { domain: 'twitter', visits: 20 },
       { domain: 'instagram', visits: 100 },
-      { domain: 'apple', visits: 5 }],
+      { domain: 'apple', visits: 5 }];
     res.status(201).json(dummyData);
   },
 
