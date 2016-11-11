@@ -64,10 +64,11 @@ npm start
   - Select ONLY the "client" directory
   - Upload it
 
+
 ### Contribution Guide
 
   [View Our Contribution Style Guide](/_CONTRIBUTING.md)
-``
+
 
 # BACKLOG
 [![Stories in Ready](https://badge.waffle.io/XXHR/thesis.png?label=ready&title=Ready)](http://waffle.io/XXHR/thesis)
