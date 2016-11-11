@@ -17,7 +17,7 @@ export default function getToken() {
       console.log(userInfo);
       axios({
         method: 'post',
-        url: 'http://localhost:3000/api/users',
+        url: 'http://yourstory-app.herokuapp.com/api/users',
         data: { chromeID: userInfo.id, username: userInfo.name },
       })
       .then((response) => {
