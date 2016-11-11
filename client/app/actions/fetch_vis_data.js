@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { createAction } from 'redux-action';
-import getToken from '../../auth';
 
 function loadVisDataUponResponse(data) {
   return {
@@ -12,7 +11,6 @@ function loadVisDataUponResponse(data) {
 
 export default function fetchVisData(id) {
   return function(dispatch) {
-    getToken();
     const microsecondsPerDay = 1000 * 60 * 60 * 24;
     const oneDayAgo = (new Date).getTime() - microsecondsPerDay;
 
