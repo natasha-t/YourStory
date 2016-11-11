@@ -17,7 +17,7 @@ const User = db.define('user', {
     autoIncrement: true
   },
   chrome_id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     unique: true
   },
   username: Sequelize.STRING
