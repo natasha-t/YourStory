@@ -1,13 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import fetchVisData from '../actions/actions';
 import store from '../store';
-
-// setInterval(() => {
-// 	store.dispatch(fetchVisData())
-// }, 2000);
-
-store.dispatch(fetchVisData());
 
 @connect((store) => {
   return {
@@ -27,7 +20,7 @@ export default class App extends React.Component {
 
 
 	 console.log(data);
-	 
+
 	 return <div>
 	 		{ data }
 	 	</div>

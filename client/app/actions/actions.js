@@ -12,7 +12,7 @@ function loadVisDataUponResponse(data) {
 
 export default function fetchVisData() {
   return function(dispatch) {
-    // getToken();
+    getToken();
     const microsecondsPerDay = 1000 * 60 * 60 * 24;
     const oneDayAgo = (new Date).getTime() - microsecondsPerDay;
 
@@ -21,7 +21,7 @@ export default function fetchVisData() {
      'startTime': oneDayAgo, // that was accessed less than one week ago.
      }, (array) => {
        console.log('chrome history', array);
-       
+
       axios({
         method: 'post',
         url: 'http://yourstory-app.herokuapp.com/api/history',
