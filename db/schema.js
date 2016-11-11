@@ -37,6 +37,14 @@ const Domain = db.define('domain', {
     autoIncrement: true,
   },
   domain: Sequelize.STRING,
+  // created_at: {
+  //   type: DataTypes.DATE,
+  //   allowNull: false,
+  // },
+  // updated_at: {
+  //   type: DataTypes.DATE,
+  //   allowNull: false,
+  // },
 });
 
 
@@ -52,10 +60,13 @@ Url.belongsTo(User);
 
 //  create tables in database
 db
-  .sync({force: false})
+  .sync({force: true})
   .then(function() {
     console.log('Tables created');
     // Create user and domain
+    // Domain.findAll({ where: { domain: "google.com" } }).then(function(domain) {
+    //   console.log('Created new user', domain);
+    //   });
       // User.create({ username: 'nat' }).then(function() {
      	// console.log('Created new user');
    	  // });
@@ -88,13 +99,14 @@ db
 
 
     //get User domains
-	   	User.findOne({ where: {username: 'nat'}, include: [Domain] }).then(function(user){
-			user.getDomains().then(function(domains){
-				console.log('USER DOMAINS', domains);
-			});
-		})
+	 //   	User.findOne({ where: {username: 'nat'}, include: [Domain] }).then(function(user){
+		// 	user.getDomains().then(function(domains){
+		// 		console.log('USER DOMAINS', domains);
+		// 	});
+		// })
+  });
 
- })
-  .catch(function(err){
-  	console.log(err);
-  })
+module.exports = {
+  User: User,
+  Domain: Domain,
+};

@@ -50,6 +50,7 @@
     "redux-thunk": "^2.1.0",
     "sequelize": "^3.24.8",
     "undefined": "^0.1.0",
+    "underscore": "^1.8.3",
     "webpack": "^1.13.3"
   }
 }
