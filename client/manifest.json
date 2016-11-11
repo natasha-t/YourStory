@@ -4,7 +4,7 @@
   "description": "Visualize Your Browsing History",
   "version": "1.0.1", // TODO: need to confirm this is the correct version
   "permissions": [
-    "history", "tabs", "http://*/",  "identity"
+    "history", "tabs", "http://*/",  "identity", "storage"
   ],
   "background": {
     "scripts": ["public/bundle.js"]
@@ -14,6 +14,7 @@
   },
   "oauth2": {
     "client_id": "1053327019332-2pj5i4bvha46bfbstc2e5asqjqikrafq.apps.googleusercontent.com",
+    // "client_id": "162214619816-c45naiqomm4cscb7dlp53urkuo1hdk16.apps.googleusercontent.com",
     "scopes": [
                 "https://www.googleapis.com/auth/userinfo.email"
         ]
