@@ -13,12 +13,9 @@
     "newtab": "public/index.html"
   },
   "oauth2": {
-<<<<<<< HEAD
     "client_id": "1053327019332-2pj5i4bvha46bfbstc2e5asqjqikrafq.apps.googleusercontent.com",
-    // "client_id": "162214619816-c45naiqomm4cscb7dlp53urkuo1hdk16.apps.googleusercontent.com",
-=======
-    "client_id": "290557892275-f55p4vmd6msl7lp6hmj2d3m111hr29q0.apps.googleusercontent.com",
->>>>>>> server/postAllData
+    // "client_id": "162214619816-c45naiqomm4cscb7dlp53urkuo1hdk16.apps.googleusercontent.com", // bruna
+    // "client_id": "290557892275-f55p4vmd6msl7lp6hmj2d3m111hr29q0.apps.googleusercontent.com", //melba
     "scopes": [
                 "https://www.googleapis.com/auth/userinfo.email"
         ]
