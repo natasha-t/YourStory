@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import store from '../store'
 import History from './history'
 import Auth from './auth'
 import Container from './nav_container'

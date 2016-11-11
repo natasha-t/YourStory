@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { createAction } from 'redux-action'
+import axios from 'axios';
 
 function loadVisDataUponResponse (data) {
   return {
@@ -17,7 +16,6 @@ export default function fetchVisData (id) {
       'text': '', // Return every history item....
       'startTime': oneDayAgo, // that was accessed less than one week ago.
     }, (array) => {
-      console.log('chrome history', array)
 
       axios({
         method: 'post',
