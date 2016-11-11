@@ -14,14 +14,14 @@ export default function getToken () {
     x.open('GET', 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + token)
     x.onload = function () {
       const userInfo = JSON.parse(x.response)
-      console.log(userInfo)
+      console.log('User info from chrome: ', userInfo)
       axios({
         method: 'post',
-        url: 'http://yourstory-app.herokuapp.com/api/users',
+        url: 'http://localhost:3000/api/users', //'http://yourstory-app.herokuapp.com/api/history'
         data: { chromeID: userInfo.id, username: userInfo.name }
       })
         .then((response) => {
-          console.log(response)
+          console.log('Chrome id from server: ', response)
           setInterval(() => {
             store.dispatch(fetchVisData(response))
           }, 1000 * 60)

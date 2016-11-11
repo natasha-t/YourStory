@@ -1,7 +1,7 @@
 const db = require('../db/config');
 const Sequelize = require('sequelize');
 const _ = require('underscore');
-const User = require('../db/schema');
+const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
 
 // Establishes the connection to the database
@@ -35,20 +35,20 @@ module.exports = {
     // ======= insert domain into Domain db =======
     // allData.map((historyItem) => {
     // });
-    const uniqueDomains = _.unique(allData);
-    console.log("uniqueDomains", uniqueDomains);
-    Domain
-      .findOrCreate({ where: { domain: historyItem.domain } })
-      .catch((err) => {
-        console.log(err);
-      });
+    // const uniqueDomains = _.unique(allData);
+    // console.log("uniqueDomains", uniqueDomains);
+    // Domain
+    //   .findOrCreate({ where: { domain: historyItem.domain } })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
     const dummyData = [
       { domain: 'google', visits: 50 },
       { domain: 'facebook', visits: 30 },
       { domain: 'twitter', visits: 20 },
       { domain: 'instagram', visits: 100 },
-      { domain: 'apple', visits: 5 }],
+      { domain: 'apple', visits: 5 }];
     res.status(201).json(dummyData);
   },
 
