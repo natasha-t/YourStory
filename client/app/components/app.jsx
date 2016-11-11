@@ -1,39 +1,29 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import store from '../store'
-import History from './history'
-import Auth from './auth'
-import Container from './nav_container'
-import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import store from '../store';
+import History from './history';
+import Container from './nav_container';
+import getToken from '../auth/auth';
 
 @connect((store) => {
   return {
-    visData: store.visData
-  }
+    visData: store.visData,
+  };
 })
 
 export default class App extends React.Component {
-  render () {
+
+  componentWillMount() {
+    getToken();
+  }
+  render() {
     return (
       <Router history={hashHistory}>
-        <Route path='/' component={Container}>
-          <IndexRoute component={Auth} />
-          <Route path='/history' component={History} />
+        <Route path="/" component={Container}>
+          <IndexRoute component={History} />
         </Route>
       </Router>
-    )
+    );
   }
-}
-
-{
-  /* <div> */
-}
-{
-  /* <Auth /> */
-}
-{
-  /* <History /> */
-}
-{
-  /* // </div> */
 }

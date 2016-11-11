@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { createAction } from 'redux-action'
+import axios from 'axios';
+import { createAction } from 'redux-action';
 
 function loadVisDataUponResponse (data) {
   return {
@@ -21,7 +21,7 @@ export default function fetchVisData (id) {
 
       axios({
         method: 'post',
-        url: 'http://localhost:3000/api/history', //'http://yourstory-app.herokuapp.com/api/history'
+        url: 'http://localhost:3000/api/history', // 'http://yourstory-app.herokuapp.com/api/history'
         data: {history: array, chromeId: id}
       }).then(response => {
         dispatch(loadVisDataUponResponse(response))
