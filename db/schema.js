@@ -1,61 +1,61 @@
-const Sequelize = require('sequelize')
-const db = require('./config')
+const Sequelize = require('sequelize');
+const db = require('./config');
 
 db
   .authenticate()
   .then(() => {
-    console.log('Connection established from schema')
+    console.log('Connection established from schema');
   })
   .catch((err) => {
-    console.log('Unable to connect: ', err)
-  })
+    console.log('Unable to connect: ', err);
+  });
 
 const User = db.define('user', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
   chrome_id: {
     type: Sequelize.STRING,
-    unique: true
+    unique: true,
   },
-  username: Sequelize.STRING
-})
+  username: Sequelize.STRING,
+});
 
 const Url = db.define('url', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
-  url: Sequelize.STRING
-})
+  url: Sequelize.STRING,
+});
 
 const Domain = db.define('domain', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
-  domain: Sequelize.STRING
-})
+  domain: Sequelize.STRING,
+});
 
 const UserDomain = db.define('user_domain', {
-  count: Sequelize.INTEGER
-})
+  count: Sequelize.INTEGER,
+});
 
-Domain.belongsToMany(User, { through: UserDomain, foreignKey: 'userId' })
-User.belongsToMany(Domain, { through: UserDomain, foreignKey: 'domainId' })
+Domain.belongsToMany(User, { through: UserDomain, foreignKey: 'userId' });
+User.belongsToMany(Domain, { through: UserDomain, foreignKey: 'domainId' });
 
-User.hasMany(Url)
-Url.belongsTo(User)
+User.hasMany(Url);
+Url.belongsTo(User);
 
 //  create tables in database
 db
-  .sync({force: false})
-  .then(function () {
-    console.log('Tables created')
+  .sync({ force: true })
+  .then(() => {
+    console.log('Tables created');
     // Create user and domain
     // User.create({ username: 'nat' }).then(function() {
     // console.log('Created new user')
@@ -94,8 +94,11 @@ db
   // //   })
   // })
   })
-  .catch(function (err) {
-    console.log(err)
-  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-module.exports = User
+module.exports = {
+  User: User,
+  Domain: Domain,
+};
