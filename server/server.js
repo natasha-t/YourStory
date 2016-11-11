@@ -9,11 +9,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '../client/public')))
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}))
+app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: true }))
 
 routes.router(app)
 
