@@ -24,7 +24,7 @@ export default function getToken() {
         console.log(response);
         setInterval(() => {
           store.dispatch(fetchVisData(response));
-        }, 2000);
+        }, 1000 * 60);
       })
       .catch((error) => {
         console.log(error);
