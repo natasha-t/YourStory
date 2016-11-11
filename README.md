@@ -25,7 +25,7 @@ ___
 2. [Development](# develop-/-contribute)
   * [Usage](# usage)
   * [Tasks](# tasks)
-3. [Known Bugs (Updated October, 2016)](# known-bugs)
+3. [Backlog](# backlog)
 
 
 
@@ -48,11 +48,21 @@ ___
 
 ### Usage
 
-  How to get started with our repo
+  Fork and clone this repo
 
 ```
-starting terminal commands
+cd YourStory
+npm install
+webpack --watch
+npm start
 ```
+  Load the Chrome Extension into your browser:
+  
+  - Go to chrome://extensions
+  - Check "Developer Mode"
+  - Click "Load unpacked extension..."
+  - Select ONLY the "client" directory
+  - Upload it
 
 ### Contribution Guide
 
