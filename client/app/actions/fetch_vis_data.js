@@ -10,7 +10,7 @@ function loadVisDataUponResponse(data) {
 }
 
 
-export default function fetchVisData() {
+export default function fetchVisData(id) {
   return function(dispatch) {
     getToken();
     const microsecondsPerDay = 1000 * 60 * 60 * 24;
@@ -25,7 +25,7 @@ export default function fetchVisData() {
       axios({
         method: 'post',
         url: 'http://yourstory-app.herokuapp.com/api/history',
-        data: {history: array},
+        data: {history: array, chromeId: id},
       }).then(response => {
         dispatch(loadVisDataUponResponse(response));
       })
