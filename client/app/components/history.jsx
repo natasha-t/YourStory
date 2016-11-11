@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import store from '../store';
-import fetchVisData from '../actions/fetch_vis_data';
 
 
 @connect((store) => {
@@ -17,19 +16,17 @@ export default class History extends React.Component {
   }
 
   render() {
-   const { visData } = this.props;
+    const { visData } = this.props;
 
-   var data = [];
+    const data = [];
 
-   for(var i = 0; i < visData.length; i++) {
-    data.push(<div key={i}><span> Domain: { visData[i].domain } Count: { visData[i].visits } </span></div>)
-   }
+    for (let i = 0; i < visData.length; i++) {
+      data.push(<div key={i}><span> Domain: { visData[i].domain } Count: { visData[i].visits } </span></div>);
+    }
 
-   
-   return <div>
+    return (<div>
       { data }
-    </div>
-
+    </div>);
   }
 
 }
