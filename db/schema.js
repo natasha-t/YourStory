@@ -17,7 +17,7 @@ const User = db.define('user', {
     autoIncrement: true
   },
   chrome_id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     unique: true
   },
   username: Sequelize.STRING
@@ -53,7 +53,7 @@ Url.belongsTo(User)
 
 //  create tables in database
 db
-  .sync({force: true})
+  .sync({force: false})
   .then(function () {
     console.log('Tables created')
     // Create user and domain
