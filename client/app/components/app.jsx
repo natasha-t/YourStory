@@ -5,6 +5,8 @@ import History from './history'
 import Auth from './auth'
 import Container from './nav_container'
 import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router'
+import store from '../store';
+
 
 @connect((store) => {
   return {
@@ -25,15 +27,3 @@ export default class App extends React.Component {
   }
 }
 
-{
-  /* <div> */
-}
-{
-  /* <Auth /> */
-}
-{
-  /* <History /> */
-}
-{
-  /* // </div> */
-}
