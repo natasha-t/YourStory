@@ -4,6 +4,7 @@ const _ = require('underscore');
 const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
 const Promise = require('bluebird');
+const dbHelpers = require('../db/dbHelpers')
 
 // Establishes the connection to the database
 db.authenticate().then(() => {
@@ -47,9 +48,19 @@ module.exports = {
     });
 
     // ================ save domain to Domains table in db ================
-    for (const key in uniqueDomains) {
+    for (let key in uniqueDomains) {
       Domain
       .findOrCreate({ where: { domain: key } })
+      .then((domain) => {
+        // ======= insert into users_domains table =====
+         User.findOne({ where: { chrome_id: req.session.chromeID } })
+         .then((user) => {
+            let tallyCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
+            console.log('tally for: ', key, 'count: ', tallyCount);
+
+            user.addDomain(domain, { count: 1 });
+         });
+      })
       .then(() => {
         const dummyData = [
               { domain: 'google', visits: 50 },
@@ -67,11 +78,9 @@ module.exports = {
         console.log('Done saving all domains!');
       });
     }
-    // ======= insert into users_domains table =====
 
-    User.findOne({ where: { chrome_id: req.session.chromeID } }).then((user) => {
-      
-    });
+
+
 
   },
 
@@ -79,9 +88,9 @@ module.exports = {
     console.log('inside routehelpers.js postUser API');
     // save to the session object the chrome id
     req.session.chromeID = req.body.chromeID;
-    console.log('session chrome id', req.session.user);
+    console.log('session chrome id', req.session.chromeID);
     // find or create user in the db
-    User.findOrCreate({ where: { chrome_id: req.session.user },
+    User.findOrCreate({ where: { chrome_id: req.session.chromeID },
       defaults: { username: req.body.username },
     })
       .spread((user, created) => {
