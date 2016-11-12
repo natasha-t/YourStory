@@ -20,7 +20,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Router history={hashHistory}>
-        <Route path="/" component={Container}>
+        <Route path="/history" component={Container}>
           <IndexRoute component={History} />
         </Route>
       </Router>
