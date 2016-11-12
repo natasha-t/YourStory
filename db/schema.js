@@ -40,7 +40,7 @@ const Domain = db.define('domain', {
   },
   domain: {
     type: Sequelize.STRING,
-    // unique: false,
+    unique: true,
   },
 });
 
