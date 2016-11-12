@@ -73,9 +73,15 @@ module.exports = {
           console.log(err);
         })
         .done(() => {
-          console.log('Done saving to join table');
+          console.log('Done saving domain for user');
         })
-      }   
+      } 
+      .catch((err) => {
+        console.log(err);
+      })
+      .done(() => {
+        console.log('Done saving to join table');
+      })   
     });
 
 
