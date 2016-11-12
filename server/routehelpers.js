@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const _ = require('underscore');
 const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
+const UserDomain = require('../db/schema').UserDomain;
 const Promise = require('bluebird');
 const dbHelpers = require('../db/dbHelpers')
 
@@ -51,36 +52,49 @@ module.exports = {
     for (let key in uniqueDomains) {
       Domain
       .findOrCreate({ where: { domain: key } })
-      .then((domain) => {
-        // ======= insert into users_domains table =====
-         User.findOne({ where: { chrome_id: req.session.chromeID } })
-         .then((user) => {
-            let tallyCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
-            console.log('tally for: ', key, 'count: ', tallyCount);
-
-            user.addDomain(domain, { count: 1 });
-         });
+      .catch((err) => {
+        console.log(err);
       })
-      .then(() => {
-        const dummyData = [
+      .done(() => {
+        console.log('Done saying all domains');
+      });
+    }
+
+    // ====== add domain and user to users_domains join table =====
+    User.findOne({ where: { chrome_id: req.session.chromeID } })
+    .then((user) => {
+      for (let key in uniqueDomains) {
+        Domain.findOne({ where: { domain: key } })
+        .then((domain) => {
+          let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
+          user.addDomain(domain, { count: totalCount });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .done(() => {
+          console.log('Done saving domain for user');
+        })
+      } 
+      .catch((err) => {
+        console.log(err);
+      })
+      .done(() => {
+        console.log('Done saving to join table');
+      })   
+    });
+
+
+
+
+    const dummyData = [
               { domain: 'google', visits: 50 },
               { domain: 'facebook', visits: 30 },
               { domain: 'twitter', visits: 20 },
               { domain: 'instagram', visits: 100 },
               { domain: 'apple', visits: 5 }];
 
-        res.status(201).json(dummyData);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .done(() => {
-        console.log('Done saving all domains!');
-      });
-    }
-
-
-
+    res.status(201).json(dummyData);
 
   },
 

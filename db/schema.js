@@ -67,4 +67,5 @@ db
 module.exports = {
   User: User,
   Domain: Domain,
+  UserDomain: UserDomain
 };
