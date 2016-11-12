@@ -16,7 +16,7 @@ db.authenticate().then(() => {
 module.exports = {
   postHistory: (req, res) => {
     const allData = req.body.history;
-    const id = req.body.chromeID; //TODO: change name to whatever natasha calls this variable
+    const id = req.body.chromeID; 
 
     // ============= add parsed domain to each history object in allData array ================
     allData.map((historyItem) => {
@@ -67,12 +67,19 @@ module.exports = {
         console.log('Done saving all domains!');
       });
     }
+    // ======= insert into users_domains table =====
+
+    User.findOne({ where: { chrome_id: req.session.chromeID } }).then((user) => {
+      
+    });
+
   },
 
   postUser: (req, res) => {
     console.log('inside routehelpers.js postUser API');
     // save to the session object the chrome id
-    req.session.user = req.body.chromeID;
+    req.session.chromeID = req.body.chromeID;
+    console.log('session chrome id', req.session.user);
     // find or create user in the db
     User.findOrCreate({ where: { chrome_id: req.session.user },
       defaults: { username: req.body.username },
@@ -83,7 +90,9 @@ module.exports = {
         }));
         console.log('user_created:', created);
         // send back to the client unique client identifier(Chrome_id)
-        res.send(req.session.user);
+        console.log('SERVER: sent chrome id', req.session.user)
+        res.json(req.session.chromeID);
       });
   },
+
 };
