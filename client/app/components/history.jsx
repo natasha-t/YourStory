@@ -19,7 +19,7 @@ export default class History extends React.Component {
     .attr('width', w);
 
     setInterval(() => {
-      svg.selectAll('circle')
+      const circle = svg.selectAll('circle')
       .data(this.props.visData)
       .enter()
       .append('svg:circle')
