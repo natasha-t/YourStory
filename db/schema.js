@@ -38,7 +38,10 @@ const Domain = db.define('domain', {
     primaryKey: true,
     autoIncrement: true,
   },
-  domain: Sequelize.STRING,
+  domain: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
 });
 
 const UserDomain = db.define('users_domains', {
