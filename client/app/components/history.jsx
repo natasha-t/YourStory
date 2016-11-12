@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import store from '../store';
-
+import * as d3 from 'd3';
 
 @connect((store) => {
   return {
@@ -11,23 +10,32 @@ import store from '../store';
 
 export default class History extends React.Component {
 
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+
+    const svg = d3.select(this.refs.hello)
+                  .append('svg')
+                  .attr('height', 600)
+                  .attr('width', 1200);
+
+    svg.selectAll('circle')
+       .data(this.props.visData)
+       .enter()
+       .append('svg:circle')
+       .attr('r', (d) => {
+         return d.visits;
+       })
+       .attr('color', 'black')
+       .attr('x', () => {
+         return Math.floor(Math.random() * 1000);
+       })
+       .attr('y', () => {
+         return Math.floor(Math.random() * 400);
+       })
   }
 
   render() {
-    const { visData } = this.props;
-
-    const data = [];
-
-    for (let i = 0; i < visData.length; i++) {
-      data.push(<div key={i}><span> Domain: { visData[i].domain } Count: { visData[i].visits } </span></div>);
-    }
-
-    return (<div>
-      { data }
-    </div>);
+    return (
+      <div ref={'hello'} />
+    );
   }
-
 }
-

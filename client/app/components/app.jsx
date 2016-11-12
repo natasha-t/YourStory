@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
-import store from '../store';
 import History from './history';
 import Container from './nav_container';
-import getToken from '../auth/auth';
 
 @connect((store) => {
   return {
@@ -14,9 +12,6 @@ import getToken from '../auth/auth';
 
 export default class App extends React.Component {
 
-  componentWillMount() {
-    getToken();
-  }
   render() {
     return (
       <Router history={hashHistory}>
