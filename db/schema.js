@@ -38,7 +38,10 @@ const Domain = db.define('domain', {
     primaryKey: true,
     autoIncrement: true,
   },
-  domain: Sequelize.STRING,
+  domain: {
+    type: Sequelize.STRING,
+    // unique: false,
+  },
 });
 
 const UserDomain = db.define('user_domain', {
@@ -53,7 +56,7 @@ Url.belongsTo(User);
 
 //  create tables in database
 db
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log('Tables created');
     // Create user and domain
