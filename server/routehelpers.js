@@ -4,6 +4,7 @@ const _ = require('underscore');
 const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
 const Promise = require('bluebird');
+const dbHelpers = require('../db/dbHelpers')
 
 // Establishes the connection to the database
 db.authenticate().then(() => {
@@ -16,7 +17,7 @@ db.authenticate().then(() => {
 module.exports = {
   postHistory: (req, res) => {
     const allData = req.body.history;
-    const id = req.body.chromeID; //TODO: change name to whatever natasha calls this variable
+    const id = req.body.chromeID; 
 
     // ============= add parsed domain to each history object in allData array ================
     allData.map((historyItem) => {
@@ -47,9 +48,19 @@ module.exports = {
     });
 
     // ================ save domain to Domains table in db ================
-    for (const key in uniqueDomains) {
+    for (let key in uniqueDomains) {
       Domain
       .findOrCreate({ where: { domain: key } })
+      .then((domain) => {
+        // ======= insert into users_domains table =====
+         User.findOne({ where: { chrome_id: req.session.chromeID } })
+         .then((user) => {
+            let tallyCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
+            console.log('tally for: ', key, 'count: ', tallyCount);
+
+            user.addDomain(domain, { count: 1 });
+         });
+      })
       .then(() => {
         const dummyData = [
               { domain: 'google', visits: 50 },
@@ -67,14 +78,19 @@ module.exports = {
         console.log('Done saving all domains!');
       });
     }
+
+
+
+
   },
 
   postUser: (req, res) => {
     console.log('inside routehelpers.js postUser API');
     // save to the session object the chrome id
-    req.session.user = req.body.chromeID;
+    req.session.chromeID = req.body.chromeID;
+    console.log('session chrome id', req.session.chromeID);
     // find or create user in the db
-    User.findOrCreate({ where: { chrome_id: req.session.user },
+    User.findOrCreate({ where: { chrome_id: req.session.chromeID },
       defaults: { username: req.body.username },
     })
       .spread((user, created) => {
@@ -83,7 +99,9 @@ module.exports = {
         }));
         console.log('user_created:', created);
         // send back to the client unique client identifier(Chrome_id)
-        res.send(req.session.user);
+        console.log('SERVER: sent chrome id', req.session.user)
+        res.json(req.session.chromeID);
       });
   },
+
 };

@@ -56,7 +56,7 @@ Url.belongsTo(User);
 
 //  create tables in database
 db
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log('Tables created');
   })
