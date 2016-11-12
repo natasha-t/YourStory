@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import History from './history';
 import Container from './nav_container';
+import getToken from '../auth/auth';
 
 @connect((store) => {
   return {
@@ -11,6 +12,10 @@ import Container from './nav_container';
 })
 
 export default class App extends React.Component {
+
+  componentWillMount() {
+    getToken();
+  }
 
   render() {
     return (
