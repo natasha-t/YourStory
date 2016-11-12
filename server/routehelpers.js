@@ -52,6 +52,12 @@ module.exports = {
     for (let key in uniqueDomains) {
       Domain
       .findOrCreate({ where: { domain: key } })
+      .catch((err) => {
+        console.log(err);
+      })
+      .done(() => {
+        console.log('Done saying all domains');
+      });
     }
 
     // ====== add domain and user to users_domains join table =====
@@ -62,9 +68,17 @@ module.exports = {
         .then((domain) => {
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
           user.addDomain(domain, { count: totalCount });
-        });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .done(() => {
+          console.log('Done saving to join table');
+        })
       }   
     });
+
+
 
 
     const dummyData = [
