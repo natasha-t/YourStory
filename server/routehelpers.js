@@ -44,11 +44,11 @@ module.exports = {
     //   });
 
     const dummyData = [
-      { domain: 'google', visits: 50 },
-      { domain: 'facebook', visits: 30 },
-      { domain: 'twitter', visits: 20 },
-      { domain: 'instagram', visits: 100 },
-      { domain: 'apple', visits: 5 }];
+      { domain: 'google', visits: 100, color: 'red' },
+      { domain: 'facebook', visits: 300, color: 'blue' },
+      { domain: 'twitter', visits: 500, color: 'lightblue' },
+      { domain: 'instagram', visits: 100, color: 'purple' },
+      { domain: 'apple', visits: 75, color: 'gray' }];
     res.status(201).json(dummyData);
   },
 
