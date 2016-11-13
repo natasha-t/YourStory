@@ -55,7 +55,7 @@ export default class History extends React.Component {
       .text((d) => {
         return 'WEBSITE: ' + d.domain + ' | VISITS: ' + d.visits;
       });
-    }, 200);
+    }, 500);
   }
 
   render() {
