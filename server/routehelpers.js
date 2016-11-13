@@ -18,7 +18,7 @@ db.authenticate().then(() => {
 module.exports = {
   postHistory: (req, res) => {
     const allData = req.body.history;
-    const id = req.body.chromeID; 
+    const id = req.body.chromeID;
 
     // ============= add parsed domain to each history object in allData array ================
     allData.map((historyItem) => {
@@ -77,13 +77,13 @@ module.exports = {
         .done(() => {
           console.log('Done saving domain for user');
         });
-      } 
+      }
       // .catch((err) => {
       //   console.log(err);
       // })
       // .done(() => {
       //   console.log('Done saving to join table');
-      // })  
+      // })
     });
 
 
@@ -97,11 +97,10 @@ module.exports = {
         for (let i = 0; i < domains.length; i++) {
           visData.push({ domain: domains[i].dataValues.domain, visits: domains[i].dataValues.users_domains.count });
         }
-        res.status(201).json(visData);    
+        res.status(201).json(visData);
       });
 
     });
-
   },
 
   postUser: (req, res) => {
