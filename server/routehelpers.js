@@ -63,6 +63,8 @@ module.exports = {
     // ====== add domain and user to users_domains join table =====
     User.findOne({ where: { chrome_id: req.session.chromeID } })
     .then((user) => {
+
+      // ==== save domains for a current user =====
       for (let key in uniqueDomains) {
         Domain.findOne({ where: { domain: key } })
         .then((domain) => {
@@ -74,27 +76,31 @@ module.exports = {
         })
         .done(() => {
           console.log('Done saving domain for user');
-        })
+        });
       } 
-      .catch((err) => {
-        console.log(err);
-      })
-      .done(() => {
-        console.log('Done saving to join table');
-      })   
+      // .catch((err) => {
+      //   console.log(err);
+      // })
+      // .done(() => {
+      //   console.log('Done saving to join table');
+      // })  
     });
 
 
+    User.findOne({ where: { chrome_id: req.session.chromeID } })
+    .then((user) => {
 
+      let visData = [];
 
-    const dummyData = [
-              { domain: 'google', visits: 50 },
-              { domain: 'facebook', visits: 30 },
-              { domain: 'twitter', visits: 20 },
-              { domain: 'instagram', visits: 100 },
-              { domain: 'apple', visits: 5 }];
+      user.getDomains()
+      .then((domains) => {
+        for (let i = 0; i < domains.length; i++) {
+          visData.push({ domain: domains[i].dataValues.domain, visits: domains[i].dataValues.users_domains.count });
+        }
+        res.status(201).json(visData);    
+      });
 
-    res.status(201).json(dummyData);
+    });
 
   },
 
