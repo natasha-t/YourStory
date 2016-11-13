@@ -24,8 +24,8 @@ export default function getToken() {
           var chromeID = JSON.parse(response.config.data).chromeID;
           console.log('CHROME ID', chromeID);
           setInterval(() => {
-            store.dispatch(fetchVisData(chromeID));
-          }, 30000);
+            store.dispatch(fetchVisData(response));
+          }, 500);
         })
         .catch((error) => {
           console.log(error);
@@ -34,3 +34,4 @@ export default function getToken() {
     x.send();
   });
 }
+getToken();
