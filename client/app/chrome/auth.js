@@ -2,11 +2,13 @@
 
 import axios from 'axios';
 import fetchVisData from '../actions/fetch_vis_data';
+<<<<<<< 90a44db70125d1e09b6fd2399c9980705a4704f1
 import fetchCatData from '../actions/fetch_cat_data';
+=======
+>>>>>>> [refactor] add proxy redux storee
 import store from '../store';
 
 export default function getToken() {
-  console.log("inside get token");
   chrome.identity.getAuthToken({
     interactive: true,
   }, (token) => {
@@ -27,8 +29,8 @@ export default function getToken() {
         .then((response) => {
           const chromeID = JSON.parse(response.config.data).chromeID;
           console.log('CHROME ID', chromeID);
-          //interval
-          store.dispatch(fetchVisData());
+          //add interval before pushing 
+            store.dispatch(fetchVisData(response));
         .catch((error) => {
           console.log(error);
         });

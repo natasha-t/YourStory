@@ -7,6 +7,7 @@ import Categories from './catData';
 import Container from './nav_container';
 import getToken from '../chrome/auth';
 
+
 export default class App extends React.Component {
 
   componentWillMount() {
