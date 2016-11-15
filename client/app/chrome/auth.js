@@ -1,7 +1,6 @@
 'use strict';
 
 import axios from 'axios';
-import fetchVisData from '../actions/fetch_vis_data';
 import fetchCatData from '../actions/fetch_cat_data';
 import store from '../store';
 
@@ -28,8 +27,7 @@ export default function getToken() {
           console.log('CHROME ID', chromeID);
           //add interval before pushing 
             store.dispatch(fetchVisData(response));
-            // store.dispatch(fetchCatData(response));
-
+            store.dispatch(fetchCatData(response));
         })
         .catch((error) => {
           console.log(error);
