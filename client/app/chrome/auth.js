@@ -21,7 +21,7 @@ export default function getToken() {
       console.log('User info from chrome: ', userInfo.id);
       axios({
         method: 'post',
-        url: 'http://localhost:3000/api/users', // 'http://yourstory-app.herokuapp.com/api/history'
+        url: process.env.HOST + '/api/users', // 'http://yourstory-app.herokuapp.com/api/history'
         data: { chromeID: userInfo.id, username: userInfo.name },
       })
         .then((response) => {
@@ -30,7 +30,7 @@ export default function getToken() {
           setInterval(() => {
             store.dispatch(fetchVisData(response));
             // store.dispatch(fetchCatData(response));
-          }, 5000);
+          }, 1000);
         })
         .catch((error) => {
           console.log(error);

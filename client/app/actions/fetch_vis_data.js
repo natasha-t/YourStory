@@ -21,7 +21,7 @@ export default function fetchVisData (id) {
     }, (array) => {
       axios({
         method: 'post',
-        url: 'http://localhost:3000/api/history',
+        url: process.env.HOST + '/api/history',
         data: { history: array, chromeID: id },
       }).then((response) => {
         dispatch(loadVisDataUponResponse(response));
