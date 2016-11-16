@@ -38,3 +38,4 @@ export default function getToken() {
     x.send();
   });
 }
+
