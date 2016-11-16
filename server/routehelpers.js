@@ -54,6 +54,15 @@ module.exports = {
     for (let key in uniqueDomains) {
       Domain
       .findOrCreate({ where: { domain: key } })
+      .then((domain) => {
+        if(!domain.category) {
+          // make API call
+          // Chain to API call: Category.create({ category: res.body.catName})
+          // .then((category) => {
+          //   domain.addCategory(category);
+        // }
+        }
+      })
       .catch((err) => {
         console.log(err);
       })
@@ -127,5 +136,27 @@ module.exports = {
         res.json(req.session.chromeID);
       });
   },
+
+  getCatData: (req, res) => {
+
+    const catData = [{ cat: ['domain1', 'domain2', 'domain3'], allDomainTotalCount: Number }];
+
+    User.findOne({ where: { chrome_id: req.session.chromeID } })
+    .then((user) => {
+      console.log("USER", user);
+      user.getDomains([ ])
+      .then((domains) => {
+        console.log("DOMAINS", domains);
+        for (let i = 0; i < domains.length; i++) {
+          const cat = {};
+          cat[domains[i].category] = [];
+          catData.push(cat);
+        }
+       })
+        .then(() => {
+          
+        })
+    })
+  }
 
 };
