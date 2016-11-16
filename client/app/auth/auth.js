@@ -5,6 +5,7 @@ import fetchVisData from '../actions/fetch_vis_data';
 import store from '../store';
 
 export default function getToken() {
+  console.log("inside get token");
   chrome.identity.getAuthToken({
     interactive: true,
   }, (token) => {
