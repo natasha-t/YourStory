@@ -76,6 +76,44 @@ db
   .sync({ force: true })
   .then(() => {
     console.log('Tables created');
+    User.create({ username: 'Lizzie' })
+    .then(()=> {
+      console.log('user created!');
+    })
+
+    Domain.create({ domain: 'google.com' })
+    .then(()=> {
+      console.log('domain created');
+    })
+
+    Domain.create({ domain: 'yahoo.com' })
+    .then(()=> {
+      console.log('domain created');
+    })
+
+    Domain.create({ domain: 'etsy.com' })
+    .then(()=> {
+      console.log('domain created');
+    })
+
+    Domain.create({ domain: 'target.com' })
+    .then(()=> {
+      console.log('domain created');
+    })
+
+    Category.create({ category: 'search'})
+
+    Category.create({ category: 'shopping'})
+
+    Domain.findOne({ where: { categoryId: true } })
+    .then(() => {
+      Category.findOne({ where: })
+    })
+
+
+
+
+
   })
   .catch((err) => {
     console.log(err);
