@@ -8,6 +8,7 @@ const Domain = require('../db/schema').Domain;
 const UserDomain = require('../db/schema').UserDomain;
 const Promise = require('bluebird');
 const dbHelpers = require('../db/dbHelpers')
+const axios = require('axios');
 
 // Establishes the connection to the database
 db.authenticate().then(() => {
@@ -51,18 +52,25 @@ module.exports = {
     });
 
     // ================ save domain to Domains table in db ================
-    for (let key in uniqueDomains) {
+    for(let key in uniqueDomains) {
       Domain
       .findOrCreate({ where: { domain: key } })
-      .then((domain) => {
-        if(!domain.category) {
-          // make API call
-          // Chain to API call: Category.create({ category: res.body.catName})
-          // .then((category) => {
-          //   domain.addCategory(category);
-        // }
-        }
-      })
+    //   .then((domain) => {
+    //     domain.getCategory()
+    //     .then((category) => {
+    //        if (category === null) {
+    //          const request = 'https://api.webshrinker.com/categories/v2/'
+    //          const hashURL = window.btoa('http://www.' + domain)
+    //          axios({
+    //            method: 'get',
+    //            url: request + hashURL + '?key=' + process.env.CATEGORY_ACCESS + 'hash=' + process.env.CATEGORY_SECRET
+    //          })
+    //          .then((res) => {
+    //            console.log(res)
+    //        })
+    //      }
+    //    })
+    //  })
       .catch((err) => {
         console.log(err);
       })
@@ -154,7 +162,7 @@ module.exports = {
         }
        })
         .then(() => {
-          
+
         })
     })
   }

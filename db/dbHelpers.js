@@ -10,5 +10,9 @@ module.exports = {
     return totalVisitCount;
   },
 
+  // tallyAllVisitCount: (urls) => {
+  //   let totalVisitCount = 0;
+  // }
+
 
 }
