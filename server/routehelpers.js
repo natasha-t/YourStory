@@ -58,7 +58,7 @@ module.exports = {
         console.log(err);
       })
       .done(() => {
-        console.log('Done saying all domains');
+        console.log('Done saving all domains');
       });
     }
 
@@ -97,7 +97,10 @@ module.exports = {
       user.getDomains()
       .then((domains) => {
         for (let i = 0; i < domains.length; i++) {
-          visData.push({ domain: domains[i].dataValues.domain, visits: domains[i].dataValues.users_domains.count });
+          visData.push(
+            { domain: domains[i].dataValues.domain,
+              visits: domains[i].dataValues.users_domains.count }
+            );
         }
         res.status(201).json(visData);
       });

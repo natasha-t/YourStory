@@ -46,6 +46,18 @@ const Domain = db.define('domain', {
   },
 });
 
+const Category = db.define('category', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  category: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
+});
+
 const UserDomain = db.define('users_domains', {
   count: Sequelize.INTEGER,
 });
@@ -55,6 +67,9 @@ User.belongsToMany(Domain, { through: UserDomain, foreignKey: 'userId' });
 
 User.hasMany(Url);
 Url.belongsTo(User);
+
+Category.hasMany(Domain);
+Domain.belongsTo(Category);
 
 //  create tables in database
 db
@@ -69,5 +84,5 @@ db
 module.exports = {
   User: User,
   Domain: Domain,
-  UserDomain: UserDomain
+  UserDomain: UserDomain,
 };

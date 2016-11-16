@@ -30,7 +30,7 @@ export default function getToken() {
           setInterval(() => {
             store.dispatch(fetchVisData(response));
             // store.dispatch(fetchCatData(response));
-          }, 500);
+          }, 1000);
         })
         .catch((error) => {
           console.log(error);
@@ -39,4 +39,3 @@ export default function getToken() {
     x.send();
   });
 }
-getToken();

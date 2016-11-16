@@ -33,31 +33,36 @@ export default class History extends React.Component {
     .attr('x', w / 2)
     .attr('y', h / 2);
 
-    setInterval(() => {
-      const circle = svg.selectAll('circle')
-      .data(this.props.visData)
-      .enter()
-      .append('svg:circle')
-      .attr('r', (d) => {
-        return (rscale(d.visits)) / 2;
-      })
-      .attr('fill', (d, i) => {
-        return (color(i));
-      })
-      .attr('cx', () => {
-        return Math.floor(Math.random() * (maxW - minW)) + minW;
-      })
-      .attr('cy', (d) => {
-        return Math.floor(Math.random() * (maxH - minH)) + minH;
-      })
-      .style('z-index', (d) => {
-        return 100 - d.visits;
-      })
-      .append('svg:title')
-      .text((d) => {
-        return 'WEBSITE: ' + d.domain + ' | VISITS: ' + d.visits;
-      });
-    }, 500);
+    // if (this.props.visData) {
+        const circle = svg.selectAll('circle')
+        .data(this.props.visData)
+        .enter()
+        .append('svg:circle')
+        .attr('r', (d) => {
+          return (rscale(d.visits)) / 2;
+        })
+        .attr('fill', (d, i) => {
+          return (color(i));
+        })
+        .attr('cx', () => {
+          return Math.floor(Math.random() * (maxW - minW)) + minW;
+        })
+        .attr('cy', (d) => {
+          return Math.floor(Math.random() * (maxH - minH)) + minH;
+        })
+        .style('z-index', (d) => {
+          return 100 - d.visits;
+        })
+        .append('svg:title')
+        .text((d) => {
+          return 'WEBSITE: ' + d.domain + ' | VISITS: ' + d.visits;
+        });
+    // }
+    // else {
+    //   svg.selectAll('image')
+    //   .append('svg:image')
+    //   .src('../../public/assets/ajax-loader.gif')
+    // }
   }
 
   render() {
