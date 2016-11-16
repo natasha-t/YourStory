@@ -5,8 +5,9 @@ import { Link } from 'react-router';
 
 const Nav = () => (
   <div>
-    <Link to="/">History</Link>
+    <Link to="/history">History</Link>
     {/* <Link to="/history">History</Link> */}
+    <Link to="/categories">Categories</Link>
   </div>
 );
 
