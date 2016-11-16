@@ -1,3 +1,5 @@
+'use strict';
+
 import axios from 'axios';
 
 function loadVisDataUponResponse (data) {
@@ -21,7 +23,7 @@ export default function fetchVisData (id) {
         method: 'post',
         url: process.env.HOST + '/api/history',
         data: { history: array, chromeID: id },
-      }).then((response) => {   
+      }).then((response) => {
         dispatch(loadVisDataUponResponse(response));
       });
     });

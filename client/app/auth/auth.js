@@ -1,3 +1,5 @@
+'use strict';
+
 import axios from 'axios';
 import fetchVisData from '../actions/fetch_vis_data';
 import store from '../store';
@@ -17,7 +19,7 @@ export default function getToken() {
       console.log('User info from chrome: ', userInfo.id);
       axios({
         method: 'post',
-        url: 'http://localhost:3000/api/users', // 'http://yourstory-app.herokuapp.com/api/history'
+        url: process.env.HOST + '/api/users', // 'http://yourstory-app.herokuapp.com/api/history'
         data: { chromeID: userInfo.id, username: userInfo.name },
       })
         .then((response) => {

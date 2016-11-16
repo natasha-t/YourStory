@@ -1,3 +1,5 @@
+'use strict';
+
 const db = require('../db/config');
 const Sequelize = require('sequelize');
 const _ = require('underscore');
