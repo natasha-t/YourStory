@@ -85,5 +85,4 @@ module.exports = {
   User: User,
   Domain: Domain,
   UserDomain: UserDomain,
-  DomainCategory: DomainCategory,
 };
