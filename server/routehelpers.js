@@ -58,7 +58,7 @@ module.exports = {
         console.log(err);
       })
       .done(() => {
-        // console.log('Done saving all domains');
+        console.log('Done saving all domains');
       });
     }
 
