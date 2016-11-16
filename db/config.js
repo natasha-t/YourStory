@@ -1,3 +1,5 @@
+'use strict';
+
 // establish postgres connection
 
 const pg = require('pg')
