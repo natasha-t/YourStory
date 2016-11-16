@@ -2,9 +2,11 @@
 
 import axios from 'axios';
 import fetchVisData from '../actions/fetch_vis_data';
+// import fetchVisData from '../actions/fetch_cat_data';
 import store from '../store';
 
 export default function getToken() {
+  console.log("inside get token");
   chrome.identity.getAuthToken({
     interactive: true,
   }, (token) => {
@@ -27,6 +29,7 @@ export default function getToken() {
           console.log('CHROME ID', chromeID);
           setInterval(() => {
             store.dispatch(fetchVisData(response));
+            // store.dispatch(fetchCatData(response));
           }, 500);
         })
         .catch((error) => {
