@@ -31,6 +31,7 @@ export default function getToken() {
           console.log('CHROME ID', chromeID);
           //add interval before pushing 
             store.dispatch(fetchVisData(response));
+        })
         .catch((error) => {
           console.log(error);
         });
