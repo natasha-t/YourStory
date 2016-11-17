@@ -81,8 +81,12 @@ db
     console.log(err);
   });
 
+  console.log(catData);
+
+
 module.exports = {
   User: User,
   Domain: Domain,
   UserDomain: UserDomain,
+  Category: Category,
 };

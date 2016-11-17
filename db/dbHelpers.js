@@ -10,9 +10,12 @@ module.exports = {
     return totalVisitCount;
   },
 
-  // tallyAllVisitCount: (urls) => {
-  //   let totalVisitCount = 0;
+  // tallyAllVisitCount: (domain) => {
+  //   let allVisitCount = 0;
+  //   domain.forEach((domain) => {
+  //     allVisitCount += domain.visits;
+  //   })
   // }
 
 
-}
+};
