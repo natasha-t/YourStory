@@ -25,13 +25,10 @@ export default function getToken() {
         data: { chromeID: userInfo.id, username: userInfo.name },
       })
         .then((response) => {
-          var chromeID = JSON.parse(response.config.data).chromeID;
+          const chromeID = JSON.parse(response.config.data).chromeID;
           console.log('CHROME ID', chromeID);
-          setInterval(() => {
-            store.dispatch(fetchVisData(response));
-            // store.dispatch(fetchCatData(response));
-          }, 5000);
-        })
+          //interval
+          store.dispatch(fetchVisData());
         .catch((error) => {
           console.log(error);
         });

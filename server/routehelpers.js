@@ -6,9 +6,12 @@ const _ = require('underscore');
 const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
 const UserDomain = require('../db/schema').UserDomain;
+const Category = require('../db/schema').Category;
 const Promise = require('bluebird');
 const dbHelpers = require('../db/dbHelpers')
 const axios = require('axios');
+const btoa = require('btoa');
+const md5 = require('md5');
 
 // Establishes the connection to the database
 db.authenticate().then(() => {
@@ -55,22 +58,8 @@ module.exports = {
     for(let key in uniqueDomains) {
       Domain
       .findOrCreate({ where: { domain: key } })
-    //   .then((domain) => {
-    //     domain.getCategory()
-    //     .then((category) => {
-    //        if (category === null) {
-    //          const request = 'https://api.webshrinker.com/categories/v2/'
-    //          const hashURL = window.btoa('http://www.' + domain)
-    //          axios({
-    //            method: 'get',
-    //            url: request + hashURL + '?key=' + process.env.CATEGORY_ACCESS + 'hash=' + process.env.CATEGORY_SECRET
-    //          })
-    //          .then((res) => {
-    //            console.log(res)
-    //        })
-    //      }
-    //    })
-    //  })
+      .then((domain) => {
+      })
       .catch((err) => {
         console.log(err);
       })
@@ -89,20 +78,37 @@ module.exports = {
         .then((domain) => {
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
           user.addDomain(domain, { count: totalCount });
+          domain.getCategory()
+         .then((category) => {
+           if (category === null) {
+            const apiUrl = 'https://api.webshrinker.com/categories/v2/'
+            const hashURL = btoa('http://www.' + domain.dataValues.domain)
+            axios({
+              method: 'get',
+              url: apiUrl + hashURL,
+              auth: {
+                username: 'fkKRkyRahQhQZHW765Jr',
+                password: '6qwnBSgBc3ndn6Vzviql'
+              }
+            })
+              .then((response) => {
+                Category.findOrCreate({ where: { category: response.data.data[0].categories[0] } })
+                .then((cat) => {
+                  domain.updateAttributes({
+                    categoryId: cat[0].dataValues.id,
+                  })
+                })
+              })
+             }
+          })
         })
         .catch((err) => {
           console.log(err);
         })
         .done(() => {
-          // console.log('Done saving domain for user');
+          console.log('Done saving and categorizing domain for user');
         });
       }
-      // .catch((err) => {
-      //   console.log(err);
-      // })
-      // .done(() => {
-      //   console.log('Done saving to join table');
-      // })
     });
 
 
@@ -147,24 +153,21 @@ module.exports = {
 
   getCatData: (req, res) => {
 
-    const catData = [{ cat: ['domain1', 'domain2', 'domain3'], allDomainTotalCount: Number }];
+    const catData = [{ catName: '', domains: [], allDomainTotalCount: 0 }];
 
     User.findOne({ where: { chrome_id: req.session.chromeID } })
     .then((user) => {
-      console.log("USER", user);
-      user.getDomains([ ])
+      user.getDomains()
       .then((domains) => {
-        console.log("DOMAINS", domains);
-        for (let i = 0; i < domains.length; i++) {
-          const cat = {};
-          cat[domains[i].category] = [];
-          catData.push(cat);
+        for(let i = 0; i < domains.length; i ++) {
+          console.log("CATZ?", domains[i].getCategory());
         }
-       })
-        .then(() => {
-
-        })
-    })
-  }
+        // res.json(domains);
+      });
+        // .then(() => {
+        //
+        // })
+    });
+  },
 
 };
