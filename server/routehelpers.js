@@ -77,6 +77,7 @@ module.exports = {
         Domain.findOne({ where: { domain: key } })
         .then((domain) => {
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
+
           user.addDomain(domain, { count: totalCount });
           domain.getCategory()
          .then((category) => {
@@ -100,7 +101,9 @@ module.exports = {
                 })
               })
              }
-          })
+          });
+
+
         })
         .catch((err) => {
           console.log(err);

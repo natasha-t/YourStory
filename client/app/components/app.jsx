@@ -10,6 +10,10 @@ import getToken from '../chrome/auth';
 
 export default class App extends React.Component {
 
+  componentWillMount() {
+    getToken();
+  }
+
   render() {
     return (
       <Router history={hashHistory}>
