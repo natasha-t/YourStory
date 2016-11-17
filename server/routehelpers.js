@@ -58,7 +58,7 @@ module.exports = {
         console.log(err);
       })
       .done(() => {
-        console.log('Done saving all domains');
+        // console.log('Done saving all domains');
       });
     }
 
@@ -77,7 +77,7 @@ module.exports = {
           console.log(err);
         })
         .done(() => {
-          console.log('Done saving domain for user');
+          // console.log('Done saving domain for user');
         });
       }
       // .catch((err) => {
@@ -109,10 +109,10 @@ module.exports = {
   },
 
   postUser: (req, res) => {
-    console.log('inside routehelpers.js postUser API');
+    // console.log('inside routehelpers.js postUser API');
     // save to the session object the chrome id
     req.session.chromeID = req.body.chromeID;
-    console.log('session chrome id', req.session.chromeID);
+    // console.log('session chrome id', req.session.chromeID);
     // find or create user in the db
     User.findOrCreate({ where: { chrome_id: req.session.chromeID },
       defaults: { username: req.body.username },
@@ -121,9 +121,9 @@ module.exports = {
         console.log(user.get({
           plain: true,
         }));
-        console.log('user_created:', created);
+        // console.log('user_created:', created);
         // send back to the client unique client identifier(Chrome_id)
-        console.log('SERVER: sent chrome id', req.session.user)
+        // console.log('SERVER: sent chrome id', req.session.user)
         res.json(req.session.chromeID);
       });
   },
