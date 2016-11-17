@@ -141,7 +141,6 @@ module.exports = {
           .catch((err) => {
             console.log('error when adding date to Dates table', err);
           });
-
           domain.getCategory()
           .then((category) => {
             console.log('trying to get category', category);
@@ -173,6 +172,7 @@ module.exports = {
               });
             }
           });
+
         })
         .catch((err) => {
           console.log('error finding domain by key in uniqueDomains object: ', err);
