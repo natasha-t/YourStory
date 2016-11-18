@@ -138,13 +138,10 @@ module.exports = {
           .then((todayDate) => {
             todayDate.addDomain(domain, { count: totalCount });
           })
-<<<<<<< bd2b2c41345b741acc5335699ec8f824d6545e33
           .catch((err) => {
             console.log('error when adding date to Dates table', err);
           });
-=======
 
->>>>>>> [add] add fetch week data component, action and reducer
           domain.getCategory()
           .then((category) => {
             console.log('trying to get category', category);
@@ -322,6 +319,7 @@ module.exports = {
     })
   },
 
+<<<<<<< 74fdfd000f6df35dfc53ce0502c5dc27925d5963
   getWeekData: (req, res) => {
 
     const todayRaw = new Date();
@@ -469,5 +467,34 @@ module.exports = {
     .catch((err) => {
       console.log("ERROR IN THERE SOMEWHERE! ", err)
     });
+  },
+
+  getWeekData: {
+    const dummyData = [
+      {day: 'Monday',
+        domains: [{ domain: 'google.com', totalCount: 100 }, { domain: 'stackoverflow.com', totalCount: 50 }, { domain: 'github.com', totalCount: 50 }]
+       total: 200},
+      {day: 'Tuesday',
+        domains: [{ domain: 'google.com', totalCount: 200 }, { domain: 'stackoverflow.com', totalCount: 60 }, { domain: 'github.com', totalCount: 50 }]
+       total: 310},
+      {day: 'Wednesday',
+        domains: [{ domain: 'google.com', totalCount: 250 }, { domain: 'stackoverflow.com', totalCount: 70 }, { domain: 'github.com', totalCount: 50 }]
+       total: 370},
+      {day: 'Thursday',
+        domains: [{ domain: 'google.com', totalCount: 150 }, { domain: 'stackoverflow.com', totalCount: 55 }, { domain: 'github.com', totalCount: 40 }]
+       total: 245},
+      {day: 'Friday',
+        domains: [{ domain: 'google.com', totalCount: 300 }, { domain: 'stackoverflow.com', totalCount: 100 }, { domain: 'github.com', totalCount: 200 }]
+       total: 600},
+       {day: 'Saturday',
+        domains: [{ domain: 'google.com', totalCount: 100 }, { domain: 'stackoverflow.com', totalCount: 20 }, { domain: 'github.com', totalCount: 20 }]
+       total: 140},
+      {day: 'Sunday',
+        domains: [{ domain: 'google.com', totalCount: 35 }, { domain: 'stackoverflow.com', totalCount: 2 }, { domain: 'github.com', totalCount: 10 }]
+       total: 47}
+    ]
+
+
+
   },
 };
