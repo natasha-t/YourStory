@@ -138,9 +138,13 @@ module.exports = {
           .then((todayDate) => {
             todayDate.addDomain(domain, { count: totalCount });
           })
+<<<<<<< bd2b2c41345b741acc5335699ec8f824d6545e33
           .catch((err) => {
             console.log('error when adding date to Dates table', err);
           });
+=======
+
+>>>>>>> [add] add fetch week data component, action and reducer
           domain.getCategory()
           .then((category) => {
             console.log('trying to get category', category);
