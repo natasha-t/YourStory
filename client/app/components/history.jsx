@@ -12,7 +12,9 @@ import * as d3 from 'd3';
 
 export default class History extends React.Component {
 
-  componentDidUpdate() {
+  componentWillUpdate() {
+    console.log('IN HISTORY COMPONENT', this.props.visData);
+
     const h = 700;
     const maxH = 500;
     const minH = 200;

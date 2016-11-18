@@ -258,7 +258,7 @@ module.exports = {
          }
 
 
-         res.status(201).json(visData);
+         res.status(201).json(catData);
 
       })
     })

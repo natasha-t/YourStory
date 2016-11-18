@@ -2,10 +2,7 @@
 
 import axios from 'axios';
 import fetchVisData from '../actions/fetch_vis_data';
-<<<<<<< 90a44db70125d1e09b6fd2399c9980705a4704f1
 import fetchCatData from '../actions/fetch_cat_data';
-=======
->>>>>>> [refactor] add proxy redux storee
 import store from '../store';
 
 export default function getToken() {
@@ -31,6 +28,8 @@ export default function getToken() {
           console.log('CHROME ID', chromeID);
           //add interval before pushing 
             store.dispatch(fetchVisData(response));
+            // store.dispatch(fetchCatData(response));
+
         })
         .catch((error) => {
           console.log(error);

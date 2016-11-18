@@ -11,7 +11,7 @@ import * as d3 from 'd3';
 
 export default class Categories extends React.Component {
 
-  componentDidMount() {
+  componentDidUpdate() {
     const dummy = [{
       category: 'news',
       domains: ['google.com', 'yahoo.com', 'wsj.com'],
@@ -25,6 +25,7 @@ export default class Categories extends React.Component {
       domains: ['webmd.com', 'weightwatchers.com', 'kaiser.com'],
       totalVisits: 25,
     }];
+    console.log('cat data in category component', this.props.catData);
 
     var data = [dummy[0].totalVisits, dummy[1].totalVisits, dummy[2].totalVisits];
 

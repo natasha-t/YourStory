@@ -11,11 +11,18 @@ function loadCatDataUponResponse (data) {
 
 export default function fetchCatData (id) {
   // console.log('fetch cat data', id);
-  axios({
-    method: 'GET',
-    url: process.env.HOST + '/api/catdata',
-  })
-  .then((response) => {
-    loadCatDataUponResponse(response);
-  });
+  return function(dispatch) {
+    axios({
+      method: 'GET',
+      url: process.env.HOST + '/api/catData',
+    })
+    .then((response) => {
+      dispatch(loadCatDataUponResponse(response));
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+    return null;
+  };
 }
