@@ -58,7 +58,21 @@ const Category = db.define('category', {
   },
 });
 
+const DateTable = db.define('date', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  dateOnly: Sequelize.DATEONLY,
+  dateTime: Sequelize.DATE,
+});
+
 const UserDomain = db.define('users_domains', {
+  count: Sequelize.INTEGER,
+});
+
+const DateDomain = db.define('dates_domains', {
   count: Sequelize.INTEGER,
 });
 
@@ -71,18 +85,24 @@ Url.belongsTo(User);
 Category.hasMany(Domain, { as: 'Sites' });
 Domain.belongsTo(Category);
 
-//  create tables in database
+Domain.belongsToMany(DateTable, { through: DateDomain, foreignKey: 'domainId' });
+DateTable.belongsToMany(Domain, { through: DateDomain, foreignKey: 'dateId' });
+
 db
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log('Tables created')
+
+    const date = new Date();
+
+    DateTable.create({ dateOnly: date, dateTime: date })
+    .catch((err) => {
+      console.log(err)
+    });
   })
   .catch((err) => {
     console.log(err);
   });
-
-  // console.log(catData);
-
 
 module.exports = {
   User: User,
