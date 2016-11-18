@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import fetchCatData from '../actions/fetch_cat_data';
+import fetchVisData from '../actions/fetch_vis_data';
 import store from '../store';
 
 export default function getToken() {
