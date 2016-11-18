@@ -6,7 +6,6 @@ import fetchCatData from '../actions/fetch_cat_data';
 import store from '../store';
 
 export default function getToken() {
-  console.log("inside get token");
   chrome.identity.getAuthToken({
     interactive: true,
   }, (token) => {
@@ -25,12 +24,12 @@ export default function getToken() {
         data: { chromeID: userInfo.id, username: userInfo.name },
       })
         .then((response) => {
-          var chromeID = JSON.parse(response.config.data).chromeID;
+          const chromeID = JSON.parse(response.config.data).chromeID;
           console.log('CHROME ID', chromeID);
-          setInterval(() => {
+          //add interval before pushing 
             store.dispatch(fetchVisData(response));
-            // store.dispatch(fetchCatData(response));
-          }, 5000);
+            store.dispatch(fetchCatData(response));
+
         })
         .catch((error) => {
           console.log(error);
@@ -39,3 +38,4 @@ export default function getToken() {
     x.send();
   });
 }
+

@@ -6,8 +6,12 @@ const _ = require('underscore');
 const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
 const UserDomain = require('../db/schema').UserDomain;
+const Category = require('../db/schema').Category;
 const Promise = require('bluebird');
 const dbHelpers = require('../db/dbHelpers')
+const axios = require('axios');
+const btoa = require('btoa');
+const md5 = require('md5');
 
 // Establishes the connection to the database
 db.authenticate().then(() => {
@@ -51,14 +55,16 @@ module.exports = {
     });
 
     // ================ save domain to Domains table in db ================
-    for (let key in uniqueDomains) {
+    for(let key in uniqueDomains) {
       Domain
       .findOrCreate({ where: { domain: key } })
+      .then((domain) => {
+      })
       .catch((err) => {
         console.log(err);
       })
       .done(() => {
-        // console.log('Done saving all domains');
+        console.log('Done saving all domains');
       });
     }
 
@@ -71,21 +77,41 @@ module.exports = {
         Domain.findOne({ where: { domain: key } })
         .then((domain) => {
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
+
           user.addDomain(domain, { count: totalCount });
+          domain.getCategory()
+         .then((category) => {
+           if (category === null) {
+            const apiUrl = 'https://api.webshrinker.com/categories/v2/'
+            const hashURL = btoa('http://www.' + domain.dataValues.domain)
+            axios({
+              method: 'get',
+              url: apiUrl + hashURL,
+              auth: {
+                username: 'fkKRkyRahQhQZHW765Jr',
+                password: '6qwnBSgBc3ndn6Vzviql'
+              }
+            })
+              .then((response) => {
+                Category.findOrCreate({ where: { category: response.data.data[0].categories[0] } })
+                .then((cat) => {
+                  domain.updateAttributes({
+                    categoryId: cat[0].dataValues.id,
+                  })
+                })
+              })
+             }
+          });
+
+
         })
         .catch((err) => {
           console.log(err);
         })
         .done(() => {
-          // console.log('Done saving domain for user');
+          console.log('Done saving and categorizing domain for user');
         });
       }
-      // .catch((err) => {
-      //   console.log(err);
-      // })
-      // .done(() => {
-      //   console.log('Done saving to join table');
-      // })
     });
 
 
@@ -126,6 +152,116 @@ module.exports = {
         // console.log('SERVER: sent chrome id', req.session.user)
         res.json(req.session.chromeID);
       });
+  },
+
+  getCatData: (req, res) => {
+    const getAllUserDomains = () => {
+      return User.findOne({ where: { chrome_id: req.session.chromeID } })
+      .then((user) => {
+        return user.getDomains()
+        .catch((err) => {
+          console.log(err);
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
+
+   let domains = new Promise((resolve, reject) => {
+        return resolve(getAllUserDomains());
+      })
+
+
+   const getCategories = () => {
+      return Category.findAll()
+      .catch((err) => {
+        console.log(err);
+      })
+    }
+
+   let categories = new Promise((resolve, reject) => {
+        return resolve(getCategories());
+      })
+
+   categories
+   .then((categories) => {
+    console.log('categories', categories.length);
+   })
+
+
+
+
+
+  const getDomArr = () => {
+   let domArr = [];
+   return domains
+         .then((domains) => {
+          for (let i = 0; i < domains.length; i++) {
+            let domain = {};
+            domain['name'] = domains[i].dataValues.domain;
+            domain['categoryId'] = domains[i].dataValues.categoryId;
+            domain['count'] = domains[i].dataValues.users_domains.count;
+            domArr.push(domain);
+          }
+          return domArr;
+         })
+  }
+
+  let domainArr = new Promise((resolve, reject) => {
+        return resolve(getDomArr());
+      })
+
+
+
+  const getCatObj = () => {
+    let catObjs = {};
+    return categories
+           .then((categories) => {
+            for (let i = 0; i < categories.length; i++) {
+              catObjs[categories[i].dataValues.category] = categories[i].dataValues.id;
+            }
+            return catObjs;
+           })
+  }
+
+  let categoryObj = new Promise((resolve, reject) => {
+        return resolve(getCatObj());
+      })
+
+
+
+    let catData = [];
+
+    domainArr
+    .then((domArr) => {
+      categoryObj
+      .then((catObj) => {
+
+         for (let category in catObj) {
+          let cat = {};
+          cat['id'] = catObj[category];
+          cat['category'] = category;
+          cat['domains'] = [];
+          cat['totalCount'] = 0;
+          catData.push(cat);
+         }
+
+
+         for (let domain of domArr) {
+           for (let i = 0; i < catData.length; i++) {
+             if (catData[i].id === domain.categoryId) {
+              catData[i].domains.push(domain.name);
+              catData[i].totalCount += domain.count;
+             }
+           }
+         }
+
+
+         res.status(201).json(catData);
+
+      })
+    })
   },
 
 };

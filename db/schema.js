@@ -68,21 +68,25 @@ User.belongsToMany(Domain, { through: UserDomain, foreignKey: 'userId' });
 User.hasMany(Url);
 Url.belongsTo(User);
 
-Category.hasMany(Domain);
+Category.hasMany(Domain, { as: 'Sites' });
 Domain.belongsTo(Category);
 
 //  create tables in database
 db
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
-    console.log('Tables created');
+    console.log('Tables created')
   })
   .catch((err) => {
     console.log(err);
   });
 
+  // console.log(catData);
+
+
 module.exports = {
   User: User,
   Domain: Domain,
   UserDomain: UserDomain,
+  Category: Category,
 };

@@ -27,7 +27,7 @@ export default function fetchVisData (id) {
         dispatch(loadVisDataUponResponse(response));
       });
     });
-
+  
     return null;
   };
 }
