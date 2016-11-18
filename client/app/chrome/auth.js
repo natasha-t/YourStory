@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import fetchVisData from '../actions/fetch_vis_data';
+<<<<<<< e5ca7f964c4cb377088860d2a0f3074287650305
 import fetchCatData from '../actions/fetch_cat_data';
 import fetchWeekData from '../actions/fetch_week_data';
 import fetchUsername from '../actions/fetch_username';
