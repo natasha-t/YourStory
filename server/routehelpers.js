@@ -469,32 +469,32 @@ module.exports = {
     });
   },
 
-  getWeekData: {
+  getWeekData: (req, res) => {
     const dummyData = [
       {day: 'Monday',
-        domains: [{ domain: 'google.com', totalCount: 100 }, { domain: 'stackoverflow.com', totalCount: 50 }, { domain: 'github.com', totalCount: 50 }]
+        domains: [{ domain: 'google.com', totalCount: 100 }, { domain: 'stackoverflow.com', totalCount: 50 }, { domain: 'github.com', totalCount: 50 }],
        total: 200},
       {day: 'Tuesday',
-        domains: [{ domain: 'google.com', totalCount: 200 }, { domain: 'stackoverflow.com', totalCount: 60 }, { domain: 'github.com', totalCount: 50 }]
+        domains: [{ domain: 'google.com', totalCount: 200 }, { domain: 'stackoverflow.com', totalCount: 60 }, { domain: 'github.com', totalCount: 50 }],
        total: 310},
       {day: 'Wednesday',
-        domains: [{ domain: 'google.com', totalCount: 250 }, { domain: 'stackoverflow.com', totalCount: 70 }, { domain: 'github.com', totalCount: 50 }]
+        domains: [{ domain: 'google.com', totalCount: 250 }, { domain: 'stackoverflow.com', totalCount: 70 }, { domain: 'github.com', totalCount: 50 }],
        total: 370},
       {day: 'Thursday',
-        domains: [{ domain: 'google.com', totalCount: 150 }, { domain: 'stackoverflow.com', totalCount: 55 }, { domain: 'github.com', totalCount: 40 }]
+        domains: [{ domain: 'google.com', totalCount: 150 }, { domain: 'stackoverflow.com', totalCount: 55 }, { domain: 'github.com', totalCount: 40 }],
        total: 245},
       {day: 'Friday',
-        domains: [{ domain: 'google.com', totalCount: 300 }, { domain: 'stackoverflow.com', totalCount: 100 }, { domain: 'github.com', totalCount: 200 }]
+        domains: [{ domain: 'google.com', totalCount: 300 }, { domain: 'stackoverflow.com', totalCount: 100 }, { domain: 'github.com', totalCount: 200 }],
        total: 600},
        {day: 'Saturday',
-        domains: [{ domain: 'google.com', totalCount: 100 }, { domain: 'stackoverflow.com', totalCount: 20 }, { domain: 'github.com', totalCount: 20 }]
+        domains: [{ domain: 'google.com', totalCount: 100 }, { domain: 'stackoverflow.com', totalCount: 20 }, { domain: 'github.com', totalCount: 20 }],
        total: 140},
       {day: 'Sunday',
-        domains: [{ domain: 'google.com', totalCount: 35 }, { domain: 'stackoverflow.com', totalCount: 2 }, { domain: 'github.com', totalCount: 10 }]
+        domains: [{ domain: 'google.com', totalCount: 35 }, { domain: 'stackoverflow.com', totalCount: 2 }, { domain: 'github.com', totalCount: 10 }],
        total: 47}
     ]
 
-
+    res.status(201).json(dummyData);
 
   },
 };

@@ -7,9 +7,6 @@ import visData from './reducers/history';
 import catData from './reducers/catData';
 import weekData from './reducers/weekData';
 
-
-
-
 import { loadState } from './chrome/storage';
 
 const persistedState = loadState();

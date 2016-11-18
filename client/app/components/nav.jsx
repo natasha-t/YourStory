@@ -8,6 +8,8 @@ const Nav = () => (
     <Link to="/history">History</Link>
     {/* <Link to="/history">History</Link> */}
     <Link to="/categories">Categories</Link>
+    <Link to="/chart">Chart</Link>
+
   </div>
 );
 
