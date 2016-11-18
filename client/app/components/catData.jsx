@@ -12,22 +12,9 @@ import * as d3 from 'd3';
 export default class Categories extends React.Component {
 
   componentDidUpdate() {
-    const dummy = [{
-      category: 'news',
-      domains: ['google.com', 'yahoo.com', 'wsj.com'],
-      totalVisits: 50,
-    }, {
-      category: 'sports',
-      domains: ['espn.com', 'nfl.com'],
-      totalVisits: 150,
-    }, {
-      category: 'health',
-      domains: ['webmd.com', 'weightwatchers.com', 'kaiser.com'],
-      totalVisits: 25,
-    }];
-    console.log('cat data in category component', this.props.catData);
 
-    var data = [dummy[0].totalVisits, dummy[1].totalVisits, dummy[2].totalVisits];
+    const data = this.props.catData;
+ 
 
     var canvas = document.querySelector("canvas"),
         context = canvas.getContext("2d");
@@ -47,9 +34,9 @@ export default class Categories extends React.Component {
         .cornerRadius(8)
         .context(context);
 
-    var pie = d3.pie();
+   const pie = d3.pie();
 
-    var arcs = pie(data);
+   const arcs = pie.value(function(d) { return d.totalCount; })(data);
 
     context.translate(width / 2, height / 2);
 
