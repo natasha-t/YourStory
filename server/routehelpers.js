@@ -7,6 +7,8 @@ const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
 const UserDomain = require('../db/schema').UserDomain;
 const Category = require('../db/schema').Category;
+const DateTable = require('../db/schema').DateTable;
+const DateDomain = require('../db/schema').DateDomain;
 const Promise = require('bluebird');
 const dbHelpers = require('../db/dbHelpers')
 const axios = require('axios');
@@ -59,7 +61,13 @@ module.exports = {
       Domain
       .findOrCreate({ where: { domain: key } })
       .then((domain) => {
-      })
+        const date = new Date();
+        DateTable
+        .findOrCreate({ where: { dateOnly: date, dateTime: date } })
+        })
+        .catch((err) => {
+          console.log(err);
+        })
       .catch((err) => {
         console.log(err);
       })
@@ -77,8 +85,13 @@ module.exports = {
         Domain.findOne({ where: { domain: key } })
         .then((domain) => {
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
-
           user.addDomain(domain, { count: totalCount });
+
+          DateTable.findOne({ where: { dateOnly: new Date() } })
+          .then((todayDate) => {
+            todayDate.addDomain(domain, { count: totalCount})
+          })
+
           domain.getCategory()
          .then((category) => {
            if (category === null) {
@@ -88,8 +101,8 @@ module.exports = {
               method: 'get',
               url: apiUrl + hashURL,
               auth: {
-                username: 'fkKRkyRahQhQZHW765Jr',
-                password: '6qwnBSgBc3ndn6Vzviql'
+                username: 'US6S18KXA4a5nfICmc2h',
+                password: 'ByfZe6xz1zeOsk7h1NSA'
               }
             })
               .then((response) => {
@@ -102,8 +115,6 @@ module.exports = {
               })
              }
           });
-
-
         })
         .catch((err) => {
           console.log(err);
@@ -189,10 +200,6 @@ module.exports = {
     console.log('categories', categories.length);
    })
 
-
-
-
-
   const getDomArr = () => {
    let domArr = [];
    return domains
@@ -212,8 +219,6 @@ module.exports = {
         return resolve(getDomArr());
       })
 
-
-
   const getCatObj = () => {
     let catObjs = {};
     return categories
@@ -228,8 +233,6 @@ module.exports = {
   let categoryObj = new Promise((resolve, reject) => {
         return resolve(getCatObj());
       })
-
-
 
     let catData = [];
 
@@ -265,3 +268,9 @@ module.exports = {
   },
 
 };
+
+// create a date / count / domain_id tabl
+// when inserting a new domain, grab the current day
+// lookup in the date table to see if current date is there
+// if it is, increase that date visit count
+// if not, add it and set count to visit count for that domain
