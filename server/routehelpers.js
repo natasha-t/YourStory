@@ -108,18 +108,19 @@ module.exports = {
     // ===============================================================
     // ====== Save domain and user to Users_Domains join table =====
     // ===============================================================
-  promisedSavedDomains
-  .then(() => {
-    User
+    promisedSavedDomains
+    .then(() => {
+      User
       .findOne({ where: { chrome_id: req.session.chromeID } })
       .then((user) => {
       // ==== save domains for a current user =====
       for (let key in uniqueDomains) {
-        Domain.findOne({ where: { domain: key } })
+        Domain
+        .findOne({ where: { domain: key } })
         .then((domain) => {
-          console.log("DOMAIN FROM USERS_DOMAINS INSERT: ", domain);
+          // console.log("DOMAIN FROM USERS_DOMAINS INSERT:", domain);
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
-          
+
           user
           .addDomain(domain, { count: totalCount })
           .catch((err) => {
@@ -129,46 +130,55 @@ module.exports = {
           DateTable
           .findOne({ where: { dateOnly: new Date() } })
           .then((todayDate) => {
-            todayDate.addDomain(domain, { count: totalCount , })
+            console.log("todayDate");
+            todayDate.addDomain(domain, { count: totalCount });
+            console.log('successfully added date to Dates table');
           })
           .catch((err) => {
             console.log('error when adding date to Dates table', err);
           });
 
           domain.getCategory()
-         .then((category) => {
-           if (category === null) {
-            const apiUrl = 'https://api.webshrinker.com/categories/v2/'
-            const hashURL = btoa('http://www.' + domain.dataValues.domain)
-            axios({
-              method: 'get',
-              url: apiUrl + hashURL,
-              auth: {
-                username: 'US6S18KXA4a5nfICmc2h',
-                password: 'ByfZe6xz1zeOsk7h1NSA'
-              }
-            })
+          .then((category) => {
+            console.log('trying to get category', category);
+            if (category === null) {
+              const apiUrl = 'https://api.webshrinker.com/categories/v2/';
+              const hashURL = btoa('http://www.' + domain.dataValues.domain);
+              axios({
+                method: 'get',
+                url: apiUrl + hashURL,
+                auth: {
+                  // username: 'UL1QVH3FAtR6eoEJJIs4',
+                  // password: 'ZCZCYLA6wtqYNDpxbbRE',
+                },
+              })
               .then((response) => {
-                Category.findOrCreate({ where: { category: response.data.data[0].categories[0] } })
+                Category
+                .findOrCreate({ where: { category: response.data.data[0].categories[0] } })
                 .then((cat) => {
                   domain.updateAttributes({
                     categoryId: cat[0].dataValues.id,
-                  })
+                  });
                 })
+                .catch((err) => {
+                  console.log('error finding or creating category', err);
+                });
               })
-             }
+              .catch((err) => {
+                console.log('error getting category from webshrinker', err);
+              });
+            }
           });
         })
         .catch((err) => {
-          console.log(err);
+          console.log('error finding domain by key in uniqueDomains object: ', err);
         })
         .done(() => {
           console.log('Done saving and categorizing domain for user');
         });
       }
+      });
     });
-  });
-
 
 
     User.findOne({ where: { chrome_id: req.session.chromeID } })
@@ -186,7 +196,6 @@ module.exports = {
         }
         res.status(201).json(visData);
       });
-
     });
   },
 
@@ -217,47 +226,46 @@ module.exports = {
         return user.getDomains()
         .catch((err) => {
           console.log(err);
-        })
+        });
       })
       .catch((err) => {
         console.log(err);
-      })
-    }
+      });
+    };
 
-   let domains = new Promise((resolve, reject) => {
-        return resolve(getAllUserDomains());
-      })
+    let domains = new Promise((resolve, reject) => {
+      return resolve(getAllUserDomains());
+    });
 
+    const getCategories = () => {
+        return Category.findAll()
+        .catch((err) => {
+          console.log(err);
+        });
+    };
 
-   const getCategories = () => {
-      return Category.findAll()
-      .catch((err) => {
-        console.log(err);
-      })
-    }
+    let categories = new Promise((resolve, reject) => {
+      return resolve(getCategories());
+    });
 
-   let categories = new Promise((resolve, reject) => {
-        return resolve(getCategories());
-      })
-
-   categories
-   .then((categories) => {
-    console.log('categories', categories.length);
-   })
+    categories
+    .then((categories) => {
+      console.log('categories', categories.length);
+    });
 
   const getDomArr = () => {
    let domArr = [];
    return domains
-         .then((domains) => {
-          for (let i = 0; i < domains.length; i++) {
-            let domain = {};
-            domain['name'] = domains[i].dataValues.domain;
-            domain['categoryId'] = domains[i].dataValues.categoryId;
-            domain['count'] = domains[i].dataValues.users_domains.count;
-            domArr.push(domain);
-          }
-          return domArr;
-         })
+     .then((domains) => {
+        for (let i = 0; i < domains.length; i++) {
+          let domain = {};
+          domain['name'] = domains[i].dataValues.domain;
+          domain['categoryId'] = domains[i].dataValues.categoryId;
+          domain['count'] = domains[i].dataValues.users_domains.count;
+          domArr.push(domain);
+        }
+       return domArr;
+     });
   }
 
   let domainArr = new Promise((resolve, reject) => {
@@ -365,7 +373,25 @@ module.exports = {
                   { domain: 'getbootstrap.com', visits: 2 },
                   { domain: 'npmjs.com', visits: 1 }],
         count: 150,
-      }];
+    }];
+
+    // ===============================================================
+    // ================== PROMISE USER ID ============================
+    // ===============================================================
+    const getUser = () => {
+      return User.findOne({ where: { chrome_id: req.session.chromeID } })
+      .then((user) => {
+        return user['dataValues']['id'];
+      })
+      .catch((err) => {
+          console.log('error getting userId from Users: ', err);
+      });
+    };
+
+    const promisedUserId = new Promise((resolve, reject) => {
+      return resolve(getUser());
+    });
+
 
     const d = new Date();
     d.setDate(d.getDate() - 2);
@@ -389,6 +415,8 @@ module.exports = {
           })
           .then((response) => { // save all domains to array and return them
             // console.log('got all domains for specified date: ', response);
+            
+            
             const domainsByDate = [];
             response.map((domain) => {
               return domainsByDate.push(domain['dataValues']);
