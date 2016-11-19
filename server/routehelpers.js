@@ -81,12 +81,16 @@ module.exports = {
       return promisedUserId
       .then((userId) => {
         for (let key in uniqueDomains) {
-          return Domain
+          console.log('each domain that should be saved:', key);
+          Domain
             .findOrCreate({ where: { domain: key, userId: userId } })
             .then(() => {
               const date = new Date();
-              return DateTable
-              .findOrCreate({ where: { dateOnly: date, dateTime: date } });
+              DateTable
+              .findOrCreate({ where: { dateOnly: date, dateTime: date } })
+              .catch((err) => {
+                console.log('error saving one date: ', err);
+              });
             })
             .catch((err) => {
               console.log('error saving all dates', err);
@@ -113,17 +117,14 @@ module.exports = {
       User
       .findOne({ where: { chrome_id: req.session.chromeID } })
       .then((user) => {
-        console.log("user id for user_domains: ", user['dataValues']['id']);
         const userID = user['dataValues']['id'];
 
       // ==== save domains for a current user =====
-      for (let key in uniqueDomains) {
-         // console.log("user id for user_domains: ", user['dataValues']['id']);
+      for (let key in uniqueDomains) {         
         const userID = user['dataValues']['id'];
         Domain
         .findOne({ where: { domain: key, userId: userID } })
         .then((domain) => {
-          // console.log("DOMAIN FROM USERS_DOMAINS INSERT:", domain);
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
 
           user
@@ -134,10 +135,8 @@ module.exports = {
 
           DateTable
           .findOne({ where: { dateOnly: new Date() } })
-          .then((todayDate) => {
-            console.log("todayDate");
+          .then((todayDate) => {            
             todayDate.addDomain(domain, { count: totalCount });
-            console.log('successfully added date to Dates table');
           })
           .catch((err) => {
             console.log('error when adding date to Dates table', err);
@@ -205,11 +204,8 @@ module.exports = {
   },
 
   postUser: (req, res) => {
-    // console.log('inside routehelpers.js postUser API');
-    // save to the session object the chrome id
     req.session.chromeID = req.body.chromeID;
-    // console.log('session chrome id', req.session.chromeID);
-    // find or create user in the db
+
     User.findOrCreate({ where: { chrome_id: req.session.chromeID },
       defaults: { username: req.body.username },
     })
@@ -217,9 +213,7 @@ module.exports = {
         console.log(user.get({
           plain: true,
         }));
-        // console.log('user_created:', created);
-        // send back to the client unique client identifier(Chrome_id)
-        // console.log('SERVER: sent chrome id', req.session.user)
+
         res.json(req.session.chromeID);
       });
   },
@@ -325,30 +319,6 @@ module.exports = {
   },
 
   getWeekData: (req, res) => {
-    // const weekDataFromDB = { '2016-11-18': [{ domain: 'github.com', visits: 192 },
-    //                       { domain: 'stackoverflow.com', visits: 7 },
-    //                       { domain: 'google.com', visits: 15 },
-    //                       { domain: 'readthedocs.org', visits: 2 },
-    //                       { domain: 'w3schools.com', visits: 1 },
-    //                       { domain: 'docs.sequelizejs.com', visits: 4 },
-    //                       { domain: 'calendar.google.com', visits: 7 },
-    //                       { domain: 'postgresql.org', visits: 1 },
-    //                       { domain: 'docs.google.com', visits: 94 },
-    //                       { domain: 'mail.google.com', visits: 18 },
-    //                       { domain: 'accounts.google.com', visits: 12 },
-    //                       { domain: 'hackreactorcore.force.com', visits: 2 },
-    //                       { domain: 'waffle.io', visits: 8 },
-    //                       { domain: 'developer.mozilla.org', visits: 2 },
-    //                       { domain: 'challenge.makerpass.com', visits: 9 }],
-    //                     '2016-11-19': [{ domain: 'learn.makerpass.com', visits: 7 },
-    //                       { domain: 'repl.it', visits: 8 },
-    //                       { domain: 'haveibeenpwned.com', visits: 4 },
-    //                       { domain: 'redux.js.org', visits: 4 },
-    //                       { domain: 'v4-alpha.getbootstrap.com', visits: 4 },
-    //                       { domain: 'getbootstrap.com', visits: 2 },
-    //                       { domain: 'npmjs.com', visits: 1 }],
-    //                   };
-
     const weekDataFromDB = [{
       date: '2016-11-18',
       domains: [{ domain: 'github.com', visits: 192 },
@@ -366,7 +336,7 @@ module.exports = {
                 { domain: 'waffle.io', visits: 8 },
                 { domain: 'developer.mozilla.org', visits: 2 },
                 { domain: 'challenge.makerpass.com', visits: 9 }],
-      count: 150,
+      totalVists: 374,
     },
       { date: '2016-11-19',
         domains: [{ domain: 'learn.makerpass.com', visits: 7 },
@@ -419,6 +389,8 @@ module.exports = {
         console.log('error: ', err);
       });
 
+
+    //helper function to reduce visits for specific day
     const weekData = {};
 
     weekDataFromDB.map((dateItem) => {
