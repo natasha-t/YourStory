@@ -118,12 +118,12 @@ module.exports = {
 
       // ==== save domains for a current user =====
       for (let key in uniqueDomains) {
-         console.log("user id for user_domains: ", user['dataValues']['id']);
+         // console.log("user id for user_domains: ", user['dataValues']['id']);
         const userID = user['dataValues']['id'];
         Domain
         .findOne({ where: { domain: key, userId: userID } })
         .then((domain) => {
-          console.log("DOMAIN FROM USERS_DOMAINS INSERT:", domain);
+          // console.log("DOMAIN FROM USERS_DOMAINS INSERT:", domain);
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
 
           user
@@ -153,8 +153,8 @@ module.exports = {
                 method: 'get',
                 url: apiUrl + hashURL,
                 auth: {
-                  username: 'UL1QVH3FAtR6eoEJJIs4',
-                  password: 'ZCZCYLA6wtqYNDpxbbRE',
+                  // username: 'UL1QVH3FAtR6eoEJJIs4',
+                  // password: 'ZCZCYLA6wtqYNDpxbbRE',
                 },
               })
               .then((response) => {
