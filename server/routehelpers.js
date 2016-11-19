@@ -113,12 +113,17 @@ module.exports = {
       User
       .findOne({ where: { chrome_id: req.session.chromeID } })
       .then((user) => {
+        console.log("user id for user_domains: ", user['dataValues']['id']);
+        const userID = user['dataValues']['id'];
+
       // ==== save domains for a current user =====
       for (let key in uniqueDomains) {
+         console.log("user id for user_domains: ", user['dataValues']['id']);
+        const userID = user['dataValues']['id'];
         Domain
-        .findOne({ where: { domain: key } })
+        .findOne({ where: { domain: key, userId: userID } })
         .then((domain) => {
-          // console.log("DOMAIN FROM USERS_DOMAINS INSERT:", domain);
+          console.log("DOMAIN FROM USERS_DOMAINS INSERT:", domain);
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
 
           user
@@ -148,8 +153,8 @@ module.exports = {
                 method: 'get',
                 url: apiUrl + hashURL,
                 auth: {
-                  // username: 'UL1QVH3FAtR6eoEJJIs4',
-                  // password: 'ZCZCYLA6wtqYNDpxbbRE',
+                  username: 'UL1QVH3FAtR6eoEJJIs4',
+                  password: 'ZCZCYLA6wtqYNDpxbbRE',
                 },
               })
               .then((response) => {
@@ -255,16 +260,15 @@ module.exports = {
 
   const getDomArr = () => {
    let domArr = [];
-   return domains
-     .then((domains) => {
-        for (let i = 0; i < domains.length; i++) {
-          let domain = {};
-          domain['name'] = domains[i].dataValues.domain;
-          domain['categoryId'] = domains[i].dataValues.categoryId;
-          domain['count'] = domains[i].dataValues.users_domains.count;
-          domArr.push(domain);
-        }
-       return domArr;
+   return domains.then((domains) => {
+      for (let i = 0; i < domains.length; i++) {
+        let domain = {};
+        domain['name'] = domains[i].dataValues.domain;
+        domain['categoryId'] = domains[i].dataValues.categoryId;
+        domain['count'] = domains[i].dataValues.users_domains.count;
+        domArr.push(domain);
+      }
+    return domArr;
      });
   }
 
@@ -373,25 +377,7 @@ module.exports = {
                   { domain: 'getbootstrap.com', visits: 2 },
                   { domain: 'npmjs.com', visits: 1 }],
         count: 150,
-    }];
-
-    // ===============================================================
-    // ================== PROMISE USER ID ============================
-    // ===============================================================
-    const getUser = () => {
-      return User.findOne({ where: { chrome_id: req.session.chromeID } })
-      .then((user) => {
-        return user['dataValues']['id'];
-      })
-      .catch((err) => {
-          console.log('error getting userId from Users: ', err);
-      });
-    };
-
-    const promisedUserId = new Promise((resolve, reject) => {
-      return resolve(getUser());
-    });
-
+      }];
 
     const d = new Date();
     d.setDate(d.getDate() - 2);
@@ -415,8 +401,6 @@ module.exports = {
           })
           .then((response) => { // save all domains to array and return them
             // console.log('got all domains for specified date: ', response);
-            
-            
             const domainsByDate = [];
             response.map((domain) => {
               return domainsByDate.push(domain['dataValues']);
