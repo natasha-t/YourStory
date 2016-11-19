@@ -95,26 +95,18 @@ DateTable.belongsToMany(Domain, { through: DateDomain, foreignKey: 'dateId' });
 db
   .sync({ force: true })
   .then(() => {
-<<<<<<< HEAD
     console.log('Tables created')
-    DateTable.bulkCreate([{ dateOnly: new Date() }, { dateOnly: '2016-11-17' }, { dateOnly: '2016-11-16' }])
-=======
     const date = new Date();
 
     DateTable.bulkCreate([{ dateOnly: date }, { dateOnly: '2016-11-17' }, { dateOnly: '2016-11-16' }])
->>>>>>> getWeekData
     .then(() => {
       console.log('DateTable created');
     })
     .catch((err) => {
       console.log(err);
     });
-<<<<<<< HEAD
   })
   .then(() => {    
-=======
-    
->>>>>>> getWeekData
     User.bulkCreate([
       { username: 'Natasha' },
       { username: 'Lizzie' },
@@ -124,7 +116,6 @@ db
     .then(() => {
       console.log('User Table created');
     })
-<<<<<<< HEAD
     .catch((err) => {
       console.log(err);
     });
@@ -157,38 +148,6 @@ db
       console.log('DateDomain Table created');
     })
     .catch((err) => {
-=======
-    .catch((err) => {
-      console.log(err);
-    });
-
-    Domain.bulkCreate([
-      { domain: 'google.com' },
-      { domain: 'yelp.com' },
-      { domain: 'facebook.com' },
-      { domain: 'wsj.com' },
-    ])
-    .then(() => {
-      console.log('Domain Table created');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-    DateDomain.bulkCreate([
-      { domainId: 1, count: 140, dateId: 1 },
-      { domainId: 2, count: 14, dateId: 1 },
-      { domainId: 3, count: 24, dateId: 1 },
-      { domainId: 4, count: 150, dateId: 1 },
-      { domainId: 2, count: 160, dateId: 2 },
-      { domainId: 3, count: 46, dateId: 2 },
-      { domainId: 1, count: 42, dateId: 2 },
-    ])
-    .then(() => {
-      console.log('DateDomain Table created');
-    })
-    .catch((err) => {
->>>>>>> getWeekData
       console.log('error creating DateDomain table', err);
     });
   })
@@ -202,11 +161,6 @@ module.exports = {
   Domain: Domain,
   UserDomain: UserDomain,
   Category: Category,
-<<<<<<< HEAD
-  DateTable: DateTable,
-  DateDomain: DateDomain
-=======
   DateDomain: DateDomain,
   DateTable: DateTable,
->>>>>>> getWeekData
 };
