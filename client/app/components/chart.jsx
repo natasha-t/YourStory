@@ -79,7 +79,6 @@ export default class Chart extends React.Component {
     const line = d3.line()
     .x((d) => { return x(d.date); })
     .y((d) => { return y(d.count); })
-    // .interpolate('linear');
 
 
   g.append("g")
@@ -102,8 +101,6 @@ export default class Chart extends React.Component {
       .attr("dy", "0.71em")
       .attr("fill", "#000")
       .text("Visit Count");
-
-
 
     svg.append("path")
       .attr("d", line(data))
