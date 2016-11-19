@@ -25,6 +25,7 @@ db.authenticate().then(() => {
 // database routes / queries
 module.exports = {
   postHistory: (req, res) => {
+    console.log("inside postHistory---------------");
     const allData = req.body.history;
     const id = req.body.chromeID;
 
@@ -55,26 +56,48 @@ module.exports = {
       uniqueDomains[historyItem.domain] = [historyItem];
       return uniqueDomains[historyItem.domain];
     });
+    console.log("uniqueDomains -------- ", uniqueDomains)
+    
+    // ========= promise user ================
+    const getUser = () => {
+      return User.findOne({ where: { chrome_id: req.session.chromeID } })
+      .then((user) => {
+        console.log("got promised user:", user['dataValues']['id'])
+        return user['dataValues']['id'];
+      })
+      .catch((err) => {
+          console.log(err);
+      });      
+    };
+
+    let user = new Promise((resolve, reject) => {
+      return resolve(getUser());
+    });
+
+    console.log("user", user);
 
     // ================ save domain to Domains table in db ================
-    for(let key in uniqueDomains) {
+    user.then((userId) => {
+      for(let key in uniqueDomains) {      
+      
       Domain
-      .findOrCreate({ where: { domain: key } })
-      .then((domain) => {
-        const date = new Date();
-        DateTable
-        .findOrCreate({ where: { dateOnly: date, dateTime: date } })
+        .findOrCreate({ where: { domain: key, userId: userId } })
+        .then((domain) => {
+          const date = new Date();
+          DateTable
+          .findOrCreate({ where: { dateOnly: date, dateTime: date } })
         })
         .catch((err) => {
-          console.log(err);
+          console.log('error saving all dates', err);
         })
       .catch((err) => {
-        console.log(err);
+        console.log("error saving all domains", err);
       })
       .done(() => {
         console.log('Done saving all domains');
       });
-    }
+      }
+    })         
 
     // ====== add domain and user to users_domains join table =====
     User.findOne({ where: { chrome_id: req.session.chromeID } })
@@ -89,7 +112,7 @@ module.exports = {
 
           DateTable.findOne({ where: { dateOnly: new Date() } })
           .then((todayDate) => {
-            todayDate.addDomain(domain, { count: totalCount})
+            todayDate.addDomain(domain, { count: totalCount , })
           })
 
           domain.getCategory()
