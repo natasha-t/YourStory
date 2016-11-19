@@ -117,17 +117,14 @@ module.exports = {
       User
       .findOne({ where: { chrome_id: req.session.chromeID } })
       .then((user) => {
-        console.log("user id for user_domains: ", user['dataValues']['id']);
         const userID = user['dataValues']['id'];
 
       // ==== save domains for a current user =====
-      for (let key in uniqueDomains) {
-         // console.log("user id for user_domains: ", user['dataValues']['id']);
+      for (let key in uniqueDomains) {         
         const userID = user['dataValues']['id'];
         Domain
         .findOne({ where: { domain: key, userId: userID } })
         .then((domain) => {
-          // console.log("DOMAIN FROM USERS_DOMAINS INSERT:", domain);
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
 
           user
@@ -138,10 +135,8 @@ module.exports = {
 
           DateTable
           .findOne({ where: { dateOnly: new Date() } })
-          .then((todayDate) => {
-            console.log("todayDate");
+          .then((todayDate) => {            
             todayDate.addDomain(domain, { count: totalCount });
-            console.log('successfully added date to Dates table');
           })
           .catch((err) => {
             console.log('error when adding date to Dates table', err);
@@ -209,11 +204,8 @@ module.exports = {
   },
 
   postUser: (req, res) => {
-    // console.log('inside routehelpers.js postUser API');
-    // save to the session object the chrome id
     req.session.chromeID = req.body.chromeID;
-    // console.log('session chrome id', req.session.chromeID);
-    // find or create user in the db
+
     User.findOrCreate({ where: { chrome_id: req.session.chromeID },
       defaults: { username: req.body.username },
     })
@@ -221,9 +213,7 @@ module.exports = {
         console.log(user.get({
           plain: true,
         }));
-        // console.log('user_created:', created);
-        // send back to the client unique client identifier(Chrome_id)
-        // console.log('SERVER: sent chrome id', req.session.user)
+
         res.json(req.session.chromeID);
       });
   },
@@ -400,7 +390,7 @@ module.exports = {
       });
 
 
-//helper function to 
+    //helper function to reduce visits for specific day
     const weekData = {};
 
     weekDataFromDB.map((dateItem) => {
