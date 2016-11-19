@@ -12,12 +12,12 @@ function loadVisDataUponResponse (data) {
 export default function fetchVisData (id) {
   console.log('fetch vis data', id);
   return function (dispatch) {
-    const microsecondsPerDay = 1000 * 60 * 60 * 24;
-    const oneDayAgo = (new Date).getTime() - microsecondsPerDay;
+    const tenMinutes = 1000 * 60 * 10 * 3;
+    const tenMinutesAgo = (new Date).getTime() - tenMinutes;
 
     chrome.history.search({
       'text': '', // Return every history item....
-      'startTime': oneDayAgo, // that was accessed less than one week ago.
+      'startTime': tenMinutesAgo, // that was accessed less than one week ago.
     }, (array) => {
       axios({
         method: 'post',
@@ -27,7 +27,7 @@ export default function fetchVisData (id) {
         dispatch(loadVisDataUponResponse(response));
       });
     });
-  
+
     return null;
   };
 }
