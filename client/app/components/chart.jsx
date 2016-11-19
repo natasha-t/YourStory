@@ -49,6 +49,7 @@ export default class Chart extends React.Component {
     }
 
     console.log('data', data);
+    console.log('year', startDate.year)
 
     const svg = d3.select("svg"),
     margin = { top: 20, right: 80, bottom: 20, left: 50 },
@@ -58,8 +59,7 @@ export default class Chart extends React.Component {
 
   
 //     //X AND Y AXIS
-
-//     //12 pm appearing on ticks between days 
+    //12 pm appearing on ticks between days 
     const x = d3.scaleTime().domain([new Date(startDate.year, startDate.month, startDate.day), new Date(endDate.year, endDate.month, endDate.day)]).range([0, width])
 
     const y = d3.scaleLinear().domain([min, max]).range([height, 0])

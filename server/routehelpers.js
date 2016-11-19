@@ -489,7 +489,7 @@ module.exports = {
        {day: '20161016',
         domains: [{ domain: 'google.com', totalCount: 100 }, { domain: 'stackoverflow.com', totalCount: 20 }, { domain: 'github.com', totalCount: 20 }],
        total: 140},
-      {day: '20161017',
+      {day: '20161018',
         domains: [{ domain: 'google.com', totalCount: 35 }, { domain: 'stackoverflow.com', totalCount: 2 }, { domain: 'github.com', totalCount: 10 }],
        total: 47}
     ]
