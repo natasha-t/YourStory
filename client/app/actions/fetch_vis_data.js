@@ -19,6 +19,7 @@ export default function fetchVisData (id) {
       'text': '', // Return every history item....
       'startTime': tenMinutesAgo, // that was accessed less than one week ago.
     }, (array) => {
+      console.log('chrome history:', array);
       axios({
         method: 'post',
         url: process.env.HOST + '/api/history',
