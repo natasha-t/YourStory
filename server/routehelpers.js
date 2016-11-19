@@ -7,10 +7,15 @@ const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
 const UserDomain = require('../db/schema').UserDomain;
 const Category = require('../db/schema').Category;
+<<<<<<< HEAD
 const DateTable = require('../db/schema').DateTable;
 const DateDomain = require('../db/schema').DateDomain;
+=======
+const DateDomain = require('../db/schema').DateDomain;
+const DateTable = require('../db/schema').DateTable;
+>>>>>>> getWeekData
 const Promise = require('bluebird');
-const dbHelpers = require('../db/dbHelpers')
+const dbHelpers = require('../db/dbHelpers');
 const axios = require('axios');
 const btoa = require('btoa');
 const md5 = require('md5');
@@ -290,6 +295,113 @@ module.exports = {
     })
   },
 
+  getWeekData: (req, res) => {
+    // const weekDataFromDB = { '2016-11-18': [{ domain: 'github.com', visits: 192 },
+    //                       { domain: 'stackoverflow.com', visits: 7 },
+    //                       { domain: 'google.com', visits: 15 },
+    //                       { domain: 'readthedocs.org', visits: 2 },
+    //                       { domain: 'w3schools.com', visits: 1 },
+    //                       { domain: 'docs.sequelizejs.com', visits: 4 },
+    //                       { domain: 'calendar.google.com', visits: 7 },
+    //                       { domain: 'postgresql.org', visits: 1 },
+    //                       { domain: 'docs.google.com', visits: 94 },
+    //                       { domain: 'mail.google.com', visits: 18 },
+    //                       { domain: 'accounts.google.com', visits: 12 },
+    //                       { domain: 'hackreactorcore.force.com', visits: 2 },
+    //                       { domain: 'waffle.io', visits: 8 },
+    //                       { domain: 'developer.mozilla.org', visits: 2 },
+    //                       { domain: 'challenge.makerpass.com', visits: 9 }],
+    //                     '2016-11-19': [{ domain: 'learn.makerpass.com', visits: 7 },
+    //                       { domain: 'repl.it', visits: 8 },
+    //                       { domain: 'haveibeenpwned.com', visits: 4 },
+    //                       { domain: 'redux.js.org', visits: 4 },
+    //                       { domain: 'v4-alpha.getbootstrap.com', visits: 4 },
+    //                       { domain: 'getbootstrap.com', visits: 2 },
+    //                       { domain: 'npmjs.com', visits: 1 }],
+    //                   };
+
+    const weekDataFromDB = [{
+      date: '2016-11-18',
+      domains: [{ domain: 'github.com', visits: 192 },
+                { domain: 'stackoverflow.com', visits: 7 },
+                { domain: 'google.com', visits: 15 },
+                { domain: 'readthedocs.org', visits: 2 },
+                { domain: 'w3schools.com', visits: 1 },
+                { domain: 'docs.sequelizejs.com', visits: 4 },
+                { domain: 'calendar.google.com', visits: 7 },
+                { domain: 'postgresql.org', visits: 1 },
+                { domain: 'docs.google.com', visits: 94 },
+                { domain: 'mail.google.com', visits: 18 },
+                { domain: 'accounts.google.com', visits: 12 },
+                { domain: 'hackreactorcore.force.com', visits: 2 },
+                { domain: 'waffle.io', visits: 8 },
+                { domain: 'developer.mozilla.org', visits: 2 },
+                { domain: 'challenge.makerpass.com', visits: 9 }],
+      count: 150,
+    },
+      { date: '2016-11-19',
+        domains: [{ domain: 'learn.makerpass.com', visits: 7 },
+                  { domain: 'repl.it', visits: 8 },
+                  { domain: 'haveibeenpwned.com', visits: 4 },
+                  { domain: 'redux.js.org', visits: 4 },
+                  { domain: 'v4-alpha.getbootstrap.com', visits: 4 },
+                  { domain: 'getbootstrap.com', visits: 2 },
+                  { domain: 'npmjs.com', visits: 1 }],
+        count: 150,
+      }];
+
+    const d = new Date();
+    d.setDate(d.getDate() - 2);
+    console.log("date", d);
+
+    //get foreign key ID for specific Date
+      DateTable
+      .findOne({
+        attributes: ['id'],
+        where: {
+          dateOnly: d,
+        },
+      })
+      .then((response) => { //get all domains for specific date
+        const id = response['dataValues']['id'];
+        return DateDomain
+          .findAll({
+            where: {
+              dateId: id,
+            },
+          })
+          .then((response) => { // save all domains to array and return them
+            // console.log('got all domains for specified date: ', response);
+            const domainsByDate = [];
+            response.map((domain) => {
+              return domainsByDate.push(domain['dataValues']);
+            });
+            console.log('domainsByDate', domainsByDate);
+            return domainsByDate;
+          })
+          .then((response) => {
+            console.log("response: ", response);
+          })
+          .catch((err) => {
+            console.log('error fomr inside date domain query: ', err);
+          });
+      })
+      .catch((err) => {
+        console.log('error: ', err);
+      });
+
+    const weekData = {};
+
+    weekDataFromDB.map((dateItem) => {
+        const totalVists = dateItem['domains'].reduce((a, b) => {
+          return { visits: a.visits + b.visits };
+        });
+        const day = dateItem['date'];
+        return weekData[day] = totalVists;
+    });
+
+    res.status(201).json(weekData);
+  },
 };
 
 // create a date / count / domain_id tabl
