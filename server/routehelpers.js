@@ -5,15 +5,10 @@ const Sequelize = require('sequelize');
 const _ = require('underscore');
 const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
-const UserDomain = require('../db/schema').UserDomain;
 const Category = require('../db/schema').Category;
-<<<<<<< HEAD
 const DateTable = require('../db/schema').DateTable;
 const DateDomain = require('../db/schema').DateDomain;
-=======
-const DateDomain = require('../db/schema').DateDomain;
-const DateTable = require('../db/schema').DateTable;
->>>>>>> getWeekData
+const UserDomain = require('../db/schema').UserDomain;
 const Promise = require('bluebird');
 const dbHelpers = require('../db/dbHelpers');
 const axios = require('axios');
@@ -30,7 +25,7 @@ db.authenticate().then(() => {
 // database routes / queries
 module.exports = {
   postHistory: (req, res) => {
-    console.log("inside postHistory---------------");
+    console.log('inside postHistory---------------');
     const allData = req.body.history;
     const id = req.body.chromeID;
 
@@ -61,64 +56,84 @@ module.exports = {
       uniqueDomains[historyItem.domain] = [historyItem];
       return uniqueDomains[historyItem.domain];
     });
-    console.log("uniqueDomains -------- ", uniqueDomains)
-    
-    // ========= promise user ================
+
+    // ===============================================================
+    // ================== PROMISE USER ID ============================
+    // ===============================================================
     const getUser = () => {
       return User.findOne({ where: { chrome_id: req.session.chromeID } })
       .then((user) => {
-        console.log("got promised user:", user['dataValues']['id'])
         return user['dataValues']['id'];
       })
       .catch((err) => {
-          console.log(err);
-      });      
+          console.log('error getting userId from Users: ', err);
+      });
     };
 
-    let user = new Promise((resolve, reject) => {
+    const promisedUserId = new Promise((resolve, reject) => {
       return resolve(getUser());
     });
 
-    console.log("user", user);
-
-    // ================ save domain to Domains table in db ================
-    user.then((userId) => {
-      for(let key in uniqueDomains) {      
-      
-      Domain
-        .findOrCreate({ where: { domain: key, userId: userId } })
-        .then((domain) => {
-          const date = new Date();
-          DateTable
-          .findOrCreate({ where: { dateOnly: date, dateTime: date } })
-        })
-        .catch((err) => {
-          console.log('error saving all dates', err);
-        })
-      .catch((err) => {
-        console.log("error saving all domains", err);
-      })
-      .done(() => {
-        console.log('Done saving all domains');
+    // ===============================================================
+    // == Save All Domains to Domains table & Return as Promise ====
+    // ===============================================================
+    const saveDomains = () => {
+      return promisedUserId
+      .then((userId) => {
+        for (let key in uniqueDomains) {
+          return Domain
+            .findOrCreate({ where: { domain: key, userId: userId } })
+            .then(() => {
+              const date = new Date();
+              return DateTable
+              .findOrCreate({ where: { dateOnly: date, dateTime: date } });
+            })
+            .catch((err) => {
+              console.log('error saving all dates', err);
+            })
+          .catch((err) => {
+            console.log('error saving all domains', err);
+          })
+          .done(() => {
+            console.log('Done saving all domains');
+          });
+        }
       });
-      }
-    })         
+    };
 
-    // ====== add domain and user to users_domains join table =====
-    User.findOne({ where: { chrome_id: req.session.chromeID } })
-    .then((user) => {
+    const promisedSavedDomains = new Promise((resolve, reject) => {
+      return resolve(saveDomains());
+    });
 
+    // ===============================================================
+    // ====== Save domain and user to Users_Domains join table =====
+    // ===============================================================
+  promisedSavedDomains
+  .then(() => {
+    User
+      .findOne({ where: { chrome_id: req.session.chromeID } })
+      .then((user) => {
       // ==== save domains for a current user =====
       for (let key in uniqueDomains) {
         Domain.findOne({ where: { domain: key } })
         .then((domain) => {
+          console.log("DOMAIN FROM USERS_DOMAINS INSERT: ", domain);
           let totalCount = dbHelpers.tallyVisitCount(uniqueDomains[key]);
-          user.addDomain(domain, { count: totalCount });
+          
+          user
+          .addDomain(domain, { count: totalCount })
+          .catch((err) => {
+            console.log('error when adding total count to User_Domains table:', err);
+          });
 
-          DateTable.findOne({ where: { dateOnly: new Date() } })
+          DateTable
+          .findOne({ where: { dateOnly: new Date() } })
           .then((todayDate) => {
             todayDate.addDomain(domain, { count: totalCount , })
           })
+          .catch((err) => {
+            console.log('error when adding date to Dates table', err);
+          });
 
           domain.getCategory()
          .then((category) => {
@@ -152,6 +167,8 @@ module.exports = {
         });
       }
     });
+  });
+
 
 
     User.findOne({ where: { chrome_id: req.session.chromeID } })
@@ -352,7 +369,7 @@ module.exports = {
 
     const d = new Date();
     d.setDate(d.getDate() - 2);
-    console.log("date", d);
+    console.log('date', d);
 
     //get foreign key ID for specific Date
       DateTable
@@ -380,7 +397,7 @@ module.exports = {
             return domainsByDate;
           })
           .then((response) => {
-            console.log("response: ", response);
+            console.log('response: ', response);
           })
           .catch((err) => {
             console.log('error fomr inside date domain query: ', err);
