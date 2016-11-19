@@ -50,6 +50,17 @@ export default class Chart extends React.Component {
 
     console.log('data', data);
     console.log('year', startDate.year)
+    let total = [];
+    for (let day of data) {
+      for (let datum in day) {
+          total.push(day.total);
+      }
+    }
+
+    const max = Math.max(...total);
+    const min = Math.min(...total);
+
+    console.log('max: ', max, 'min: ', min);
 
     const svg = d3.select("svg"),
     margin = { top: 20, right: 80, bottom: 20, left: 50 },
