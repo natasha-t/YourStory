@@ -152,4 +152,6 @@ module.exports = {
   Domain: Domain,
   UserDomain: UserDomain,
   Category: Category,
+  DateDomain: DateDomain,
+  DateTable: DateTable,
 };

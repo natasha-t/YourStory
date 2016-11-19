@@ -7,8 +7,10 @@ const User = require('../db/schema').User;
 const Domain = require('../db/schema').Domain;
 const UserDomain = require('../db/schema').UserDomain;
 const Category = require('../db/schema').Category;
+const DateDomain = require('../db/schema').DateDomain;
+const DateTable = require('../db/schema').DateTable;
 const Promise = require('bluebird');
-const dbHelpers = require('../db/dbHelpers')
+const dbHelpers = require('../db/dbHelpers');
 const axios = require('axios');
 const btoa = require('btoa');
 const md5 = require('md5');
@@ -320,8 +322,35 @@ module.exports = {
       }];
 
     const d = new Date();
-    d.setDate(d.getDate() - 1);
-    console.log(d);
+    d.setDate(d.getDate() - 2);
+    console.log("date", d);
+
+    DateTable
+    .findOne({
+      attributes: ['id'],
+      where: {
+        dateOnly: d,
+      },
+    })
+    .then((response) => {
+      console.log('got date id', response['dataValues']['id']);
+      const id = response['dataValues']['id'];
+      return DateDomain
+        .findAll({
+          where: {
+            dateId: id,
+          },
+        })
+        .catch((err) => {
+          console.log('error fomr inside date domain query: ', err);
+        });
+    })
+    .then((response) => {
+      console.log('got all domains for specified date: ', response);
+    })
+    .catch((err) => {
+      console.log('error: ', err);
+    });
 
     const weekData = {};
 
@@ -332,8 +361,7 @@ module.exports = {
         const day = dateItem['date'];
         return weekData[day] = totalVists;
     });
-    console.log("weekData", weekData);
-  
+
     res.status(201).json(weekData);
   },
 };
