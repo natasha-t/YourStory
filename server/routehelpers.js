@@ -325,32 +325,41 @@ module.exports = {
     d.setDate(d.getDate() - 2);
     console.log("date", d);
 
-    DateTable
-    .findOne({
-      attributes: ['id'],
-      where: {
-        dateOnly: d,
-      },
-    })
-    .then((response) => {
-      console.log('got date id', response['dataValues']['id']);
-      const id = response['dataValues']['id'];
-      return DateDomain
-        .findAll({
-          where: {
-            dateId: id,
-          },
-        })
-        .catch((err) => {
-          console.log('error fomr inside date domain query: ', err);
-        });
-    })
-    .then((response) => {
-      console.log('got all domains for specified date: ', response);
-    })
-    .catch((err) => {
-      console.log('error: ', err);
-    });
+    //get foreign key ID for specific Date
+      DateTable
+      .findOne({
+        attributes: ['id'],
+        where: {
+          dateOnly: d,
+        },
+      })
+      .then((response) => { //get all domains for specific date
+        const id = response['dataValues']['id'];
+        return DateDomain
+          .findAll({
+            where: {
+              dateId: id,
+            },
+          })
+          .then((response) => { // save all domains to array and return them
+            // console.log('got all domains for specified date: ', response);
+            const domainsByDate = [];
+            response.map((domain) => {
+              return domainsByDate.push(domain['dataValues']);
+            });
+            console.log('domainsByDate', domainsByDate);
+            return domainsByDate;
+          })
+          .then((response) => {
+            console.log("response: ", response);
+          })
+          .catch((err) => {
+            console.log('error fomr inside date domain query: ', err);
+          });
+      })
+      .catch((err) => {
+        console.log('error: ', err);
+      });
 
     const weekData = {};
 

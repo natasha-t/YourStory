@@ -3,6 +3,7 @@
 const Sequelize = require('sequelize');
 const db = require('./config');
 
+// TODO: look into putting sync inside authenticate promise
 db
   .authenticate()
   .then(() => {
