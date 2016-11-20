@@ -120,7 +120,7 @@ module.exports = {
         const userID = user['dataValues']['id'];
 
       // ==== save domains for a current user =====
-      for (let key in uniqueDomains) {         
+      for (let key in uniqueDomains) {
         const userID = user['dataValues']['id'];
         Domain
         .findOne({ where: { domain: key, userId: userID } })
@@ -135,7 +135,7 @@ module.exports = {
 
           DateTable
           .findOne({ where: { dateOnly: new Date() } })
-          .then((todayDate) => {            
+          .then((todayDate) => {
             todayDate.addDomain(domain, { count: totalCount });
           })
           .catch((err) => {
@@ -349,9 +349,15 @@ module.exports = {
         count: 150,
       }];
 
-    const d = new Date();
-    d.setDate(d.getDate() - 2);
-    console.log('date', d);
+    const today = new Date();
+    const yesterday = today - 1;
+    const twoDaysAgo = today - 2;
+    const threeDaysAgo = today - 3;
+    const fourDaysAgo = today - 4;
+    const fiveDaysAgo = today - 5;
+    const sixDaysAgo = today - 6;
+
+    console.log('today', today);
 
     //get foreign key ID for specific Date
       DateTable
