@@ -5,6 +5,8 @@ import * as d3 from 'd3';
   
 
 
+
+
 @connect((store) => {
   return {
     weekData: store.weekData,
@@ -48,19 +50,17 @@ export default class Chart extends React.Component {
       data.push({ count: totalDomainCount[i], date: dates[i] });
     }
 
-    console.log('data', data);
-    console.log('year', startDate.year)
-    let total = [];
-    for (let day of data) {
-      for (let datum in day) {
-          total.push(day.total);
-      }
+//     //MAX AND MIN VALUES FOR Y AXIS
+    const max = Math.max(...totalDomainCount);
+    const min = Math.min(...totalDomainCount);
+
+
+    data = [];
+    for (let i = 0; i < totalDomainCount.length; i++) {
+      data.push({ count: totalDomainCount[i], date: dates[i] });
     }
 
-    const max = Math.max(...total);
-    const min = Math.min(...total);
-
-    console.log('max: ', max, 'min: ', min);
+    console.log('data', data);
 
     const svg = d3.select("svg"),
     margin = { top: 20, right: 80, bottom: 20, left: 50 },
@@ -101,6 +101,15 @@ export default class Chart extends React.Component {
       .attr("dy", "0.71em")
       .attr("fill", "#000")
       .text("Visit Count");
+
+    svg.append("path")
+      .attr("d", line(data))
+      .attr("stroke", "blue")
+      .attr("stroke-width", 2)
+      .attr("fill", "none");
+
+  }
+
 
     svg.append("path")
       .attr("d", line(data))
