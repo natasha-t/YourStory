@@ -255,7 +255,6 @@ db
 //     console.log("ERROR IN THERE SOMEWHERE! ", err)
 //   });
   })
-
   .then(() => {
     console.log('All tables created');
   })
