@@ -119,6 +119,7 @@ db
       return weekArray;
     }
     const week = getWeek();
+    //array that will be mapped. A promise function will be called for each date
 
   const getIds = (day) => {
     return new Promise((resolve, reject) => {
@@ -141,7 +142,7 @@ db
             const domainsByDate = response.map((domain) => {
               return domain.dataValues;
             });
-            return resolve(domainsByDate);
+            resolve(domainsByDate);
           })
           .catch((err) => {
             console.log('error from inside date domain query: ', err);
@@ -153,37 +154,68 @@ db
       })
     };
 
+    // array of promised arrays. Will be resolved by calling promise.all(promisedWeek)
     const promisedWeek = week.map((day) => {
       return getIds(day);
     });
 
-    Promise.all(promisedWeek)
-    .then((thisWeek) => {
-
-      const getNameAndDate = (entry) => {
-        return new Promise((resolve, reject) => {
-          Domain.findOne({ where: { id: entry.domainId } })
-          .then((domain) => {
-            DateTable.findOne({ where: { id: entry.dateId } })
-            .then((date) => {
-              DateDomain.findOne({ where: { domainId: entry.domainId } })
-              .then((datedDom) => {
-                const nameDateCount = { count : datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
-                return resolve(nameDateCount);
-              })
-              .catch((err) => {
-                console.log("ERROR GETTING COUNT IN GETNAME: ", err)
-              })
+    // next promise function to call. Will be called for each onbject inside each promised
+    // array inside promisedWeek
+    const getNameAndDate = (entry) => {
+      return new Promise((resolve, reject) => {
+        Domain.findOne({ where: { id: entry.domainId } })
+        .then((domain) => {
+          DateTable.findOne({ where: { id: entry.dateId } })
+          .then((date) => {
+            DateDomain.findOne({ where: { domainId: entry.domainId } })
+            .then((datedDom) => {
+              const nameDateCount = { count : datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
+               resolve(nameDateCount);
             })
             .catch((err) => {
-              console.log("ERROR MATCHING DATE AND NAME IN GETNAME: ", err)
+              console.log("ERROR GETTING COUNT IN GETNAME: ", err)
             })
           })
           .catch((err) => {
-            console.log("ERROR FINDING DOM IN GETNAME: ", err)
+            console.log("ERROR MATCHING DATE AND NAME IN GETNAME: ", err)
           })
         })
-      }
+        .catch((err) => {
+          console.log("ERROR FINDING DOM IN GETNAME: ", err)
+        })
+      })
+    }
+
+    // make all promised arrays inside promisedArray wait to resolve until their promised
+    // objects have resolved
+    Promise.all(promisedWeek)
+    .then((thisWeek) => {
+      console.log("-----RESOLVEDWEEK-----", thisWeek)
+      return new Promise((resolve, reject) => {
+        const promisedArr = [];
+        thisWeek.map((arr) => {
+          const promisedFunctions = arr.map((obj) => {
+            return getNameAndDate(obj);
+          });
+          promisedArr.push(promisedFunctions);
+        });
+        resolve(promisedArr);
+      })
+      .then((promisedArray) => {
+        console.log('-----PROMISED ARRAY-----', promisedArray);
+        const resolvedThings = thing.map((subThing) => {
+          return Promise.all(subThing);
+        });
+        console.log('resolve thing', resolvedThings)
+        return Promise.all(resolvedThings)
+      })
+      .then((finalThing) => {
+        console.log('final thing', finalThing);
+      });
+
+
+
+
       thisWeek.forEach((day) => {
         const namedAndDatedDoms = day.map((entry) => {
           return getNameAndDate(entry);
