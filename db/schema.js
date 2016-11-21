@@ -94,9 +94,18 @@ DateTable.belongsToMany(Domain, { through: DateDomain, foreignKey: 'dateId' });
 
 db
   .sync({ force: false })
-  // .then(() => {
+  .then(() => {
   //   const date = new Date();
-  //   return DateTable.bulkCreate([{ dateOnly: date }, { dateOnly: '2016-11-17' }, { dateOnly: '2016-11-16' }])
+  //   return DateTable.bulkCreate(
+  //     [
+  //     { dateOnly: date },
+  //     { dateOnly: '2016-11-19' },
+  //     { dateOnly: '2016-11-18' },
+  //     { dateOnly: '2016-11-17' },
+  //     { dateOnly: '2016-11-16' },
+  //     { dateOnly: '2016-11-15' },
+  //     { dateOnly: '2016-11-14' },
+  //   ])
   //   .then(() => {
   //     console.log('DateTable created');
   //   })
@@ -118,7 +127,7 @@ db
   //     console.log(err);
   //   });
   // })
-  // .then(() => {    
+  // .then(() => {
   //   return Domain.bulkCreate([
   //     { domain: 'google.com', userId: 1 },
   //     { domain: 'yelp.com', userId: 1 },
@@ -132,7 +141,7 @@ db
   //     console.log(err);
   //   });
   // })
-  // .then(() => {    
+  // .then(() => {
   //   return DateDomain.bulkCreate([
   //     { domainId: 1, count: 140, dateId: 1 },
   //     { domainId: 2, count: 14, dateId: 1 },
@@ -140,7 +149,11 @@ db
   //     { domainId: 4, count: 150, dateId: 1 },
   //     { domainId: 2, count: 160, dateId: 2 },
   //     { domainId: 3, count: 46, dateId: 2 },
-  //     { domainId: 1, count: 42, dateId: 2 },
+  //     { domainId: 1, count: 42, dateId: 3 },
+  //     { domainId: 1, count: 140, dateId: 4 },
+  //     { domainId: 2, count: 14, dateId: 5 },
+  //     { domainId: 3, count: 24, dateId: 6 },
+  //     { domainId: 4, count: 150, dateId: 7 },
   //   ])
   //   .then(() => {
   //     console.log('DateDomain Table created');
@@ -148,7 +161,8 @@ db
   //   .catch((err) => {
   //     console.log('error creating DateDomain table', err);
   //   });
-  // })
+  })
+
   .then(() => {
     console.log('All tables created');
   })
