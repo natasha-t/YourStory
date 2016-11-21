@@ -31,7 +31,6 @@ export default function getToken() {
             store.dispatch(fetchVisData(response));
             store.dispatch(fetchCatData(response));
             store.dispatch(fetchWeekData(response));
-
         })
         .catch((error) => {
           console.log(error);
