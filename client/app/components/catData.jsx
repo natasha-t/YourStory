@@ -56,6 +56,8 @@ export default class Categories extends React.Component {
         "contentserver": 'Content Servers'
     }
 
+    console.log('cat data from catData.jsx', this.props.catData);
+
     const datasetCreator = ((data) => {
       return data.map((item) => {
         return { label: catParser[item.category], count: item.totalCount };
