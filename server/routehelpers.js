@@ -152,8 +152,8 @@ module.exports = {
                 method: 'get',
                 url: apiUrl + hashURL,
                 auth: {
-                  // username: 'UL1QVH3FAtR6eoEJJIs4',
-                  // password: 'ZCZCYLA6wtqYNDpxbbRE',
+                  username: 'UL1QVH3FAtR6eoEJJIs4',
+                  password: 'ZCZCYLA6wtqYNDpxbbRE',
                 },
               })
               .then((response) => {
@@ -319,95 +319,165 @@ module.exports = {
   },
 
   getWeekData: (req, res) => {
-    const weekDataFromDB = [{
-      date: '2016-11-18',
-      domains: [{ domain: 'github.com', visits: 192 },
-                { domain: 'stackoverflow.com', visits: 7 },
-                { domain: 'google.com', visits: 15 },
-                { domain: 'readthedocs.org', visits: 2 },
-                { domain: 'w3schools.com', visits: 1 },
-                { domain: 'docs.sequelizejs.com', visits: 4 },
-                { domain: 'calendar.google.com', visits: 7 },
-                { domain: 'postgresql.org', visits: 1 },
-                { domain: 'docs.google.com', visits: 94 },
-                { domain: 'mail.google.com', visits: 18 },
-                { domain: 'accounts.google.com', visits: 12 },
-                { domain: 'hackreactorcore.force.com', visits: 2 },
-                { domain: 'waffle.io', visits: 8 },
-                { domain: 'developer.mozilla.org', visits: 2 },
-                { domain: 'challenge.makerpass.com', visits: 9 }],
-      totalVists: 374,
-    },
-      { date: '2016-11-19',
-        domains: [{ domain: 'learn.makerpass.com', visits: 7 },
-                  { domain: 'repl.it', visits: 8 },
-                  { domain: 'haveibeenpwned.com', visits: 4 },
-                  { domain: 'redux.js.org', visits: 4 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 4 },
-                  { domain: 'getbootstrap.com', visits: 2 },
-                  { domain: 'npmjs.com', visits: 1 }],
-        count: 150,
-      }];
+    // const weekDataFromDB = [{
+    //   date: '2016-11-18',
+    //   domains: [{ domain: 'github.com', visits: 192 },
+    //             { domain: 'stackoverflow.com', visits: 7 },
+    //             { domain: 'google.com', visits: 15 },
+    //             { domain: 'readthedocs.org', visits: 2 },
+    //             { domain: 'w3schools.com', visits: 1 },
+    //             { domain: 'docs.sequelizejs.com', visits: 4 },
+    //             { domain: 'calendar.google.com', visits: 7 },
+    //             { domain: 'postgresql.org', visits: 1 },
+    //             { domain: 'docs.google.com', visits: 94 },
+    //             { domain: 'mail.google.com', visits: 18 },
+    //             { domain: 'accounts.google.com', visits: 12 },
+    //             { domain: 'hackreactorcore.force.com', visits: 2 },
+    //             { domain: 'waffle.io', visits: 8 },
+    //             { domain: 'developer.mozilla.org', visits: 2 },
+    //             { domain: 'challenge.makerpass.com', visits: 9 }],
+    //   totalVists: 374,
+    // },
+    //   { date: '2016-11-19',
+    //     domains: [{ domain: 'learn.makerpass.com', visits: 7 },
+    //               { domain: 'repl.it', visits: 8 },
+    //               { domain: 'haveibeenpwned.com', visits: 4 },
+    //               { domain: 'redux.js.org', visits: 4 },
+    //               { domain: 'v4-alpha.getbootstrap.com', visits: 4 },
+    //               { domain: 'getbootstrap.com', visits: 2 },
+    //               { domain: 'npmjs.com', visits: 1 }],
+    //     count: 150,
+    //   }];
 
-    const today = new Date();
-    const yesterday = today - 1;
-    const twoDaysAgo = today - 2;
-    const threeDaysAgo = today - 3;
-    const fourDaysAgo = today - 4;
-    const fiveDaysAgo = today - 5;
-    const sixDaysAgo = today - 6;
+      const todayRaw = new Date();
+      const today = todayRaw.getDate();
+      const month = todayRaw.getMonth() + 1;
+      const year = todayRaw.getFullYear();
 
-    console.log('today', today);
+      const daysOfTheWeek = {
+        today : year + '-' + month + '-' + (today),
+        yesterday : year + '-' + month + '-' + (today - 1),
+        twoDaysAgo : year + '-' + month + '-' + (today - 2),
+        threeDaysAgo : year + '-' + month + '-' + (today - 3),
+        fourDaysAgo : year + '-' + month + '-' + (today - 4),
+        fiveDaysAgo : year + '-' + month + '-' + (today - 5),
+        sixDaysAgo : year + '-' + month + '-' + (today - 6),
+      }
 
-    //get foreign key ID for specific Date
-      DateTable
-      .findOne({
-        attributes: ['id'],
-        where: {
-          dateOnly: d,
-        },
-      })
-      .then((response) => { //get all domains for specific date
-        const id = response['dataValues']['id'];
-        return DateDomain
-          .findAll({
+      const getWeek = () => {
+        const weekArray = [];
+        for(let dia in daysOfTheWeek) {
+          weekArray.push(daysOfTheWeek[dia]);
+        }
+        return weekArray;
+      }
+      const week = getWeek();
+
+    const getIds = (day) => {
+      return new Promise((resolve, reject) => {
+        DateTable
+          .findOne({
+            attributes: ['id'],
             where: {
-              dateId: id,
+              dateOnly: day,
             },
           })
-          .then((response) => { // save all domains to array and return them
-            // console.log('got all domains for specified date: ', response);
-            const domainsByDate = [];
-            response.map((domain) => {
-              return domainsByDate.push(domain['dataValues']);
+          .then((response) => { // get all domains for specific date
+            const id = response.dataValues.id;
+            DateDomain
+            .findAll({
+              where: {
+                dateId: id,
+              },
+            })
+            .then((response) => { // save all domains to array and return them
+              const domainsByDate = response.map((domain) => {
+                return domain.dataValues;
+              });
+              return resolve(domainsByDate);
+            })
+            .catch((err) => {
+              console.log('error from inside date domain query: ', err);
             });
-            console.log('domainsByDate', domainsByDate);
-            return domainsByDate;
-          })
-          .then((response) => {
-            console.log('response: ', response);
           })
           .catch((err) => {
-            console.log('error fomr inside date domain query: ', err);
+            console.log('error: ', err);
           });
-      })
-      .catch((err) => {
-        console.log('error: ', err);
+        })
+      };
+
+      const promisedWeek = week.map((day) => {
+        return getIds(day);
       });
 
+      Promise.all(promisedWeek)
+      .then((thisWeek) => {
 
-    //helper function to reduce visits for specific day
-    const weekData = {};
+        const getNameAndDate = (entry) => {
+          return new Promise((resolve, reject) => {
+            Domain.findOne({ where: { id: entry.domainId } })
+            .then((domain) => {
+              DateTable.findOne({ where: { id: entry.dateId } })
+              .then((date) => {
+                DateDomain.findOne({ where: { domainId: entry.domainId } })
+                .then((datedDom) => {
+                  const nameDateCount = { count: datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
+                  return resolve(nameDateCount);
+                })
+                .catch((err) => {
+                  console.log("ERROR GETTING COUNT IN GETNAME: ", err)
+                })
+              })
+              .catch((err) => {
+                console.log("ERROR MATCHING DATE AND NAME IN GETNAME: ", err)
+              })
+            })
+            .catch((err) => {
+              console.log("ERROR FINDING DOM IN GETNAME: ", err)
+            })
+          })
+        }
+        thisWeek.forEach((day) => {
+          const namedAndDatedDoms = day.map((entry) => {
+            return getNameAndDate(entry);
+          })
+          Promise.all(namedAndDatedDoms)
+          .then((doms) => {
+            const domObjs = {};
+             doms.forEach((dom) => {
+               const date = dom.date.toISOString().slice(0, 10).replace(/-/g, '');
+               if (!domObjs.date) {
+                 domObjs.date = date
+                 domObjs.domains = [{ domain: dom.domain, visits: dom.count }];
+               } else {
+                 domObjs.domains.push({ domain: dom.domain, visits: dom.count });
+               }
+             });
 
-    weekDataFromDB.map((dateItem) => {
-        const totalVists = dateItem['domains'].reduce((a, b) => {
-          return { visits: a.visits + b.visits };
-        });
-        const day = dateItem['date'];
-        return weekData[day] = totalVists;
-    });
+            const weekDataFromDB = [];
+            weekDataFromDB.push(domObjs);
 
-    res.status(201).json(weekData);
+            const weekData = weekDataFromDB.map((dateItem) => {
+              return {
+                date: dateItem.date,
+                domains: dateItem.domains,
+                totalVisits: dateItem.domains.reduce((mem, curr) => {
+                  return mem.visits + curr.visits;
+                }),
+              };
+            });
+
+            //  res.status(201).json(weekDataFromDB);
+            console.log("WEEKDATA", weekDataFromDB);
+          })
+          .catch((err) => {
+            console.log("ERROR INSIDE PROMISED DOMS: ", err)
+          })
+        })
+      })
+      .catch((err) => {
+        console.log("ERROR IN THERE SOMEWHERE! ", err)
+      });
   },
 };
 

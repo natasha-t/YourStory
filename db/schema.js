@@ -97,7 +97,7 @@ db
   .then(() => {
 
     const todayRaw = new Date();
-    const today = todayRaw.getUTCDate();
+    const today = todayRaw.getDate();
     const month = todayRaw.getMonth() + 1;
     const year = todayRaw.getFullYear();
 
@@ -120,7 +120,7 @@ db
     }
     const week = getWeek();
 
-  const getData = (day) => {
+  const getIds = (day) => {
     return new Promise((resolve, reject) => {
       DateTable
         .findOne({
@@ -130,7 +130,7 @@ db
           },
         })
         .then((response) => { // get all domains for specific date
-          const id = response['dataValues']['id'];
+          const id = response.dataValues.id;
           DateDomain
           .findAll({
             where: {
@@ -138,12 +138,9 @@ db
             },
           })
           .then((response) => { // save all domains to array and return them
-            console.log('-----GOT ALL FOR DATE: ');
-            const domainsByDate = [];
-            response.map((domain) => {
-              return domainsByDate.push(domain['dataValues']);
+            const domainsByDate = response.map((domain) => {
+              return domain.dataValues;
             });
-            // console.log('domainsByDate', domainsByDate);
             return resolve(domainsByDate);
           })
           .catch((err) => {
@@ -157,25 +154,76 @@ db
     };
 
     const promisedWeek = week.map((day) => {
-      return getData(day);
+      return getIds(day);
     });
-    console.log("PROMISED", promisedWeek);
 
     Promise.all(promisedWeek)
     .then((thisWeek) => {
+
+      const getNameAndDate = (entry) => {
+        return new Promise((resolve, reject) => {
+          Domain.findOne({ where: { id: entry.domainId } })
+          .then((domain) => {
+            DateTable.findOne({ where: { id: entry.dateId } })
+            .then((date) => {
+              DateDomain.findOne({ where: { domainId: entry.domainId } })
+              .then((datedDom) => {
+                const nameDateCount = { count : datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
+                return resolve(nameDateCount);
+              })
+              .catch((err) => {
+                console.log("ERROR GETTING COUNT IN GETNAME: ", err)
+              })
+            })
+            .catch((err) => {
+              console.log("ERROR MATCHING DATE AND NAME IN GETNAME: ", err)
+            })
+          })
+          .catch((err) => {
+            console.log("ERROR FINDING DOM IN GETNAME: ", err)
+          })
+        })
+      }
       thisWeek.forEach((day) => {
-        day.forEach((entry) => {
-          console.log(entry);
+        const namedAndDatedDoms = day.map((entry) => {
+          return getNameAndDate(entry);
+        })
+        Promise.all(namedAndDatedDoms)
+        .then((doms) => {
+          const domObjs = {};
+           doms.forEach((dom) => {
+             const date = dom.date.toISOString().slice(0, 10).replace(/-/g, '');
+             if (!domObjs.date) {
+               domObjs.date = date
+               domObjs.domains = [{ domain: dom.domain, visits: dom.count }];
+             } else {
+               domObjs.domains.push({ domain: dom.domain, visits: dom.count });
+             }
+           });
+
+          const weekDataFromDB = [];
+          weekDataFromDB.push(domObjs);
+
+          const weekData = weekDataFromDB.map((dateItem) => {
+            return {
+              date: dateItem.date,
+              domains: dateItem.domains,
+              totalVisits: dateItem.domains.reduce((mem, curr) => {
+                return mem.visits + curr.visits;
+              }),
+            };
+          });
+          //  res.status(201).json(weekData);
+          console.log("WEEKDATA", weekDataFromDB);
+        })
+        .catch((err) => {
+          console.log("ERROR INSIDE PROMISED DOMS: ", err)
         })
       })
     })
     .catch((err) => {
-      console.log("ERROR RESOLVING PROMISES:", err)
+      console.log("ERROR IN THERE SOMEWHERE! ", err)
     })
-
-
-
-
 
 
 
@@ -246,6 +294,7 @@ db
   //     console.log('error creating DateDomain table', err);
   //   });
   })
+
   .then(() => {
     console.log('All tables created');
   })
