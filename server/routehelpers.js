@@ -319,170 +319,142 @@ module.exports = {
   },
 
   getWeekData: (req, res) => {
-    // const weekDataFromDB = [{
-    //   date: '2016-11-18',
-    //   domains: [{ domain: 'github.com', visits: 192 },
-    //             { domain: 'stackoverflow.com', visits: 7 },
-    //             { domain: 'google.com', visits: 15 },
-    //             { domain: 'readthedocs.org', visits: 2 },
-    //             { domain: 'w3schools.com', visits: 1 },
-    //             { domain: 'docs.sequelizejs.com', visits: 4 },
-    //             { domain: 'calendar.google.com', visits: 7 },
-    //             { domain: 'postgresql.org', visits: 1 },
-    //             { domain: 'docs.google.com', visits: 94 },
-    //             { domain: 'mail.google.com', visits: 18 },
-    //             { domain: 'accounts.google.com', visits: 12 },
-    //             { domain: 'hackreactorcore.force.com', visits: 2 },
-    //             { domain: 'waffle.io', visits: 8 },
-    //             { domain: 'developer.mozilla.org', visits: 2 },
-    //             { domain: 'challenge.makerpass.com', visits: 9 }],
-    //   totalVists: 374,
-    // },
-    //   { date: '2016-11-19',
-    //     domains: [{ domain: 'learn.makerpass.com', visits: 7 },
-    //               { domain: 'repl.it', visits: 8 },
-    //               { domain: 'haveibeenpwned.com', visits: 4 },
-    //               { domain: 'redux.js.org', visits: 4 },
-    //               { domain: 'v4-alpha.getbootstrap.com', visits: 4 },
-    //               { domain: 'getbootstrap.com', visits: 2 },
-    //               { domain: 'npmjs.com', visits: 1 }],
-    //     count: 150,
-    //   }];
 
-      const todayRaw = new Date();
-      const today = todayRaw.getDate();
-      const month = todayRaw.getMonth() + 1;
-      const year = todayRaw.getFullYear();
+    const todayRaw = new Date();
+    const today = todayRaw.getDate();
+    const month = todayRaw.getMonth() + 1;
+    const year = todayRaw.getFullYear();
 
-      const daysOfTheWeek = {
-        today : year + '-' + month + '-' + (today),
-        yesterday : year + '-' + month + '-' + (today - 1),
-        twoDaysAgo : year + '-' + month + '-' + (today - 2),
-        threeDaysAgo : year + '-' + month + '-' + (today - 3),
-        fourDaysAgo : year + '-' + month + '-' + (today - 4),
-        fiveDaysAgo : year + '-' + month + '-' + (today - 5),
-        sixDaysAgo : year + '-' + month + '-' + (today - 6),
+    const daysOfTheWeek = {
+      today: year + '-' + month + '-' + (today),
+      yesterday: year + '-' + month + '-' + (today - 1),
+      twoDaysAgo: year + '-' + month + '-' + (today - 2),
+      threeDaysAgo: year + '-' + month + '-' + (today - 3),
+      fourDaysAgo: year + '-' + month + '-' + (today - 4),
+      fiveDaysAgo: year + '-' + month + '-' + (today - 5),
+      sixDaysAgo: year + '-' + month + '-' + (today - 6),
+    }
+
+    // construct an array of dates. We will map over this array, feeding each date into a
+    // promised query to the database to return domain information for each day
+    const getWeek = () => {
+      const weekArray = [];
+      for(let dia in daysOfTheWeek) {
+        weekArray.push(daysOfTheWeek[dia]);
       }
+      return weekArray;
+    }
+    // array that will be mapped. A promise function will be called for each date
+    const week = getWeek();
 
-      const getWeek = () => {
-        const weekArray = [];
-        for(let dia in daysOfTheWeek) {
-          weekArray.push(daysOfTheWeek[dia]);
-        }
-        return weekArray;
-      }
-      const week = getWeek();
-
-    const getIds = (day) => {
-      return new Promise((resolve, reject) => {
-        DateTable
-          .findOne({
-            attributes: ['id'],
+  // initial function to be called for each date. Returns a domainId, dateId and count
+  const getIds = (day) => {
+    return new Promise((resolve, reject) => {
+      DateTable
+        .findOne({
+          attributes: ['id'],
+          where: {
+            dateOnly: day,
+          },
+        })
+        .then((response) => { // get all domains for specific date
+          const id = response.dataValues.id;
+          DateDomain
+          .findAll({
             where: {
-              dateOnly: day,
+              dateId: id,
             },
           })
-          .then((response) => { // get all domains for specific date
-            const id = response.dataValues.id;
-            DateDomain
-            .findAll({
-              where: {
-                dateId: id,
-              },
-            })
-            .then((response) => { // save all domains to array and return them
-              const domainsByDate = response.map((domain) => {
-                return domain.dataValues;
-              });
-              return resolve(domainsByDate);
-            })
-            .catch((err) => {
-              console.log('error from inside date domain query: ', err);
+          .then((response) => { // save all domains to array and return them
+            const domainsByDate = response.map((domain) => {
+              return domain.dataValues;
             });
+            return resolve(domainsByDate);
           })
           .catch((err) => {
-            console.log('error: ', err);
+            console.log('error from inside date domain query: ', err);
           });
         })
-      };
+        .catch((err) => {
+          console.log('error: ', err);
+        });
+      })
+    };
 
-      const promisedWeek = week.map((day) => {
-        return getIds(day);
-      });
+    // promisedWeek is the result of calling each function for each date. Returns an array
+    // of promised arrays. Will be resolved by calling promise.all(promisedWeek)
+    const promisedWeek = week.map((day) => {
+      return getIds(day);
+    });
 
-      Promise.all(promisedWeek)
-      .then((thisWeek) => {
-
-        const getNameAndDate = (entry) => {
-          return new Promise((resolve, reject) => {
-            Domain.findOne({ where: { id: entry.domainId } })
-            .then((domain) => {
-              DateTable.findOne({ where: { id: entry.dateId } })
-              .then((date) => {
-                DateDomain.findOne({ where: { domainId: entry.domainId } })
-                .then((datedDom) => {
-                  const nameDateCount = { count: datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
-                  return resolve(nameDateCount);
-                })
-                .catch((err) => {
-                  console.log("ERROR GETTING COUNT IN GETNAME: ", err)
-                })
-              })
-              .catch((err) => {
-                console.log("ERROR MATCHING DATE AND NAME IN GETNAME: ", err)
-              })
+    // next promise function to call. Will be called for each object inside each promised
+    // array inside promisedWeek
+    const getNameAndDate = (entry) => {
+      return new Promise((resolve, reject) => {
+        Domain.findOne({ where: { id: entry.domainId } })
+        .then((domain) => {
+          DateTable.findOne({ where: { id: entry.dateId } })
+          .then((date) => {
+            DateDomain.findOne({ where: { domainId: entry.domainId } })
+            .then((datedDom) => {
+              const nameDateCount = { count : datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
+               return resolve(nameDateCount);
             })
             .catch((err) => {
-              console.log("ERROR FINDING DOM IN GETNAME: ", err)
+              console.log("ERROR GETTING COUNT IN GETNAME: ", err)
             })
           })
-        }
-        thisWeek.forEach((day) => {
-          const namedAndDatedDoms = day.map((entry) => {
-            return getNameAndDate(entry);
-          })
-          Promise.all(namedAndDatedDoms)
-          .then((doms) => {
-            const domObjs = {};
-             doms.forEach((dom) => {
-               const date = dom.date.toISOString().slice(0, 10).replace(/-/g, '');
-               if (!domObjs.date) {
-                 domObjs.date = date
-                 domObjs.domains = [{ domain: dom.domain, visits: dom.count }];
-               } else {
-                 domObjs.domains.push({ domain: dom.domain, visits: dom.count });
-               }
-             });
-
-            const weekDataFromDB = [];
-            weekDataFromDB.push(domObjs);
-
-            const weekData = weekDataFromDB.map((dateItem) => {
-              return {
-                date: dateItem.date,
-                domains: dateItem.domains,
-                totalVisits: dateItem.domains.reduce((mem, curr) => {
-                  return mem.visits + curr.visits;
-                }),
-              };
-            });
-
-            //  res.status(201).json(weekDataFromDB);
-            console.log("WEEKDATA", weekDataFromDB);
-          })
           .catch((err) => {
-            console.log("ERROR INSIDE PROMISED DOMS: ", err)
+            console.log("ERROR MATCHING DATE AND NAME IN GETNAME: ", err)
           })
         })
+        .catch((err) => {
+          console.log("ERROR FINDING DOM IN GETNAME: ", err)
+        })
       })
-      .catch((err) => {
-        console.log("ERROR IN THERE SOMEWHERE! ", err)
+    }
+
+    // make all promised arrays inside promisedArray wait to resolve until their promised
+    // objects have resolved
+    Promise.all(promisedWeek)
+    .then((thisWeek) => {
+      return new Promise((resolve, reject) => {
+        const promisedArr = [];
+        thisWeek.map((arr) => {
+          const promisedFunctions = arr.map((obj) => {
+            return getNameAndDate(obj);
+          });
+          promisedArr.push(promisedFunctions);
+        });
+        resolve(promisedArr);
+      })
+      .then((promisedArray) => {
+        const resolvedArrays = promisedArray.map((subArray) => {
+          return Promise.all(subArray);
+        });
+        return Promise.all(resolvedArrays)
+      })
+      .then((finalArray) => {
+        res.send(
+          finalArray.map((arr) => {
+            const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
+            const finalObj = {};
+            finalObj.date = date;
+            finalObj.domains = arr.map((obj) => {
+              return obj.domain;
+            });
+            const toSum = arr.map((obj) => {
+              return obj.count;
+            });
+            finalObj.count = toSum.reduce((mem, curr) => {
+              return mem + curr;
+            });
+            return finalObj;
+          }));
       });
+    })
+    .catch((err) => {
+      console.log("ERROR IN THERE SOMEWHERE! ", err)
+    });
   },
 };
-
-// create a date / count / domain_id tabl
-// when inserting a new domain, grab the current day
-// lookup in the date table to see if current date is there
-// if it is, increase that date visit count
-// if not, add it and set count to visit count for that domain
