@@ -28,9 +28,9 @@ rect {
   stroke-width: 2;
 }
 
-.axis--x path {
+/*.axis--x path {
   display: none;
-}
+}*/
 
 .line {
   fill: none;

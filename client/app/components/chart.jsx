@@ -29,6 +29,9 @@ export default class Chart extends React.Component {
       'date': Number(data[data.length - 1].date.slice(6))
     }
 
+
+
+
     console.log('startDate: ', startDate, 'endDate: ', endDate)
 
     //AGGREGATE TOTAL VISIT COUNT FOR ALL DOMAINS
@@ -36,7 +39,7 @@ export default class Chart extends React.Component {
     let dates = [];
     for (const day of data) {
       totalDomainCount.push(day.count);
-      dates.push(day.date);
+      dates.push(new Date(day.date.slice(0, 4), day.date.slice(4, 6), day.date.slice(6)));
     }
 
     console.log('dates: ', dates, 'totalDomainCount: ', totalDomainCount);
