@@ -61,8 +61,9 @@ export default class History extends React.Component {
   }
 
   render() {
+    const data = this.props.visData
     return (
-      <div ref={'hello'} style={{ margin: 'auto' }} />
+      <svgwidth={w}height={h}className='chart'>  <circlecx={30}cy={80}r={25}fill={'red'} />  <circlecx={130}cy={80}r={60}fill={'green'} />  <circlecx={260}cy={80}r={40}fill={'blue'} />  </svg>
     );
   }
 }
