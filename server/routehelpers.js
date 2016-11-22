@@ -322,7 +322,7 @@ module.exports = {
 
     const todayRaw = new Date();
     const today = todayRaw.getDate();
-    const month = todayRaw.getMonth() + 1;
+    const month = todayRaw.getMonth();
     const year = todayRaw.getFullYear();
 
     const daysOfTheWeek = {
