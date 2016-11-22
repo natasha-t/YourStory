@@ -10,7 +10,7 @@ import * as d3 from 'd3';
   };
 })
 
-export default class Chart extends React.Component {
+export default class Graph extends React.Component {
 
   componentDidUpdate() {
     // let data = this.props.weekData;
