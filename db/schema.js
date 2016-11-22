@@ -151,6 +151,7 @@ db
   //       console.log('error', err);
   //     });
   // })
+
   .then(() => {
     console.log('All tables created');
   })
