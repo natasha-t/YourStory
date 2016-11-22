@@ -5,8 +5,7 @@ import { combineReducers } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import visData from './reducers/history';
 import catData from './reducers/catData';
-
-
+import weekData from './reducers/weekData';
 
 import { loadState } from './chrome/storage';
 
@@ -18,7 +17,8 @@ const createStoreWithMiddleware = applyMiddleware(
 
 let reducers = combineReducers({
   visData,
-  catData
+  catData,
+  weekData
 })
 
 

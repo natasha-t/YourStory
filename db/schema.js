@@ -94,6 +94,7 @@ DateTable.belongsToMany(Domain, { through: DateDomain, foreignKey: 'dateId' });
 
 db
   .sync({ force: false })
+<<<<<<< cdfaa2420c51195cd3b0c88664699626919d7fd1
   .then(() => {
 
 //   const todayRaw = new Date();
@@ -255,7 +256,6 @@ db
 //     console.log("ERROR IN THERE SOMEWHERE! ", err)
 //   });
   })
-
   .then(() => {
     console.log('All tables created');
   })

@@ -12,6 +12,7 @@ import * as d3 from 'd3';
 export default class Categories extends React.Component {
 
   componentDidMount() {
+    console.log('CAT DATA', this.props.catData)
 
     const catParser = {
         "uncategorized": 'Others',

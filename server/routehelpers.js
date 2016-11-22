@@ -173,6 +173,7 @@ module.exports = {
               });
             }
           });
+
         })
         .catch((err) => {
           console.log('error finding domain by key in uniqueDomains object: ', err);
@@ -319,6 +320,7 @@ module.exports = {
   },
 
   getWeekData: (req, res) => {
+<<<<<<< 5cd4b8a4cbefacf5228f36a9d7cb1b8a036eeb6c
 
     const todayRaw = new Date();
     const today = todayRaw.getDate();
@@ -465,5 +467,7 @@ module.exports = {
     .catch((err) => {
       console.log("ERROR IN THERE SOMEWHERE! ", err)
     });
+
   },
+
 };
