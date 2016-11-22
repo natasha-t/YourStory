@@ -372,11 +372,11 @@ module.exports = {
             return resolve(domainsByDate);
           })
           .catch((err) => {
-            console.log('error from inside date domain query: ', err);
+            console.log('ERROR INSIDE DATEDOMAIN QUERY: ', err);
           });
         })
         .catch((err) => {
-          console.log('error: ', err);
+          console.log('ERROR: ', err);
         });
       })
     };
@@ -434,6 +434,12 @@ module.exports = {
         });
         return Promise.all(resolvedArrays)
       })
+      .catch((err) => {
+        console.log("ERROR RESOLVING SUB ARRAYS: ", err)
+      })
+      .catch((err) => {
+        console.log("ERROR INSIDE PROMISED ARRAY: ", err)
+      })
       .then((finalArray) => {
         res.send(
           finalArray.map((arr) => {
@@ -451,7 +457,10 @@ module.exports = {
             });
             return finalObj;
           }));
-      });
+      })
+      .catch((err) => {
+        console.log("ERROR INSIDE FINAL OBJECT CONSTRUCTION: ", err);
+      })
     })
     .catch((err) => {
       console.log("ERROR IN THERE SOMEWHERE! ", err)
