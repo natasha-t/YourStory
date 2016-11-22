@@ -14,20 +14,32 @@ export default class History extends React.Component {
 
   componentWillUpdate() {
 
+    const data = this.props.visData.sort((a, b) => {
+      if(a.visits > b.visits) {
+        return 1;
+      }
+      if(a.visits < b.visits) {
+        return -1;
+      }
+      return 0;
+    })
+
     const h = window.innerHeight;
     const w = window.innerWidth - 50;
     const color = d3.scaleLinear()
-    .domain([0, 30])
-    .range(["orange", "pink"]);
+    .domain([0, data.length])
+    .range(["yellow", "pink"]);
     const rscale = d3.scaleLinear()
     .domain([0, h])
     .range([0, w]);
 
 
     const svg = d3.select('.bubble-container')
-    .append('svg')
+    .append('svg:svg')
     .attr('height', h)
     .attr('width', w)
+    .style('display', 'flex')
+    .style('justify-content', 'space-between');
 
 
     const tooltip = d3.select('.bubble-container')
@@ -37,21 +49,20 @@ export default class History extends React.Component {
       .style("visibility", "hidden")
 
       const circle = svg.selectAll('circle')
-      .data(this.props.visData)
+      .data(data)
       .enter()
-      .append('circle')
-      .attr('class', 'circle')
+      .append('svg:circle')
       .attr('r', (d) => {
         return rscale(d.visits);
       })
       .attr('fill', (d, i) => {
         return (color(i));
       })
-      .attr('cx', () => {
-        return Math.floor(Math.random() * w);
+      .attr('cx', (d, i) => {
+        return Math.floor(Math.random() * w)
       })
-      .attr('cy', () => {
-        return Math.floor(Math.random() * h);
+      .attr('cy', (d, i) => {
+        return Math.floor(Math.random() * h)
       })
       .style('z-index', (d) => {
         return 100 - (d.visits);
@@ -80,13 +91,15 @@ export default class History extends React.Component {
       return d3.selectAll('circle')
       .transition()
       .duration(1000)
-      .attr('cy', (d) => {
-        return (d.visits * 10) + 'px';
+      .attr('cx', (d, i) => {
+        return (i * 10) + 'px';
       })
-      .attr('cx', (d) => {
-        return (d.visits * 10) + 'px';
+      .attr('cy', (d, i) => {
+        return (i * 10) + 'px';
       })
-      .attr('margin', '50px')
+      .style('margin', (d) => {
+        return d.visits + 'px';
+      })
     };
 
     return (
