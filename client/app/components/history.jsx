@@ -17,7 +17,7 @@ export default class History extends React.Component {
     const h = window.innerHeight;
     const w = window.innerWidth - 50;
     const color = d3.scaleLinear()
-    .domain([0, 5])
+    .domain([0, 30])
     .range(["orange", "pink"]);
     const rscale = d3.scaleLinear()
     .domain([0, h])
@@ -57,12 +57,10 @@ export default class History extends React.Component {
         return 100 - (d.visits);
       })
       .on("mouseover", ((d) => {
-
         let vis = 'visits';
         if(d.visits === 1) {
           vis = 'visit';
         }
-
         tooltip.html(
           '<strong>' + d.domain + '</strong><br><span>' + d.visits + ' ' + vis + '</span>');
         tooltip
@@ -78,11 +76,19 @@ export default class History extends React.Component {
 }
 
   render() {
-
     const lineUpCircles = () => {
       return d3.selectAll('circle')
-      .attr('fill', 'red');
+      .transition()
+      .duration(1000)
+      .attr('cy', (d) => {
+        return (d.visits * 10) + 'px';
+      })
+      .attr('cx', (d) => {
+        return (d.visits * 10) + 'px';
+      })
+      .attr('margin', '50px')
     };
+
     return (
       <div>
         <div className='bubble-container'></div>
