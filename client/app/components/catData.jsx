@@ -207,10 +207,8 @@ export default class Categories extends React.Component {
   }
 
   render() {
-    return (
-      <div> 
-        <div id="chart"></div>
-      </div>
+    return (      
+      <div id="chart"></div>
     );
   }
 }

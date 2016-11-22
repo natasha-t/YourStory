@@ -219,10 +219,10 @@ module.exports = {
       });
   },
 
-  getCatData: (req, res) => {
-    const getAllUserDomains = () => {
+  getCatData: (req, res) => {    
+    const getAllUserDomains = () => {      
       return User.findOne({ where: { chrome_id: req.session.chromeID } })
-      .then((user) => {
+      .then((user) => {        
         return user.getDomains()
         .catch((err) => {
           console.log(err);
@@ -248,11 +248,6 @@ module.exports = {
       return resolve(getCategories());
     });
 
-    categories
-    .then((categories) => {
-      console.log('categories', categories.length);
-    });
-
   const getDomArr = () => {
    let domArr = [];
    return domains.then((domains) => {
@@ -267,33 +262,32 @@ module.exports = {
      });
   }
 
-  let domainArr = new Promise((resolve, reject) => {
-        return resolve(getDomArr());
-      })
+    let domainArr = new Promise((resolve, reject) => {
+      return resolve(getDomArr());
+    });
 
-  const getCatObj = () => {
-    let catObjs = {};
-    return categories
-           .then((categories) => {
-            for (let i = 0; i < categories.length; i++) {
-              catObjs[categories[i].dataValues.category] = categories[i].dataValues.id;
-            }
-            return catObjs;
-           })
-  }
+    const getCatObj = () => {
+      let catObjs = {};
+      return categories
+             .then((categories) => {
+               for (let i = 0; i < categories.length; i++) {
+                 catObjs[categories[i].dataValues.category] = categories[i].dataValues.id;
+               }
+               return catObjs;
+             });
+    };
 
-  let categoryObj = new Promise((resolve, reject) => {
-        return resolve(getCatObj());
-      })
+    let categoryObj = new Promise((resolve, reject) => {
+      return resolve(getCatObj());
+    });
 
     let catData = [];
 
     domainArr
     .then((domArr) => {
       categoryObj
-      .then((catObj) => {
-
-         for (let category in catObj) {
+      .then((catObj) => {       
+        for (let category in catObj) {
           let cat = {};
           cat['id'] = catObj[category];
           cat['category'] = category;
@@ -305,20 +299,18 @@ module.exports = {
 
          for (let domain of domArr) {
            for (let i = 0; i < catData.length; i++) {
+             console.log('domain inside domArr: ', domain);
              if (catData[i].id === domain.categoryId) {
               // catData[i].domains.push(domain.name);
-              catData[i].domains.push({label: domain.name, count: domain.count})
-              catData[i].totalCount += domain.count;
-
+               catData[i].domains.push({ label: domain.name, count: domain.count });
+               catData[i].totalCount += domain.count;
              }
            }
          }
 
-
          res.status(201).json(catData);
-
-      })
-    })
+      });
+    });
   },
 
   getWeekData: (req, res) => {
