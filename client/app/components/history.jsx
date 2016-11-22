@@ -14,56 +14,63 @@ export default class History extends React.Component {
 
   componentWillUpdate() {
 
-    const h = 700;
-    const maxH = 500;
-    const minH = 200;
-    const w = 1280;
-    const maxW = 1000;
-    const minW = 200;
+    const h = window.innerHeight;
+    const w = window.innerWidth - 50;
     const color = d3.scaleLinear()
     .domain([0, 5])
-    .range(["steelblue", "pink"]);
+    .range(["orange", "pink"]);
     const rscale = d3.scaleLinear()
-    .domain([0, 500])
-    .range([0, 325]);
+    .domain([0, h])
+    .range([0, w]);
 
-    const svg = d3.select(this.refs.hello)
+
+    const svg = d3.select('.bubble-container')
     .append('svg')
     .attr('height', h)
     .attr('width', w)
-    .attr('x', w / 2)
-    .attr('y', h / 2);
 
       const circle = svg.selectAll('circle')
       .data(this.props.visData)
       .enter()
-      .append('svg:circle')
+      .append('circle')
       .attr('r', (d) => {
-        return (rscale(d.visits)) / 2;
+        return rscale(d.visits);
       })
       .attr('fill', (d, i) => {
         return (color(i));
       })
       .attr('cx', () => {
-        return Math.floor(Math.random() * (maxW - minW)) + minW;
+        return Math.floor(Math.random() * w);
       })
-      .attr('cy', (d) => {
-        return Math.floor(Math.random() * (maxH - minH)) + minH;
+      .attr('cy', () => {
+        return Math.floor(Math.random() * h);
       })
       .style('z-index', (d) => {
-        return 100 - d.visits;
+        return 100 - (d.visits);
       })
-      .append('svg:title')
-      .text((d) => {
-        return 'WEBSITE: ' + d.domain + ' | VISITS: ' + d.visits;
-      });
 
-  }
+      const div = d3.select('body').append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+        circle.on("mouseover", function(d) {
+              div.transition()
+                  .duration(200)
+                  .style("opacity", .9);
+              div	.html(d.domain+ "<br/>"  + d.visits)
+                  .style("left", (d.visits) + "px")
+                  .style("top", (d.visits) + "px");
+              })
+          circle.on("mouseout", function(d) {
+              div.transition()
+                  .duration(500)
+                  .style("opacity", 0);
+  })
+}
 
   render() {
-    const data = this.props.visData
     return (
-      <svgwidth={w}height={h}className='chart'>  <circlecx={30}cy={80}r={25}fill={'red'} />  <circlecx={130}cy={80}r={60}fill={'green'} />  <circlecx={260}cy={80}r={40}fill={'blue'} />  </svg>
+      <div className='bubble-container' />
     );
   }
 }
