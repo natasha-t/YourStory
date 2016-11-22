@@ -29,10 +29,18 @@ export default class History extends React.Component {
     .attr('height', h)
     .attr('width', w)
 
+
+    const tooltip = d3.select('.bubble-container')
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
+
       const circle = svg.selectAll('circle')
       .data(this.props.visData)
       .enter()
       .append('circle')
+      .attr('class', 'circle')
       .attr('r', (d) => {
         return rscale(d.visits);
       })
@@ -48,29 +56,38 @@ export default class History extends React.Component {
       .style('z-index', (d) => {
         return 100 - (d.visits);
       })
+      .on("mouseover", ((d) => {
 
-      const div = d3.select('body').append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
+        let vis = 'visits';
+        if(d.visits === 1) {
+          vis = 'visit';
+        }
 
-        circle.on("mouseover", function(d) {
-              div.transition()
-                  .duration(200)
-                  .style("opacity", .9);
-              div	.html(d.domain+ "<br/>"  + d.visits)
-                  .style("left", (d.visits) + "px")
-                  .style("top", (d.visits) + "px");
-              })
-          circle.on("mouseout", function(d) {
-              div.transition()
-                  .duration(500)
-                  .style("opacity", 0);
-  })
+        tooltip.html(
+          '<strong>' + d.domain + '</strong><br><span>' + d.visits + ' ' + vis + '</span>');
+        tooltip
+        .style("visibility", "visible")
+        .style("top", (d3.event.pageY-10)+"px")
+        .style("left",(d3.event.pageX+15)+"px")
+        .style("textAlign", "center");
+      }))
+      .on("mouseout", () => {
+        tooltip.style("visibility", "hidden");
+      });
+
 }
 
   render() {
+
+    const lineUpCircles = () => {
+      return d3.selectAll('circle')
+      .attr('fill', 'red');
+    };
     return (
-      <div className='bubble-container' />
+      <div>
+        <div className='bubble-container'></div>
+        <button onClick={lineUpCircles} />
+      </div>
     );
   }
 }

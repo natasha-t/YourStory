@@ -120,7 +120,7 @@ module.exports = {
         const userID = user['dataValues']['id'];
 
       // ==== save domains for a current user =====
-      for (let key in uniqueDomains) {         
+      for (let key in uniqueDomains) {
         const userID = user['dataValues']['id'];
         Domain
         .findOne({ where: { domain: key, userId: userID } })
@@ -135,7 +135,7 @@ module.exports = {
 
           DateTable
           .findOne({ where: { dateOnly: new Date() } })
-          .then((todayDate) => {            
+          .then((todayDate) => {
             todayDate.addDomain(domain, { count: totalCount });
           })
           .catch((err) => {
@@ -152,8 +152,8 @@ module.exports = {
                 method: 'get',
                 url: apiUrl + hashURL,
                 auth: {
-                  // username: 'UL1QVH3FAtR6eoEJJIs4',
-                  // password: 'ZCZCYLA6wtqYNDpxbbRE',
+                  username: 'UL1QVH3FAtR6eoEJJIs4',
+                  password: 'ZCZCYLA6wtqYNDpxbbRE',
                 },
               })
               .then((response) => {
