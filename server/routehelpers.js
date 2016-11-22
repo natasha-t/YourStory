@@ -447,7 +447,7 @@ module.exports = {
             const finalObj = {};
             finalObj.date = date;
             finalObj.domains = arr.map((obj) => {
-              return obj.domain;
+              return { domain: obj.domain, visits: obj.count };
             });
             const toSum = arr.map((obj) => {
               return obj.count;
