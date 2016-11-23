@@ -12,8 +12,8 @@ import * as d3 from 'd3';
 export default class Categories extends React.Component {
 
   componentDidMount() {
-    
-    console.log('CAT DATA', this.props.catData)
+
+    console.log('CAT DATA', this.props.catData);
 
     const catParser = {
         "uncategorized": 'Others',
@@ -90,13 +90,13 @@ export default class Categories extends React.Component {
         .innerRadius(radius - donutWidth)             
         .outerRadius(radius)
         .padAngle(0.013)
-        .cornerRadius(8);
+        // .cornerRadius(8);
 
       let pie = d3.pie()
-        .value(((d) => { console.log('earlier d', d); return d.count; }))
+        .value(((d) => { return d.count; }))
         .sort(null);
 
-      const tooltipD3 = d3.select('#chart')
+      let tooltipD3 = d3.select('#chart')
         .append('div')
         .attr('class', 'tooltipD3');
 
@@ -136,17 +136,18 @@ export default class Categories extends React.Component {
         tooltipD3.select('.count').html(d.data.count);
         tooltipD3.select('.percent').html(percent + '%');
         tooltipD3.style('display', 'block');
-        if(!d.data.domains){
-          legend.text('HELLO');
-        }  
+        svg.select('.domain').text(d.data.label + ': ' + percent + '%');
       }));
 
       path.on('mouseout', (() => {                              
-        tooltipD3.style('display', 'none');                 
+        // tooltip.style('display', 'none');
+        svg.selectAll('text').text("");
       }));
 
       path.on('click', d => {
-        if(!d.data.domains){return};
+
+        if(!d.data.domains){ console.log('Path.onClick: It should have been redirected'); return };
+
         let temp = svg.selectAll('path')
         .data(pie(d.data.domains))
 
@@ -172,7 +173,7 @@ export default class Categories extends React.Component {
           })).transition()
           .duration(2000)
           .attrTween('d', function(d) {
-            var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
+            var interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
             return function(t) {
               return arc(interpolate(t));
             };
@@ -180,32 +181,35 @@ export default class Categories extends React.Component {
 
         temp.exit()
           .remove();
-
-        legend.remove();
       });
 
-      let legend = svg.selectAll('.legend')
-      .data(color.domain())
-      .enter()
-      .append('g')
-      .attr('transform', ((d, i) => {
-        const height = legendRectSize + legendSpacing;
-        const offset =  height * color.domain().length / 2;
-        const horz = -3 * legendRectSize;
-        const vert = i * height - offset;
-        return 'translate(' + horz + ',' + vert + ')';        
-      }));
 
-      legend.append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', color)
-        .style('stroke', color);
+        let newLabel = svg.append('text')
+          .attr('text-anchor', 'middle')
+          .attr('class', 'domain');
 
-      legend.append('text')
-        .attr('x', legendRectSize + legendSpacing)
-        .attr('y', legendRectSize - legendSpacing)
-        .text((d) => { return d; });
+      // let legend = svg.selectAll('.legend')
+      // .data(color.domain())
+      // .enter()
+      // .append('g')
+      // .attr('transform', ((d, i) => {
+      //   const height = legendRectSize + legendSpacing;
+      //   const offset =  height * color.domain().length / 2;
+      //   const horz = -3 * legendRectSize;
+      //   const vert = i * height - offset;
+      //   return 'translate(' + horz + ',' + vert + ')';        
+      // }));
+
+      // legend.append('rect')
+      //   .attr('width', legendRectSize)
+      //   .attr('height', legendRectSize)
+      //   .style('fill', color)
+      //   .style('stroke', color);
+
+      // legend.append('text')
+      //   .attr('x', legendRectSize + legendSpacing)
+      //   .attr('y', legendRectSize - legendSpacing)
+      //   .text((d) => { return d; });
   }
 
   render() {
