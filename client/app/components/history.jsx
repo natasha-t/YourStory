@@ -14,7 +14,7 @@ export default class History extends React.Component {
 
   componentDidMount() {
 
-    const h = 700;
+    const h = 300;
     const maxH = 500;
     const minH = 200;
     const w = 400;
