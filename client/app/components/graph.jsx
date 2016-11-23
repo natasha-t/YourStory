@@ -15,45 +15,43 @@ export default class Graph extends React.Component {
   componentDidMount() {
     // let data = this.props.weekData;
 
-    // console.log('WEEK DATA IN GRAPH COMPONENT', data);
 
      let data = [{
       date: '20161018',
       domains: [{ domain: 'learn.makerpass.com', visits: 103 },
-                  { domain: 'repl.it', visits: 30 },
-                  { domain: 'allData', visits: 311 }],
+                  { domain: 'repl.it', visits: 100 },
+                  { domain: 'allData', visits: 211 }],
       },
       { date: '20161019',
-        domains: [{ domain: 'learn.makerpass.com', visits: 17 },
-                  { domain: 'repl.it', visits: 4 },
+        domains: [{ domain: 'learn.makerpass.com', visits: 78 },
+                  { domain: 'repl.it', visits: 57 },
                   { domain: 'allData', visits: 200 }],
       },
       { date: '20161020',
         domains: [{ domain: 'learn.makerpass.com', visits: 35 },
-                  { domain: 'repl.it', visits: 12 },
-                  { domain: 'allData', visits: 200 }],
+                  { domain: 'repl.it', visits: 100 },
+                  { domain: 'allData', visits: 150 }],
       },
       { date: '20161021',
         domains: [{ domain: 'learn.makerpass.com', visits: 250 },
                   { domain: 'repl.it', visits: 50 },
-                  { domain: 'allData', visits: 200 }],
+                  { domain: 'allData', visits: 99 }],
       },
       { date: '20161022',
         domains: [{ domain: 'learn.makerpass.com', visits: 45 },
-                  { domain: 'repl.it', visits: 20 },
-                 { domain: 'allData', visits: 200 }],
+                  { domain: 'repl.it', visits: 55 },
+                 { domain: 'allData', visits: 106 }],
       },
       { date: '20161023',
         domains: [{ domain: 'learn.makerpass.com', visits: 200 },
-                  { domain: 'repl.it', visits: 44 },
+                  { domain: 'repl.it', visits: 90 },
                   { domain: 'allData', visits: 200 }],
       },
       { date: '20161024',
-        domains: [{ domain: 'learn.makerpass.com', visits: 20 },
-                  { domain: 'repl.it', visits: 17 },
-                  { domain: 'allData', visits: 200 }],
+        domains: [{ domain: 'learn.makerpass.com', visits: 69 },
+                  { domain: 'repl.it', visits: 76 },
+                  { domain: 'allData', visits: 250 }],
       }]  
-
 
 
     //======== ALL DOMAINS =========
@@ -86,22 +84,24 @@ export default class Graph extends React.Component {
 
     console.log('max: ', max, 'min: ', min);
 
+
     //======= PER DOMAIN ========
-    const lineDataGenerator = (data, inputDomain) => {
+
+    const lineDataGenerator = (inputDomain) => {
       let domainData = [];
       for (const day of data) {
         for (const domain of day.domains) {
           if (domain.domain === inputDomain) {
-            domainData.push({ count: domain.visits, date: new Date(day.date.slice(0, 4), day.date.slice(4, 6), day.date.slice(6)) })
+            domainData.push({ count: domain.visits, date: new Date(day.date.slice(0, 4), day.date.slice(4, 6), day.date.slice(6)) });
           }
         }
       }
-     return domainData;      
+      return domainData;      
     };
+    
 
-    const allDomains = lineDataGenerator(data, 'allData');
-
-    console.log('makerpass data', allDomains);
+    const repl = lineDataGenerator('repl.it');
+    const makerPass = lineDataGenerator('learn.makerpass.com');
 
 
     //======= CREATE SVG ELEMENT =======
@@ -117,10 +117,13 @@ export default class Graph extends React.Component {
     const y = d3.scaleLinear().domain([min, max]).range([height, 0])
 
 
-    //ASSIGN X AND Y VALUES FOR LINE PATH
-    const line = d3.line()
-    .x((d) => { return x(d.date); })
-    .y((d) => { return y(d.count); });
+    const line1 = d3.line()
+    .x((d) => { return x(d.date) })
+    .y((d) => { return y(d.count) })
+
+    const line2 = d3.line()
+    .x((d) => { return x(d.date) })
+    .y((d) => { return y(d.count) })
 
 
     //DRAW X AND Y AXIS
@@ -146,15 +149,15 @@ export default class Graph extends React.Component {
         .text("Visit Count");
 
     //APPEND ALL DOMAINS LINE TO GRAPH 
-    // svg.append("path")
-    //    .attr("d", line(allDomainsdata))
-    //    .attr("stroke", "blue")
-    //    .attr("stroke-width", 2)
-    //    .attr("fill", "none");
+    svg.append("path")
+       .attr("d", line1(repl))
+       .attr("stroke", "blue")
+       .attr("stroke-width", 2)
+       .attr("fill", "none");
 
 
     svg.append("path")
-       .attr("d", line(allDomains))
+       .attr("d", line2(makerPass))
        .attr("stroke", "red")
        .attr("stroke-width", 2)
        .attr("fill", "none")
