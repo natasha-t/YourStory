@@ -24,8 +24,8 @@ export default class History extends React.Component {
       return 0;
     })
 
-    const h = window.innerHeight,
-          w = window.innerWidth - 50,
+    const h = 360,
+          w = 360,
           padding = 1.5,
           rootNode = data[data.length - 1],
 
@@ -35,11 +35,6 @@ export default class History extends React.Component {
           rscale = d3.scaleLinear()
             .domain([0, (h-20)])
             .range([0, (w-20)]);
-
-
-
-
-
           //
           // force = d3.layout.force()
           //   .nodes(data)
@@ -87,7 +82,11 @@ export default class History extends React.Component {
           vis = 'visit';
         }
         tooltip.html(
-          '<strong>' + d.domain + '</strong><br><span>' + d.visits + ' ' + vis + '</span>');
+          '<strong>' +
+            '<a href=http://www.' + d.domain + '</a>' + d.domain +
+          '</strong><br><span>' +
+             d.visits + ' ' + vis +
+          '</span>');
         tooltip
         .style("visibility", "visible")
         .style("top", (d3.event.pageY-10)+"px")
