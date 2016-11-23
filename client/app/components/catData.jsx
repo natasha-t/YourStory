@@ -132,10 +132,10 @@ export default class Categories extends React.Component {
           return d.count;                                           
         }));
         const percent = Math.round(1000 * d.data.count / total) / 10;
-        tooltipD3.select('.label').html(d.data.label);
-        tooltipD3.select('.count').html(d.data.count);
-        tooltipD3.select('.percent').html(percent + '%');
-        tooltipD3.style('display', 'block');
+        // tooltipD3.select('.label').html(d.data.label);
+        // tooltipD3.select('.count').html(d.data.count);
+        // tooltipD3.select('.percent').html(percent + '%');
+        // tooltipD3.style('display', 'block');
         svg.select('.domain').text(d.data.label + ': ' + percent + '%');
       }));
 
