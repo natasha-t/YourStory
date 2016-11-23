@@ -306,7 +306,7 @@ module.exports = {
            for (let i = 0; i < catData.length; i++) {
              if (catData[i].id === domain.categoryId) {
               // catData[i].domains.push(domain.name);
-              catData[i].domains.push({label: domain.name, count: domain.count})
+              catData[i].domains.push({ label: domain.name, count: domain.count })
               catData[i].totalCount += domain.count;
 
              }
@@ -324,7 +324,7 @@ module.exports = {
     console.log("ID:::", req.session.chromeID)
 
     const todayRaw = new Date();
-    const today = todayRaw.getDate();
+    const today = todayRaw.getUTCDate();
     const month = todayRaw.getMonth() + 1;
     const year = todayRaw.getFullYear();
 
@@ -460,7 +460,21 @@ module.exports = {
         console.log("ERROR INSIDE PROMISED ARRAY: ", err)
       })
       .then((finalArray) => {
-        console.log("FINAL ARRAY", finalArray)
+        // console.log("FINAL ARRAY", _.uniq(finalArray.map((arr) => {
+        //   const finalObj = {};
+        //   const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
+        //     finalObj.date = date;
+        //     finalObj.domains = arr.map((obj) => {
+        //       return { domain: obj.domain, count: obj.count };
+        //     });
+        //     const toSum = arr.map((obj) => {
+        //       return obj.count;
+        //     });
+        //     finalObj.totalCount = toSum.reduce((mem, curr) => {
+        //       return mem + curr;
+        //     });
+        //   return finalObj;
+        // }), ((obj) => { return obj.date; })))
         res.status(200).send(
           _.uniq(finalArray.map((arr) => {
             const finalObj = {};
