@@ -6,6 +6,7 @@ import GraphList from './graphlist';
 import History from './history';
 import Categories from './catData';
 import Graph from './graph';
+import Container from './nav_container';
 import getToken from '../chrome/auth';
 import Footer from './footer';
 // import Container from './nav_container';
