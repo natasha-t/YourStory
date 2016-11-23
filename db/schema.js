@@ -65,7 +65,10 @@ const DateTable = db.define('date', {
     primaryKey: true,
     autoIncrement: true,
   },
-  dateOnly: Sequelize.DATEONLY,
+  dateOnly: {
+    type: Sequelize.DATEONLY,
+    unique: true,
+  },
   dateTime: Sequelize.DATE,
 });
 
@@ -127,9 +130,6 @@ db
   //     { dateOnly: '2016-11-20' },
   //     { dateOnly: '2016-11-19' },
   //     { dateOnly: '2016-11-18' },
-  //     { dateOnly: '2016-11-17' },
-  //     { dateOnly: '2016-11-16' },
-  //     { dateOnly: '2016-11-15' }
   //   ])
   //     .then(() =>{
   //       console.log("Date Table Created")
@@ -146,17 +146,14 @@ db
   //     { domainId: 3, count: 150, dateId: 4 },
   //     { domainId: 3, count: 160, dateId: 5 },
   //     { domainId: 3, count: 46, dateId: 6 },
-  //     { domainId: 4, count: 42, dateId: 7 },
-  //     { domainId: 4, count: 42, dateId: 8 },
-  //     { domainId: 4, count: 42, dateId: 9 },
   //     ])
   //   .then(() => {
   //     console.log('DateDomain Table created');
-    // })
+  //   })
   //  .catch((err) => {
   //     console.log('error', err);
   //  });
- })
+});
 
 module.exports = {
   User: User,

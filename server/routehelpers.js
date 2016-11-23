@@ -350,53 +350,34 @@ module.exports = {
     // array that will be mapped. A promise function will be called for each date
     const week = getWeek();
 
-    const getUser = () => {
-      return User.findOne({ where: { chrome_id: req.session.chromeID } })
-      .then((user) => {
-        console.log("-----USER-----", user)
-        return user.dataValues.id;
-      })
-      .catch((err) => {
-          console.log('error getting userId from Users: ', err);
-      });
-    };
-
-    const promisedUserId = new Promise((resolve, reject) => {
-      return resolve(getUser());
-    });
-
   // initial function to be called for each date. Returns a domainId, dateId and count
-  promisedUserId
-  .then((userID) => {
   const getIds = (day) => {
-   return new Promise((resolve, reject) => {
-      console.log("_______USERID_____", userID)
-     Domain.findOne({ where: { userId: userID } })
-     .then((domain) => {
-       console.log("_______DOMAINID_____", domain.dataValues)
-       const domainID = domain.dataValues.id
-       DateTable
+    return new Promise((resolve, reject) => {
+      DateTable
         .findOne({
           attributes: ['id'],
           where: {
             dateOnly: day,
           },
         })
-        .then((response) => { // get all domains for specific date and user
-          console.log("-----DATE-----", response)
-          const dateID = response.dataValues.id;
+        .then((response) => { // get all domains for specific date
+          let id;
+          if(response !== null) {
+            id = response.dataValues.id;
+          } else { id = 1; }
           DateDomain
           .findAll({
             where: {
-              dateId: dateID, domainId: domainID,
+              dateId: id,
             },
           })
           .then((response) => { // save all domains to array and return them
-            console.log("-----DOMAINS BY DATE-----", response)
-            const domainsByDate = response.map((domain) => {
-              return domain.dataValues;
-            });
-            return resolve(domainsByDate);
+
+              const domainsByDate = response.map((instance) => {
+                return instance.dataValues;
+              });
+
+             return resolve(domainsByDate);
           })
           .catch((err) => {
             console.log('ERROR INSIDE DATEDOMAIN QUERY: ', err);
@@ -406,8 +387,7 @@ module.exports = {
           console.log('ERROR: ', err);
         });
       })
-     })
-   };
+    };
 
     // promisedWeek is the result of calling each function for each date. Returns an array
     // of promised arrays. Will be resolved by calling promise.all(promisedWeek)
@@ -419,13 +399,15 @@ module.exports = {
     // array inside promisedWeek
     const getNameAndDate = (entry) => {
       return new Promise((resolve, reject) => {
-        Domain.findAll({ where: { id: entry.domainId } })
+        Domain.findOne({ where: { id: entry.domainId } })
         .then((domain) => {
+          console.log("DOMAIN", domain.dataValues)
           DateTable.findOne({ where: { id: entry.dateId } })
           .then((date) => {
+            console.log("DATE", date.dataValues)
             DateDomain.findOne({ where: { domainId: entry.domainId } })
             .then((datedDom) => {
-              console.log("-----DATED VALUES-----", datedDom.dataValues)
+              console.log("DATEDDOM", domain.dataValues.domain)
               const nameDateCount = { count: datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
                return resolve(nameDateCount);
             })
@@ -441,16 +423,12 @@ module.exports = {
           console.log("ERROR FINDING DOM IN GETNAME: ", err)
         })
       })
-      .catch((err) => {
-        console.log("ERROR FINDING USER: ", err)
-      })
     }
 
     // make all promised arrays inside promisedArray wait to resolve until their promised
     // objects have resolved
     Promise.all(promisedWeek)
     .then((thisWeek) => {
-      console.log("----THIS WEEK----", thisWeek)
       return new Promise((resolve, reject) => {
         const promisedArr = [];
         thisWeek.map((arr) => {
@@ -462,6 +440,7 @@ module.exports = {
         resolve(promisedArr);
       })
       .then((promisedArray) => {
+        console.log("PROMISED ARRAY", promisedArray)
         const resolvedArrays = promisedArray.map((subArray) => {
           return Promise.all(subArray);
         });
@@ -474,21 +453,21 @@ module.exports = {
         console.log("ERROR INSIDE PROMISED ARRAY: ", err)
       })
       .then((finalArray) => {
-        console.log("-----FINAL ARRAY-----", finalArray)
-        res.status(200).send(
+        console.log("FINAL ARRAY", finalArray)
+        res.send(
           finalArray.map((arr) => {
             const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
             const finalObj = {};
-            finalObj.date = date;
-            finalObj.domains = arr.map((obj) => {
-              return { domain: obj.domain, visits: obj.count };
-            });
-            const toSum = arr.map((obj) => {
-              return obj.count;
-            });
-            finalObj.count = toSum.reduce((mem, curr) => {
-              return mem + curr;
-            });
+              finalObj.date = date;
+              finalObj.domains = arr.map((obj) => {
+                return { domain: obj.domain, visits: obj.count };
+              });
+              const toSum = arr.map((obj) => {
+                return obj.count;
+              });
+              finalObj.count = toSum.reduce((mem, curr) => {
+                return mem + curr;
+              });
             return finalObj;
           }));
       })
@@ -499,7 +478,6 @@ module.exports = {
     .catch((err) => {
       console.log("ERROR IN THERE SOMEWHERE! ", err)
     });
-  })
 
   },
 

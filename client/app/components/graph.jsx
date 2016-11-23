@@ -15,6 +15,7 @@ export default class Graph extends React.Component {
   componentDidUpdate() {
     // let data = this.props.weekData;
 
+
      let data = [{
       date: '20161018',
       domains:[{ domain: 'learn.makerpass.com', visits: 103 },
@@ -85,7 +86,7 @@ export default class Graph extends React.Component {
                   { domain: 'getbootstrap.com', visits: 13 },
                   { domain: 'npmjs.com', visits: 11 }],
         count: 122,
-      }]  
+      }]
 
     console.log('chart data', data);
 
@@ -147,7 +148,7 @@ export default class Graph extends React.Component {
           }
         }
       }
-     return domainData;      
+     return domainData;
     };
 
     const makerPass = lineDataGenerator(data, 'learn.makerpass.com');
@@ -161,9 +162,9 @@ export default class Graph extends React.Component {
     width = svg.attr("width") - margin.left - margin.right,
     height = svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
- 
+
     //======= CREATE X AND Y SCALES ======
-    //12 pm appearing on ticks between days 
+    //12 pm appearing on ticks between days
     const x = d3.scaleTime().domain([new Date(startDate.year, startDate.month, startDate.date), new Date(endDate.year, endDate.month, endDate.date)]).range([0, width])
     const y = d3.scaleLinear().domain([min, max]).range([height, 0])
 
@@ -196,7 +197,7 @@ export default class Graph extends React.Component {
         .attr("fill", "#000")
         .text("Visit Count");
 
-    //APPEND ALL DOMAINS LINE TO GRAPH 
+    //APPEND ALL DOMAINS LINE TO GRAPH
     // svg.append("path")
     //    .attr("d", line(allDomainsdata))
     //    .attr("stroke", "blue")
