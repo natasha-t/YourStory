@@ -67,7 +67,7 @@ const DateTable = db.define('date', {
   },
   dateOnly: {
     type: Sequelize.DATEONLY,
-    // unique: true,
+    unique: true,
   },
 });
 
@@ -94,7 +94,7 @@ Domain.belongsToMany(DateTable, { through: DateDomain, foreignKey: 'domainId' })
 DateTable.belongsToMany(Domain, { through: DateDomain, foreignKey: 'dateId' });
 
 db
-  .sync({ force: false })
+  .sync({ force: true })
 
   .then(() => {
     console.log('All tables created');
