@@ -60,6 +60,9 @@ export default class Graph extends React.Component {
       }]
 
 
+    console.log('chart data', data);
+
+
     //======== ALL DOMAINS =========
     const startDate = {
       'year': Number(data[0].date.slice(0, 4)),
@@ -164,6 +167,7 @@ export default class Graph extends React.Component {
       }
       return domainData;
     };
+
 
     //MAKE LINE PATH
     const generateLine = () => {

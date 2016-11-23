@@ -318,8 +318,8 @@ module.exports = {
              console.log('domain inside domArr: ', domain);
              if (catData[i].id === domain.categoryId) {
               // catData[i].domains.push(domain.name);
-               catData[i].domains.push({ label: domain.name, count: domain.count });
-               catData[i].totalCount += domain.count;
+              catData[i].domains.push({ label: domain.name, count: domain.count })
+              catData[i].totalCount += domain.count;
 
              }
            }
