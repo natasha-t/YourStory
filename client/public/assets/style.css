@@ -1,8 +1,7 @@
-.domainsplot {
-      font-size: 100%;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      width: 960px;
-  }
+.domain {
+  font-size: 100%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
 #chart {                                                          
   height: 360px;                                                  
@@ -19,7 +18,7 @@ rect {
   stroke-width: 2
 }
 
-.tooltip {
+/*.tooltip {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;                                                       
   background: #eee;                                               
   box-shadow: -3px 3px 15px #888888;
@@ -34,7 +33,7 @@ rect {
   top: 95px;                                                      
   width: 80px;                                                    
   z-index: 10;                                                    
-}                                                                
+}    */                                                            
 .legend {
   font-size: 10px;
   color: white;

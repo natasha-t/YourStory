@@ -86,13 +86,13 @@ export default class Categories extends React.Component {
         .innerRadius(radius - donutWidth)             
         .outerRadius(radius)
         .padAngle(0.013)
-        .cornerRadius(8);
+        // .cornerRadius(8);
 
       let pie = d3.pie()
         .value(((d) => { return d.count; }))
         .sort(null);
 
-      const tooltip = d3.select('#chart')
+      let tooltip = d3.select('#chart')
         .append('div')
         .attr('class', 'tooltip');
 
@@ -124,28 +124,26 @@ export default class Categories extends React.Component {
         });
 
       path.on('mouseover', ((d) => {
-        console.log(d);
         const total = d3.sum(dataset.map((d) => {                
           return d.count;                                           
         }));
         const percent = Math.round(1000 * d.data.count / total) / 10;
-        tooltip.select('.label').html(d.data.label);
-        tooltip.select('.count').html(d.data.count);
-        tooltip.select('.percent').html(percent + '%');
-        tooltip.style('display', 'block');
-        if(!d.data.domains){
-          legend.text('HELLO');
-        }  
+        // tooltip.select('.label').html(d.data.label);
+        // tooltip.select('.count').html(d.data.count);
+        // tooltip.select('.percent').html(percent + '%');
+        // tooltip.style('display', 'block');
+        svg.select('.domain').text(d.data.label + ': ' + percent + '%');
       }));
 
       path.on('mouseout', (() => {                              
-        tooltip.style('display', 'none');                 
+        // tooltip.style('display', 'none');
+        svg.selectAll('text').text("");         
       }));
 
       path.on('click', d => {
-        console.log(d);
+
         if(!d.data.domains){ console.log('Path.onClick: It should have been redirected'); return };
-        
+
         let temp = svg.selectAll('path')
         .data(pie(d.data.domains))
 
@@ -179,33 +177,35 @@ export default class Categories extends React.Component {
 
         temp.exit()
           .remove();
-
-        legend.remove();
       });
 
-      let legend = svg.selectAll('.legend')
-      .data(color.domain())
-      .enter()
-      .append('g')
-      .text("")
-      .attr('transform', ((d, i) => {
-        const height = legendRectSize + legendSpacing;
-        const offset =  height * color.domain().length / 2;
-        const horz = -3 * legendRectSize;
-        const vert = i * height - offset;
-        return 'translate(' + horz + ',' + vert + ')';        
-      }));
 
-      legend.append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', color)
-        .style('stroke', color);
+        let newLabel = svg.append('text')
+          .attr('text-anchor', 'middle')
+          .attr('class', 'domain');
 
-      legend.append('text')
-        .attr('x', legendRectSize + legendSpacing)
-        .attr('y', legendRectSize - legendSpacing)
-        .text((d) => { return d; });
+      // let legend = svg.selectAll('.legend')
+      // .data(color.domain())
+      // .enter()
+      // .append('g')
+      // .attr('transform', ((d, i) => {
+      //   const height = legendRectSize + legendSpacing;
+      //   const offset =  height * color.domain().length / 2;
+      //   const horz = -3 * legendRectSize;
+      //   const vert = i * height - offset;
+      //   return 'translate(' + horz + ',' + vert + ')';        
+      // }));
+
+      // legend.append('rect')
+      //   .attr('width', legendRectSize)
+      //   .attr('height', legendRectSize)
+      //   .style('fill', color)
+      //   .style('stroke', color);
+
+      // legend.append('text')
+      //   .attr('x', legendRectSize + legendSpacing)
+      //   .attr('y', legendRectSize - legendSpacing)
+      //   .text((d) => { return d; });
   }
 
   render() {
