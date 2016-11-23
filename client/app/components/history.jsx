@@ -12,56 +12,105 @@ import * as d3 from 'd3';
 
 export default class History extends React.Component {
 
-  componentDidMount() {
-    const h = 700;
-    const maxH = 500;
-    const minH = 200;
-    const w = 614;
-    const maxW = 1000;
-    const minW = 200;
-    const color = d3.scaleLinear()
-    .domain([0, 5])
-    .range(["steelblue", "pink"]);
-    const rscale = d3.scaleLinear()
-    .domain([0, 500])
-    .range([0, 325]);
+  componentWillUpdate() {
 
-    const svg = d3.select(this.refs.hello)
-    .append('svg')
+    const data = this.props.visData.sort((a, b) => {
+      if (a.visits > b.visits) {
+        return 1;
+      }
+      if (a.visits < b.visits) {
+        return -1;
+      }
+      return 0;
+    })
+
+    const h = 360,
+          w = 360,
+          padding = 1.5,
+          rootNode = data[data.length - 1],
+
+          color = d3.scaleLinear()
+            .domain([0, data.length])
+            .range(["rgb(230, 85, 13)", "rgb(198, 219, 239)"]);
+          // rscale = d3.scaleLinear()
+          //   .domain([0, (h / 4)])
+          //   .range([0, (w / 4)]);
+
+    const svg = d3.select('.bubble-container')
+    .append('svg:svg')
     .attr('height', h)
     .attr('width', w)
-    .attr('x', w / 2)
-    .attr('y', h / 2);
+    .style('display', 'flex')
+    .style('justify-content', 'space-between');
+
+
+    const tooltip = d3.select('.bubble-container')
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
 
       const circle = svg.selectAll('circle')
-      .data(this.props.visData)
+      .data(data)
       .enter()
       .append('svg:circle')
       .attr('r', (d) => {
-        return (rscale(d.visits)) / 2;
+        return (d.visits / h);
       })
       .attr('fill', (d, i) => {
         return (color(i));
       })
-      .attr('cx', () => {
-        return Math.floor(Math.random() * (maxW - minW)) + minW;
+      .attr('cx', (d, i) => {
+        return Math.floor(Math.random() * (w - 100))
       })
-      .attr('cy', (d) => {
-        return Math.floor(Math.random() * (maxH - minH)) + minH;
+      .attr('cy', (d, i) => {
+        return Math.floor(Math.random() * (h - 100))
       })
       .style('z-index', (d) => {
-        return 100 - d.visits;
+        return 100 - (d.visits);
       })
-      .append('svg:title')
-      .text((d) => {
-        return 'WEBSITE: ' + d.domain + ' | VISITS: ' + d.visits;
+      .on("mouseover", ((d) => {
+        let vis = 'visits';
+        if (d.visits === 1) {
+          vis = 'visit';
+        }
+        tooltip.html(
+          '<strong>' +
+            '<a href=http://www.' + d.domain + '</a>' + d.domain +
+          '</strong><br><span>' +
+             d.visits + ' ' + vis +
+          '</span>');
+        tooltip
+        .style("visibility", "visible")
+        .style("top", (d3.event.pageY-10)+"px")
+        .style("left",(d3.event.pageX+15)+"px")
+        .style("textAlign", "center");
+      }))
+      .on("mouseout", () => {
+        tooltip.style("visibility", "hidden");
       });
-      
+
   }
 
-  render() {
+  render(data) {
+
+    const lineUpCircles = () => {
+      return d3.selectAll('circle')
+      .transition()
+      .duration(1000)
+      .attr('cx', (d, i) => {
+        return (i * 10) + 'px';
+      })
+      .attr('cy', (d, i) => {
+        return (i * 10) + 'px';
+      })
+    };
+
     return (
-      <div ref={'hello'} style={{ margin: 'auto' }} />
+      <div>
+        <div className='bubble-container'></div>
+        <button onClick={lineUpCircles} />
+      </div>
     );
   }
 }
