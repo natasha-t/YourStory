@@ -14,10 +14,10 @@ div{
   margin: 0 auto;
 }
 rect {
-  stroke-width: 2
+  stroke-width: 2;
 }
 
-.tooltip {
+.tooltipD3 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;                                                       
   background: #eee;                                               
   box-shadow: -3px 3px 15px #888888;
@@ -39,12 +39,6 @@ rect {
   color: white;
 }
 
-polyline{
-  opacity: .3;
-  stroke: black;
-  stroke-width: 2px;
-  fill: none;
-}
 .line {
   fill: none;
   stroke: steelblue;
