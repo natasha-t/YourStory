@@ -19,7 +19,7 @@ let reducers = combineReducers({
   visData,
   catData,
   weekData
-})
+});
 
 
 const store = createStoreWithMiddleware(reducers, persistedState);

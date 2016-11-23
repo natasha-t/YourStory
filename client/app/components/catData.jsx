@@ -58,6 +58,10 @@ export default class Categories extends React.Component {
         "contentserver": 'Content Servers'
     };
 
+    console.log('cat data from catData.jsx', this.props.catData);
+
+    console.log('cat data from catData.jsx', this.props.catData);
+
     const datasetCreator = ((data) => {
       return data.map((item) => {
         return { label: catParser[item.category], count: item.totalCount, domains: item.domains };
@@ -205,10 +209,8 @@ export default class Categories extends React.Component {
   }
 
   render() {
-    return (
-      <div> 
-        <div id="chart"></div>
-      </div>
+    return (      
+      <div id="chart"></div>
     );
   }
 }

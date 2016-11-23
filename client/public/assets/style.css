@@ -49,3 +49,12 @@ polyline{
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
+.footer {
+  margin-bottom: 2%;
+}
+
+.data-parent-container {
+  background-color: purple;
+}
+
