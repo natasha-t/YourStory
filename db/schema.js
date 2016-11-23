@@ -93,7 +93,7 @@ DateTable.belongsToMany(Domain, { through: DateDomain, foreignKey: 'dateId' });
 
 
 db
-  .sync({ force: true })
+  .sync({ force: false })
 
   .then(() => {
     console.log('All tables created');

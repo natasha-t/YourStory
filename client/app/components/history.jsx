@@ -15,24 +15,38 @@ export default class History extends React.Component {
   componentWillUpdate() {
 
     const data = this.props.visData.sort((a, b) => {
-      if(a.visits > b.visits) {
+      if (a.visits > b.visits) {
         return 1;
       }
-      if(a.visits < b.visits) {
+      if (a.visits < b.visits) {
         return -1;
       }
       return 0;
     })
 
-    const h = window.innerHeight;
-    const w = window.innerWidth - 50;
-    const color = d3.scaleLinear()
-    .domain([0, data.length])
-    .range(["yellow", "pink"]);
-    const rscale = d3.scaleLinear()
-    .domain([0, h])
-    .range([0, w]);
+    const h = window.innerHeight,
+          w = window.innerWidth - 50,
+          padding = 1.5,
+          rootNode = data[data.length - 1],
 
+          color = d3.scaleLinear()
+            .domain([0, data.length])
+            .range(["yellow", "pink"]),
+          rscale = d3.scaleLinear()
+            .domain([0, (h-20)])
+            .range([0, (w-20)]);
+
+
+
+
+
+          //
+          // force = d3.layout.force()
+          //   .nodes(data)
+          //   .size([w, h])
+          //   .gravity(.02)
+          //   .charge(0)
+          //   .start();
 
     const svg = d3.select('.bubble-container')
     .append('svg:svg')
@@ -69,7 +83,7 @@ export default class History extends React.Component {
       })
       .on("mouseover", ((d) => {
         let vis = 'visits';
-        if(d.visits === 1) {
+        if (d.visits === 1) {
           vis = 'visit';
         }
         tooltip.html(
@@ -83,22 +97,19 @@ export default class History extends React.Component {
       .on("mouseout", () => {
         tooltip.style("visibility", "hidden");
       });
+  }
 
-}
+  render(data) {
 
-  render() {
     const lineUpCircles = () => {
       return d3.selectAll('circle')
       .transition()
       .duration(1000)
       .attr('cx', (d, i) => {
-        return (i * 10) + 'px';
+        return (i * 10) + (i*10) + 'px';
       })
       .attr('cy', (d, i) => {
-        return (i * 10) + 'px';
-      })
-      .style('margin', (d) => {
-        return d.visits + 'px';
+        return (i * 10) - (i*10) + 'px';
       })
     };
 
