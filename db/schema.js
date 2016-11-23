@@ -91,8 +91,8 @@ Domain.belongsTo(User);
 Domain.belongsToMany(DateTable, { through: DateDomain, foreignKey: 'domainId' });
 DateTable.belongsToMany(Domain, { through: DateDomain, foreignKey: 'dateId' });
 
- db
-      .sync({ force: false })
+db
+  .sync({ force: false })
   //     .then(() => {
   //       return User.bulkCreate([
   //         { username: 'Natasha' },

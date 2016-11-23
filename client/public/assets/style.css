@@ -20,6 +20,9 @@ div{
 rect {
   stroke-width: 2;
 }
+.logoImg {
+  width: 125px
+}
 
 .tooltipD3 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;                                                       

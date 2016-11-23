@@ -218,6 +218,23 @@ module.exports = {
         res.json(req.session.chromeID);
       });
   },
+  
+  getUser: (req, res) => {
+    console.log("inside get user");
+    req.session.chromeID = req.body.chromeID;
+
+    User.findOne({ where: { chrome_id: req.session.chromeID } })
+    .then((user) => {
+      console.log("user from getUser", user);
+      if (user === null) {
+        user = 'User';
+      }
+      res.status(201).json(user);
+    })
+    .catch((err) => {
+      console.log("error sending username", err);
+    });
+  },
 
   getCatData: (req, res) => {    
     const getAllUserDomains = () => {      
