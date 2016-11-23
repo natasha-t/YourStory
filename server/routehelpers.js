@@ -468,7 +468,7 @@ module.exports = {
             const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
               finalObj.date = date;
               finalObj.domains = arr.map((obj) => {
-                return obj.domain;
+                return { domain: obj.domain, count: obj.count };
               });
               const toSum = arr.map((obj) => {
                 return obj.count;
