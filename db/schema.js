@@ -191,7 +191,7 @@ db
 
 
     db
-      .sync({ force: true })
+      .sync({ force: false })
 
       .then(() => {
         console.log('All tables created');
