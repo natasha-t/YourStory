@@ -12,7 +12,7 @@ function loadVisDataUponResponse (data) {
 export default function fetchVisData (id) {
   console.log('fetch vis data', id);
   return function (dispatch) {
-    const tenMinutes = 1000 * 60 * 10 * 3;
+    const tenMinutes = 1000 * 60 * 60 * 72;
     const tenMinutesAgo = (new Date).getTime() - tenMinutes;
 
     chrome.history.search({

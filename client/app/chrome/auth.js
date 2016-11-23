@@ -26,9 +26,9 @@ export default function getToken() {
         data: { chromeID: userInfo.id, username: userInfo.name },
       })
         .then((response) => {
-          console.log('CHROME ID INFO', response);
-          const chromeID = JSON.parse(response.config.data).chromeID;          
-          //add interval before pushing 
+          const chromeID = JSON.parse(response.config.data).chromeID;
+          console.log('CHROME ID', chromeID);
+          //add interval before pushing
             store.dispatch(fetchVisData(response));
             store.dispatch(fetchCatData(response));
             store.dispatch(fetchUsername(response));
@@ -41,4 +41,3 @@ export default function getToken() {
     x.send();
   });
 }
-

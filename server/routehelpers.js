@@ -487,6 +487,7 @@ module.exports = {
         // }), ((obj) => { return obj.date; })))
         res.status(200).send(
           _.uniq(finalArray.map((arr) => {
+            console.log("FINAL ARRAY", finalArray)
             const finalObj = {};
             const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
               finalObj.date = date;
