@@ -22,6 +22,7 @@ export default class App extends React.Component {
     return (
       <div>
         <div className="container-fluid">
+          <br />
           <div className="row">
             <div className="col-sm-12">
               <div className="row">
@@ -32,7 +33,7 @@ export default class App extends React.Component {
                   </div>
                 </div>
                 <div className="col-sm-5">
-                  <div >
+                  <div className="nav-greeting">
                     <span>Welcome back, <span>[username placeholder]</span> !</span> 
                   </div>
                 </div>
@@ -40,6 +41,8 @@ export default class App extends React.Component {
               </div>
             </div>
           </div>
+          <br />
+
 
           <div className="row">
             <div className="col-sm-12">
@@ -61,30 +64,31 @@ export default class App extends React.Component {
               </div>
             </div>
           </div>
+          <br />          
 
           <div className="row">
             <div className="col-sm-12">
               <div className="row">
                 <div className="col-sm-1"></div>
                 <div className="col-sm-10">
-                  <div className="data-parent-container">
-                    Graph Component
-                    <GraphList />
-                  </div>
+                  <h5>Sites Visited This Week</h5>
+                  <GraphList />                  
                 </div>
                 <div className="col-sm-1"></div>
               </div>
             </div>
           </div>
+          <br />
+          <br />          
 
           <div className="row">
             <div className="col-sm-1"></div>
             <div className="col-sm-5">
               <div className="row">
                 <div className="col-sm-11">
+                  <h5>Most Visited Sites</h5>
                   <div className="data-parent-container">
-                    Top Sites Component
-                     <History />
+                    <History />
                   </div>
                 </div>
                 <div className="col-sm-1"></div>
@@ -95,8 +99,8 @@ export default class App extends React.Component {
               <div className="row">
                 <div className="col-sm-1"></div>
                 <div className="col-sm-11">
+                  <h5>Sites By Category</h5>
                   <div className="data-parent-container">
-                    Categories Component
                     <Categories />
                   </div>
                 </div>

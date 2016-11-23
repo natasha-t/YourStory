@@ -96,17 +96,17 @@ export default class Categories extends React.Component {
         .value(((d) => { console.log('earlier d', d); return d.count; }))
         .sort(null);
 
-      const tooltip = d3.select('#chart')
+      const tooltipD3 = d3.select('#chart')
         .append('div')
-        .attr('class', 'tooltip');
+        .attr('class', 'tooltipD3');
 
-      tooltip.append('div')
+      tooltipD3.append('div')
         .attr('class', 'label');
 
-      tooltip.append('div')
+      tooltipD3.append('div')
         .attr('class', 'count');
 
-      tooltip.append('div')
+      tooltipD3.append('div')
         .attr('class', 'percent');
 
       let path = svg.selectAll('path')
@@ -132,17 +132,17 @@ export default class Categories extends React.Component {
           return d.count;                                           
         }));
         const percent = Math.round(1000 * d.data.count / total) / 10;
-        tooltip.select('.label').html(d.data.label);
-        tooltip.select('.count').html(d.data.count);
-        tooltip.select('.percent').html(percent + '%');
-        tooltip.style('display', 'block');
+        tooltipD3.select('.label').html(d.data.label);
+        tooltipD3.select('.count').html(d.data.count);
+        tooltipD3.select('.percent').html(percent + '%');
+        tooltipD3.style('display', 'block');
         if(!d.data.domains){
           legend.text('HELLO');
         }  
       }));
 
       path.on('mouseout', (() => {                              
-        tooltip.style('display', 'none');                 
+        tooltipD3.style('display', 'none');                 
       }));
 
       path.on('click', d => {
