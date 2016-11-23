@@ -1,3 +1,7 @@
+.custom-body {
+  background-color: #FCFCFC;
+}
+
 .domainsplot {
       font-size: 100%;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -33,7 +37,12 @@ rect {
   width: 80px;                                                    
   z-index: 10;                                                    
 }
-                                                                
+      
+.graph-row {
+  width: 15%;
+  float: right;
+} 
+
 .legend {
   font-size: 10px;
   color: white;
@@ -51,7 +60,10 @@ rect {
 
 .data-parent-container {
   background-color: #fff;
-  border: .5px #979797 solid;
+  border : 1px rgba(151, 151, 151, .35) solid;
   padding: 5%;
 }
 
+.nav-greeting {
+  text-align: right;
+}
