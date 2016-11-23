@@ -13,7 +13,6 @@ const Promise = require('bluebird');
 const dbHelpers = require('../db/dbHelpers');
 const axios = require('axios');
 const btoa = require('btoa');
-const md5 = require('md5');
 
 // Establishes the connection to the database
 db.authenticate().then(() => {
@@ -463,22 +462,22 @@ module.exports = {
       })
       .then((finalArray) => {
         console.log("FINAL ARRAY", finalArray)
-        res.send(
-          finalArray.map((arr) => {
-            const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
+        res.status(200).send(
+          _.uniq(finalArray.map((arr) => {
             const finalObj = {};
+            const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
               finalObj.date = date;
               finalObj.domains = arr.map((obj) => {
-                return { domain: obj.domain, visits: obj.count };
+                return obj.domain;
               });
               const toSum = arr.map((obj) => {
                 return obj.count;
               });
-              finalObj.count = toSum.reduce((mem, curr) => {
+              finalObj.totalCount = toSum.reduce((mem, curr) => {
                 return mem + curr;
               });
             return finalObj;
-          }));
+          }), ((obj) => { return obj.date; })));
       })
       .catch((err) => {
         console.log("ERROR INSIDE FINAL OBJECT CONSTRUCTION: ", err);
