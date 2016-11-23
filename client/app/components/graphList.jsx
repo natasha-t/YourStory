@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Graph from './graph';
-import OptionsList from './options-list';
+import DomainList from './domainList';
 
 @connect((store) => { 
   return {
@@ -11,28 +11,22 @@ import OptionsList from './options-list';
 })
 
 export default class GraphList extends React.Component {
-  componentDidMount() {
-    // console.log("data from graphlist", this.props.weekData);
-    // const uniqueDomains = [];
-    // let graphData = [];
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectValue: this.props.list,
+    }
+    console.log("STATE from GraphList", props);
+  }
 
-    // const allDomains = this.props.weekData.map((rawDayObj) => {
-    //   rawDayObj['domains'].map((domain) => {
-    //     let url = domain.domain;
-    //     if ((uniqueDomains.indexOf(url)) === -1) {
-    //       uniqueDomains.push(url);
-    //     }
-    //   });
-    // });
+  graphChange(graphValue) {
+    console.log("graphValue", graphValue);
 
-    // const listItems = uniqueDomains.map((domain) => {
-    //   <option>{ domain }</option>
-    // });
   }
 
   render() {    
     const uniqueDomains = [];
-    // let graphData = [];
+    let graphData = [];
 
     this.props.weekData.map((rawDayObj) => {
       rawDayObj['domains'].map((domain) => {
@@ -42,20 +36,19 @@ export default class GraphList extends React.Component {
         }
       });
     });
+    graphData = [uniqueDomains, uniqueDomains, uniqueDomains];
+
 
     return (
       <div>
         <div className="graph-row">
-          <select className="custom-select form-control form-control-sm" value={this.props.sample} onChange={this.changeWebsite.bind(this)}>
-            <option selected>Compare Website</option>            
-            {uniqueDomains.map((domain) =>
-              <OptionsList domain={domain} />
-            )}
-          </select>
+          {graphData.map((domainList) =>
+            <DomainList domain={domainList} getValue={this.graphChange.bind(this)}/>
+          )}
           <br />
         </div>
         <div className="data-parent-container">
-          <Graph />
+          <Graph domainName={graphValue}/>
         </div>
       </div>
     );
@@ -66,3 +59,9 @@ export default class GraphList extends React.Component {
 
 
 
+          // <select className="custom-select form-control form-control-sm" value={this.state.selectValue} onChange={this.changeWebsite.bind(this)}>
+          //   <option selected>Compare Website</option>            
+          //   {uniqueDomains.map((domain) =>
+          //     <OptionsList domain={domain} />
+          //   )}
+          // </select>
