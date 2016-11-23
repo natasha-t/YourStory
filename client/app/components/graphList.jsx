@@ -33,7 +33,7 @@ export default class GraphList extends React.Component {
        <div className="graph-row">
         <select className="custom-select form-control form-control-sm">
           <option selected>Compare Website</option>
-          <option value="1"></option>
+          <option value="1">google.com</option>
           <option value="2">Two</option>
           <option value="3">Three</option>
         </select>
