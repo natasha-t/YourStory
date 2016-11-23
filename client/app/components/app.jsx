@@ -19,15 +19,23 @@ export default class App extends React.Component {
 
   render() {
     return (
-      
       <div>
+        <div>
+          <Categories />
+        </div>
 
-        <History />
-        <GraphList />
+        <div>
+          <History />
+        </div>
+
+        <div>
+          <GraphList />
+        </div>
 
         <center className="footer">
           <Footer />
         </center>
+
       </div>
     );
   }

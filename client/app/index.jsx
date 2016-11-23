@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 import App from './components/app';
 import store from './store';
 import { saveState } from './chrome/storage';
-import Bootstrap from '../public/bootstrap/dist/css/bootstrap.css';
 
 
 store.subscribe(() => {

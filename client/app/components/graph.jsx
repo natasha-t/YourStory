@@ -12,7 +12,7 @@ import * as d3 from 'd3';
 
 export default class Graph extends React.Component {
 
-  componentDidUpdate() {
+  componentDidMount() {
     // let data = this.props.weekData;
 
      let data = [{
@@ -210,16 +210,12 @@ export default class Graph extends React.Component {
        .attr("stroke-width", 2)
        .attr("fill", "none")
 
-
-
   }
 
   render() {
-
     return (
-      <svg width="960" height="500"></svg>
+      <div id="graph"><svg width="960" height="500"></svg></div>
     );
-
   }
 
 }
