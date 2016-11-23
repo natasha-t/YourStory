@@ -13,7 +13,7 @@
     "newtab": "public/index.html"
   },
   "oauth2": {
-    // "client_id": "799894733477-pept7gm20n0gj8n9ul98nmago3s2fpk9.apps.googleusercontent.com",
+    // "client_id": "799894733477-pept7gm20n0gj8n9ul98nmago3s2fpk9.apps.googleusercontent.com", //Lizzie
     // "client_id": "1053327019332-2pj5i4bvha46bfbstc2e5asqjqikrafq.apps.googleusercontent.com", // Natasha
     // "client_id": "162214619816-c45naiqomm4cscb7dlp53urkuo1hdk16.apps.googleusercontent.com", // bruna
     "client_id": "290557892275-f55p4vmd6msl7lp6hmj2d3m111hr29q0.apps.googleusercontent.com", //melba

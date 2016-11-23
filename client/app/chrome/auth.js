@@ -3,6 +3,7 @@
 import axios from 'axios';
 import fetchVisData from '../actions/fetch_vis_data';
 import fetchCatData from '../actions/fetch_cat_data';
+import fetchWeekData from '../actions/fetch_week_data';
 import store from '../store';
 
 export default function getToken() {
@@ -29,7 +30,7 @@ export default function getToken() {
           //add interval before pushing 
             store.dispatch(fetchVisData(response));
             store.dispatch(fetchCatData(response));
-
+            store.dispatch(fetchWeekData(response));
         })
         .catch((error) => {
           console.log(error);

@@ -120,7 +120,7 @@ module.exports = {
         const userID = user['dataValues']['id'];
 
       // ==== save domains for a current user =====
-      for (let key in uniqueDomains) {         
+      for (let key in uniqueDomains) {
         const userID = user['dataValues']['id'];
         Domain
         .findOne({ where: { domain: key, userId: userID } })
@@ -135,7 +135,7 @@ module.exports = {
 
           DateTable
           .findOne({ where: { dateOnly: new Date() } })
-          .then((todayDate) => {            
+          .then((todayDate) => {
             todayDate.addDomain(domain, { count: totalCount });
           })
           .catch((err) => {
@@ -152,8 +152,8 @@ module.exports = {
                 method: 'get',
                 url: apiUrl + hashURL,
                 auth: {
-                  // username: 'UL1QVH3FAtR6eoEJJIs4',
-                  // password: 'ZCZCYLA6wtqYNDpxbbRE',
+                  username: 'UL1QVH3FAtR6eoEJJIs4',
+                  password: 'ZCZCYLA6wtqYNDpxbbRE',
                 },
               })
               .then((response) => {
@@ -173,6 +173,7 @@ module.exports = {
               });
             }
           });
+
         })
         .catch((err) => {
           console.log('error finding domain by key in uniqueDomains object: ', err);
@@ -218,10 +219,10 @@ module.exports = {
       });
   },
 
-  getCatData: (req, res) => {
-    const getAllUserDomains = () => {
+  getCatData: (req, res) => {    
+    const getAllUserDomains = () => {      
       return User.findOne({ where: { chrome_id: req.session.chromeID } })
-      .then((user) => {
+      .then((user) => {        
         return user.getDomains()
         .catch((err) => {
           console.log(err);
@@ -247,11 +248,6 @@ module.exports = {
       return resolve(getCategories());
     });
 
-    categories
-    .then((categories) => {
-      console.log('categories', categories.length);
-    });
-
   const getDomArr = () => {
    let domArr = [];
    return domains.then((domains) => {
@@ -266,33 +262,32 @@ module.exports = {
      });
   }
 
-  let domainArr = new Promise((resolve, reject) => {
-        return resolve(getDomArr());
-      })
+    let domainArr = new Promise((resolve, reject) => {
+      return resolve(getDomArr());
+    });
 
-  const getCatObj = () => {
-    let catObjs = {};
-    return categories
-           .then((categories) => {
-            for (let i = 0; i < categories.length; i++) {
-              catObjs[categories[i].dataValues.category] = categories[i].dataValues.id;
-            }
-            return catObjs;
-           })
-  }
+    const getCatObj = () => {
+      let catObjs = {};
+      return categories
+             .then((categories) => {
+               for (let i = 0; i < categories.length; i++) {
+                 catObjs[categories[i].dataValues.category] = categories[i].dataValues.id;
+               }
+               return catObjs;
+             });
+    };
 
-  let categoryObj = new Promise((resolve, reject) => {
-        return resolve(getCatObj());
-      })
+    let categoryObj = new Promise((resolve, reject) => {
+      return resolve(getCatObj());
+    });
 
     let catData = [];
 
     domainArr
     .then((domArr) => {
       categoryObj
-      .then((catObj) => {
-
-         for (let category in catObj) {
+      .then((catObj) => {       
+        for (let category in catObj) {
           let cat = {};
           cat['id'] = catObj[category];
           cat['category'] = category;
@@ -304,109 +299,168 @@ module.exports = {
 
          for (let domain of domArr) {
            for (let i = 0; i < catData.length; i++) {
+             console.log('domain inside domArr: ', domain);
              if (catData[i].id === domain.categoryId) {
-              catData[i].domains.push(domain.name);
-              catData[i].totalCount += domain.count;
+              // catData[i].domains.push(domain.name);
+               catData[i].domains.push({ label: domain.name, count: domain.count });
+               catData[i].totalCount += domain.count;
              }
            }
          }
 
-
          res.status(201).json(catData);
-
-      })
-    })
+      });
+    });
   },
 
   getWeekData: (req, res) => {
-    const weekDataFromDB = [{
-      date: '2016-11-18',
-      domains: [{ domain: 'github.com', visits: 192 },
-                { domain: 'stackoverflow.com', visits: 7 },
-                { domain: 'google.com', visits: 15 },
-                { domain: 'readthedocs.org', visits: 2 },
-                { domain: 'w3schools.com', visits: 1 },
-                { domain: 'docs.sequelizejs.com', visits: 4 },
-                { domain: 'calendar.google.com', visits: 7 },
-                { domain: 'postgresql.org', visits: 1 },
-                { domain: 'docs.google.com', visits: 94 },
-                { domain: 'mail.google.com', visits: 18 },
-                { domain: 'accounts.google.com', visits: 12 },
-                { domain: 'hackreactorcore.force.com', visits: 2 },
-                { domain: 'waffle.io', visits: 8 },
-                { domain: 'developer.mozilla.org', visits: 2 },
-                { domain: 'challenge.makerpass.com', visits: 9 }],
-      totalVists: 374,
-    },
-      { date: '2016-11-19',
-        domains: [{ domain: 'learn.makerpass.com', visits: 7 },
-                  { domain: 'repl.it', visits: 8 },
-                  { domain: 'haveibeenpwned.com', visits: 4 },
-                  { domain: 'redux.js.org', visits: 4 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 4 },
-                  { domain: 'getbootstrap.com', visits: 2 },
-                  { domain: 'npmjs.com', visits: 1 }],
-        count: 150,
-      }];
 
-    const d = new Date();
-    d.setDate(d.getDate() - 2);
-    console.log('date', d);
+    const todayRaw = new Date();
+    const today = todayRaw.getDate();
+    const month = todayRaw.getMonth();
+    const year = todayRaw.getFullYear();
 
-    //get foreign key ID for specific Date
+    const daysOfTheWeek = {
+      today: year + '-' + month + '-' + (today),
+      yesterday: year + '-' + month + '-' + (today - 1),
+      twoDaysAgo: year + '-' + month + '-' + (today - 2),
+      threeDaysAgo: year + '-' + month + '-' + (today - 3),
+      fourDaysAgo: year + '-' + month + '-' + (today - 4),
+      fiveDaysAgo: year + '-' + month + '-' + (today - 5),
+      sixDaysAgo: year + '-' + month + '-' + (today - 6),
+    }
+
+    // construct an array of dates. We will map over this array, feeding each date into a
+    // promised query to the database to return domain information for each day
+    const getWeek = () => {
+      const weekArray = [];
+      for(let dia in daysOfTheWeek) {
+        weekArray.push(daysOfTheWeek[dia]);
+      }
+      return weekArray;
+    }
+    // array that will be mapped. A promise function will be called for each date
+    const week = getWeek();
+
+  // initial function to be called for each date. Returns a domainId, dateId and count
+  const getIds = (day) => {
+    return new Promise((resolve, reject) => {
       DateTable
-      .findOne({
-        attributes: ['id'],
-        where: {
-          dateOnly: d,
-        },
-      })
-      .then((response) => { //get all domains for specific date
-        const id = response['dataValues']['id'];
-        return DateDomain
+        .findOne({
+          attributes: ['id'],
+          where: {
+            dateOnly: day,
+          },
+        })
+        .then((response) => { // get all domains for specific date
+          const id = response.dataValues.id;
+          DateDomain
           .findAll({
             where: {
               dateId: id,
             },
           })
           .then((response) => { // save all domains to array and return them
-            // console.log('got all domains for specified date: ', response);
-            const domainsByDate = [];
-            response.map((domain) => {
-              return domainsByDate.push(domain['dataValues']);
+            const domainsByDate = response.map((domain) => {
+              return domain.dataValues;
             });
-            console.log('domainsByDate', domainsByDate);
-            return domainsByDate;
-          })
-          .then((response) => {
-            console.log('response: ', response);
+            return resolve(domainsByDate);
           })
           .catch((err) => {
-            console.log('error fomr inside date domain query: ', err);
+            console.log('ERROR INSIDE DATEDOMAIN QUERY: ', err);
           });
-      })
-      .catch((err) => {
-        console.log('error: ', err);
-      });
-
-
-    //helper function to reduce visits for specific day
-    const weekData = {};
-
-    weekDataFromDB.map((dateItem) => {
-        const totalVists = dateItem['domains'].reduce((a, b) => {
-          return { visits: a.visits + b.visits };
+        })
+        .catch((err) => {
+          console.log('ERROR: ', err);
         });
-        const day = dateItem['date'];
-        return weekData[day] = totalVists;
+      })
+    };
+
+    // promisedWeek is the result of calling each function for each date. Returns an array
+    // of promised arrays. Will be resolved by calling promise.all(promisedWeek)
+    const promisedWeek = week.map((day) => {
+      return getIds(day);
     });
 
-    res.status(201).json(weekData);
-  },
-};
+    // next promise function to call. Will be called for each object inside each promised
+    // array inside promisedWeek
+    const getNameAndDate = (entry) => {
+      return new Promise((resolve, reject) => {
+        Domain.findOne({ where: { id: entry.domainId } })
+        .then((domain) => {
+          DateTable.findOne({ where: { id: entry.dateId } })
+          .then((date) => {
+            DateDomain.findOne({ where: { domainId: entry.domainId } })
+            .then((datedDom) => {
+              const nameDateCount = { count : datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
+               return resolve(nameDateCount);
+            })
+            .catch((err) => {
+              console.log("ERROR GETTING COUNT IN GETNAME: ", err)
+            })
+          })
+          .catch((err) => {
+            console.log("ERROR MATCHING DATE AND NAME IN GETNAME: ", err)
+          })
+        })
+        .catch((err) => {
+          console.log("ERROR FINDING DOM IN GETNAME: ", err)
+        })
+      })
+    }
 
-// create a date / count / domain_id tabl
-// when inserting a new domain, grab the current day
-// lookup in the date table to see if current date is there
-// if it is, increase that date visit count
-// if not, add it and set count to visit count for that domain
+    // make all promised arrays inside promisedArray wait to resolve until their promised
+    // objects have resolved
+    Promise.all(promisedWeek)
+    .then((thisWeek) => {
+      return new Promise((resolve, reject) => {
+        const promisedArr = [];
+        thisWeek.map((arr) => {
+          const promisedFunctions = arr.map((obj) => {
+            return getNameAndDate(obj);
+          });
+          promisedArr.push(promisedFunctions);
+        });
+        resolve(promisedArr);
+      })
+      .then((promisedArray) => {
+        const resolvedArrays = promisedArray.map((subArray) => {
+          return Promise.all(subArray);
+        });
+        return Promise.all(resolvedArrays)
+      })
+      .catch((err) => {
+        console.log("ERROR RESOLVING SUB ARRAYS: ", err)
+      })
+      .catch((err) => {
+        console.log("ERROR INSIDE PROMISED ARRAY: ", err)
+      })
+      .then((finalArray) => {
+        res.send(
+          finalArray.map((arr) => {
+            const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
+            const finalObj = {};
+            finalObj.date = date;
+            finalObj.domains = arr.map((obj) => {
+              return { domain: obj.domain, visits: obj.count };
+            });
+            const toSum = arr.map((obj) => {
+              return obj.count;
+            });
+            finalObj.count = toSum.reduce((mem, curr) => {
+              return mem + curr;
+            });
+            return finalObj;
+          }));
+      })
+      .catch((err) => {
+        console.log("ERROR INSIDE FINAL OBJECT CONSTRUCTION: ", err);
+      })
+    })
+    .catch((err) => {
+      console.log("ERROR IN THERE SOMEWHERE! ", err)
+    });
+
+  },
+
+};

@@ -8,6 +8,7 @@ import App from './components/app';
 import store from './store';
 import { saveState } from './chrome/storage';
 
+
 store.subscribe(() => {
   saveState(store.getState());
 });
