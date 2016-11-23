@@ -48,10 +48,15 @@ export default class Graph extends React.Component {
                   { domain: 'allData', visits: 200 }],
       },
       { date: '20161024',
-        domains: [{ domain: 'learn.makerpass.com', visits: 69 },
-                  { domain: 'repl.it', visits: 76 },
-                  { domain: 'allData', visits: 250 }],
-      }]  
+        domains: [{ domain: 'learn.makerpass.com', visits: 20 },
+                  { domain: 'repl.it', visits: 17 },
+                  { domain: 'haveibeenpwned.com', visits: 20 },
+                  { domain: 'redux.js.org', visits: 21 },
+                  { domain: 'v4-alpha.getbootstrap.com', visits: 20 },
+                  { domain: 'getbootstrap.com', visits: 13 },
+                  { domain: 'npmjs.com', visits: 11 }],
+        count: 122,
+      }]
 
 
     //======== ALL DOMAINS =========
@@ -81,16 +86,32 @@ export default class Graph extends React.Component {
     //MAX AND MIN VALUES FOR Y AXIS
     const max = Math.max(...totalDomainCount);
     const min = Math.min(...totalDomainCount);
-    
+
 
     //take domains from array at index 0 of data
-      //pass each domain into lineDataGenerator 
+      //pass each domain into lineDataGenerator
 
     // const repl = lineDataGenerator('repl.it');
     // const makerPass = lineDataGenerator('learn.makerpass.com');
     // const allDomains = lineDataGenerator('allData');
 
-    // console.log('all domains', allDomains);
+
+    console.log('allDomainsdata', allDomainsdata);
+
+    //======= PER DOMAIN ========
+    const lineDataGenerator = (data, inputDomain) => {
+      let domainData = [];
+      for (const day of data) {
+        for (const domain of day.domains) {
+          if (domain.domain === inputDomain) {
+            domainData.push({ count: domain.visits, date: new Date(day.date.slice(0, 4), day.date.slice(4, 6), day.date.slice(6)) })
+          }
+        }
+      }
+     return domainData;
+    };
+
+    const makerPass = lineDataGenerator(data, 'learn.makerpass.com');
 
 
     //======= CREATE SVG ELEMENT =======
@@ -99,10 +120,10 @@ export default class Graph extends React.Component {
     width = svg.attr("width") - margin.left - margin.right,
     height = svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
- 
+
 
     //======= CREATE X AND Y SCALES ======
-    //12 pm appearing on ticks between days 
+    //12 pm appearing on ticks between days
     const x = d3.scaleTime().domain([new Date(startDate.year, startDate.month, startDate.date), new Date(endDate.year, endDate.month, endDate.date)]).range([0, width])
     const y = d3.scaleLinear().domain([min, max]).range([height, 0])
 
@@ -129,7 +150,6 @@ export default class Graph extends React.Component {
         .attr("fill", "#000")
         .text("Visit Count");
 
-
         //======= PER DOMAIN ========
 
     const lineDataGenerator = (inputDomain) => {
@@ -141,8 +161,8 @@ export default class Graph extends React.Component {
           }
         }
       }
-      return domainData;      
-    };    
+      return domainData;
+    };
 
     //MAKE LINE PATH
     const generateLine = () => {
@@ -151,7 +171,7 @@ export default class Graph extends React.Component {
             .y((d) => { return y(d.count) })
     }
 
-    //APPEND ALL DOMAINS LINE TO GRAPH 
+    //APPEND ALL DOMAINS LINE TO GRAPH
     //+++ add css class to distinguish each line +++
     const generateSVG = (domain, color) => {
       return svg.append("path")
@@ -166,7 +186,7 @@ export default class Graph extends React.Component {
       return generateSVG(lineDataGenerator(domain), color);
     }
 
-    
+
     const allData = () => {
       return data[0].domains.map((domain) => {
         console.log('domain', domain.domain);
@@ -174,12 +194,12 @@ export default class Graph extends React.Component {
         return createDomainPath(domain.domain, Math.floor(Math.random() * colors.length));
       })
     }
-      
+
 
     //+++ somehow render all svgs at once by iterating +++
       console.log('domains array', data[0].domains[1].domain)
 
-    
+
     if (data[0].domains.length === 1) {
       createDomainPath(data[0].domains[0].domain, '#E0B1F2');
     } else if (data[0].domains.length === 2) {
