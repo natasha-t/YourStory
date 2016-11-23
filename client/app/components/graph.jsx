@@ -214,7 +214,7 @@ export default class Graph extends React.Component {
 
   render() {
     return (
-      <div id="graph"><svg width="960" height="500"></svg></div>
+      <div id="graph"><svg width="960" height="200"></svg></div>
     );
   }
 
