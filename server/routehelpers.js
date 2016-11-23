@@ -306,8 +306,10 @@ module.exports = {
          for (let domain of domArr) {
            for (let i = 0; i < catData.length; i++) {
              if (catData[i].id === domain.categoryId) {
-              catData[i].domains.push(domain.name);
+              // catData[i].domains.push(domain.name);
+              catData[i].domains.push({label: domain.name, count: domain.count})
               catData[i].totalCount += domain.count;
+
              }
            }
          }
@@ -320,7 +322,6 @@ module.exports = {
   },
 
   getWeekData: (req, res) => {
-<<<<<<< 5cd4b8a4cbefacf5228f36a9d7cb1b8a036eeb6c
 
     const todayRaw = new Date();
     const today = todayRaw.getDate();

@@ -4,7 +4,7 @@ import React from 'react';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import History from './history';
 import Categories from './catData';
-import Graph from './chart';
+import Graph from './graph';
 import Container from './nav_container';
 import getToken from '../chrome/auth';
 
