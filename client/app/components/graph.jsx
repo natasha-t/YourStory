@@ -17,8 +17,6 @@ export default class Graph extends React.Component {
 
     // console.log('WEEK DATA IN GRAPH COMPONENT', data);
 
-
-
      let data = [{
       date: '20161018',
       domains: [{ domain: 'learn.makerpass.com', visits: 103 },
@@ -48,22 +46,12 @@ export default class Graph extends React.Component {
       { date: '20161023',
         domains: [{ domain: 'learn.makerpass.com', visits: 200 },
                   { domain: 'repl.it', visits: 44 },
-                  { domain: 'haveibeenpwned.com', visits: 38 },
-                  { domain: 'redux.js.org', visits: 50 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 4 },
-                  { domain: 'getbootstrap.com', visits: 20 },
-                  { domain: 'npmjs.com', visits: 10 }],
-        count: 366,
+                  { domain: 'allData', visits: 200 }],
       },
       { date: '20161024',
         domains: [{ domain: 'learn.makerpass.com', visits: 20 },
                   { domain: 'repl.it', visits: 17 },
-                  { domain: 'haveibeenpwned.com', visits: 20 },
-                  { domain: 'redux.js.org', visits: 21 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 20 },
-                  { domain: 'getbootstrap.com', visits: 13 },
-                  { domain: 'npmjs.com', visits: 11 }],
-        count: 122,
+                  { domain: 'allData', visits: 200 }],
       }]  
 
 
@@ -81,21 +69,10 @@ export default class Graph extends React.Component {
       'date': Number(data[data.length - 1].date.slice(6))
     }
 
-    //AGGREGATE TOTAL VISIT COUNT FOR ALL DOMAINS FOR MAX AND MIN
-    const findMin = (domains) => {
-      let minValues = [];
-      for (const domain of domains) {
-        minValues.push(domain.visits);
-      }
-      return Math.min(...minValues);
-    }
-
-
 
     let totalDomainCount = [];
     let dates = [];
     for (const day of data) {
-      totalDomainCount.push(day.count);
       dates.push(new Date(day.date.slice(0, 4), day.date.slice(4, 6), day.date.slice(6)));
       for (const domain of day.domains) {
         totalDomainCount.push(domain.visits);
@@ -107,13 +84,7 @@ export default class Graph extends React.Component {
     const max = Math.max(...totalDomainCount);
     const min = Math.min(...totalDomainCount);
 
-
-    const allDomainsdata = [];
-    for (let i = 0; i < totalDomainCount.length; i++) {
-      allDomainsdata.push({ count: totalDomainCount[i], date: dates[i] });
-    }
-
-    console.log('allDomainsdata', allDomainsdata);
+    console.log('max: ', max, 'min: ', min);
 
     //======= PER DOMAIN ========
     const lineDataGenerator = (data, inputDomain) => {
@@ -128,9 +99,9 @@ export default class Graph extends React.Component {
      return domainData;      
     };
 
-    const makerPass = lineDataGenerator(data, 'learn.makerpass.com');
+    const allDomains = lineDataGenerator(data, 'allData');
 
-    console.log('makerpass data', makerPass);
+    console.log('makerpass data', allDomains);
 
 
     //======= CREATE SVG ELEMENT =======
@@ -183,7 +154,7 @@ export default class Graph extends React.Component {
 
 
     svg.append("path")
-       .attr("d", line(makerPass))
+       .attr("d", line(allDomains))
        .attr("stroke", "red")
        .attr("stroke-width", 2)
        .attr("fill", "none")
