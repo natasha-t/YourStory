@@ -7,7 +7,8 @@
 #chart {                                                          
   height: 360px;                                                  
   position: relative;                                             
-  width: 360px;                                                
+  width: 360px;
+  cursor: pointer !important                                              
 }     
 div{
   margin: 0 auto;
@@ -35,10 +36,6 @@ rect {
 .legend {
   font-size: 10px;
   color: white;
-}
-
-svg{
-  cursor: pointer !important
 }
 
 polyline{
