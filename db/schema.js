@@ -93,7 +93,7 @@ DateTable.belongsToMany(Domain, { through: DateDomain, foreignKey: 'dateId' });
 
 db
   .sync({ force: false })
-  //     .then(() => {
+      .then(() => {
   //       return User.bulkCreate([
   //         { username: 'Natasha' },
   //         { username: 'Lizzie' },
@@ -152,13 +152,10 @@ db
   //     });
   // })
 
-  .then(() => {
-    console.log('All tables created');
-  })
-  .catch((err) => {
-    console.log('error', err);
-  });
-
+  // .catch((err) => {
+    // console.log('error', err);
+  // });
+});
 
 module.exports = {
   User: User,
