@@ -226,12 +226,12 @@ db
       .then(() => {
         return DateTable.bulkCreate([
           { dateOnly: new Date() },
+          { dateOnly: '2016-11-22' },
           { dateOnly: '2016-11-21' },
           { dateOnly: '2016-11-20' },
           { dateOnly: '2016-11-19' },
           { dateOnly: '2016-11-18' },
           { dateOnly: '2016-11-17' },
-          { dateOnly: '2016-11-16' },
         ])
       })
       .then(() => {

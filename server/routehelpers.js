@@ -324,8 +324,8 @@ module.exports = {
   getWeekData: (req, res) => {
 
     const todayRaw = new Date();
-    const today = todayRaw.getDate();
-    const month = todayRaw.getMonth();
+    const today = todayRaw.getUTCDate();
+    const month = todayRaw.getMonth() + 1;
     const year = todayRaw.getFullYear();
 
     const daysOfTheWeek = {
@@ -444,7 +444,7 @@ module.exports = {
         console.log("ERROR INSIDE PROMISED ARRAY: ", err)
       })
       .then((finalArray) => {
-        res.send(
+        res.status(200).send(
           finalArray.map((arr) => {
             const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
             const finalObj = {};
