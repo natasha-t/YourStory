@@ -13,7 +13,6 @@ import Footer from './footer';
 // import Container from './nav_container';
 
 @connect((store) => {
-  console.log("store from app.jsx", store);
   return {
     username: store.username,
   };
@@ -26,7 +25,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log("username in render:", this.props)
     return (
       <div>
         <div className="container-fluid">
