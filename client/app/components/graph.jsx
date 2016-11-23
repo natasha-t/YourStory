@@ -100,24 +100,6 @@ export default class Graph extends React.Component {
     // const allDomains = lineDataGenerator('allData');
 
 
-    console.log('allDomainsdata', allDomainsdata);
-
-    //======= PER DOMAIN ========
-    const lineDataGenerator = (data, inputDomain) => {
-      let domainData = [];
-      for (const day of data) {
-        for (const domain of day.domains) {
-          if (domain.domain === inputDomain) {
-            domainData.push({ count: domain.visits, date: new Date(day.date.slice(0, 4), day.date.slice(4, 6), day.date.slice(6)) })
-          }
-        }
-      }
-     return domainData;
-    };
-
-    const makerPass = lineDataGenerator(data, 'learn.makerpass.com');
-
-
     //======= CREATE SVG ELEMENT =======
     const svg = d3.select("svg"),
     margin = { top: 20, right: 80, bottom: 20, left: 50 },
