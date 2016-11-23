@@ -20,16 +20,89 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          <Categories />
-        </div>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row">
+                <div className="col-sm-1"></div>
+                <div className="col-sm-5">
+                  <div >
+                    [logo placeholder]
+                  </div>
+                </div>
+                <div className="col-sm-5">
+                  <div >
+                    <span>Welcome back, <span>[username placeholder]</span> !</span> 
+                  </div>
+                </div>
+                <div className="col-sm-1"></div>
+              </div>
+            </div>
+          </div>
 
-        <div>
-          <History />
-        </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row">
+                <div className="col-sm-12">
+                  <center>
+                    <label className="custom-control custom-radio">
+                      <input id="radio1" name="radio" type="radio" className="custom-control-input" />
+                      <span className="custom-control-indicator"></span>
+                      <span className="custom-control-description">Graph View</span>
+                    </label>
+                    <label className="custom-control custom-radio">
+                      <input id="radio2" name="radio" type="radio" className="custom-control-input" />
+                      <span className="custom-control-indicator"></span>
+                      <span className="custom-control-description">List View</span>
+                    </label>
+                  </center>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <div>
-          <GraphList />
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row">
+                <div className="col-sm-1"></div>
+                <div className="col-sm-10">
+                  <div className="data-parent-container">
+                    Graph Component
+                    <GraphList />
+                  </div>
+                </div>
+                <div className="col-sm-1"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-1"></div>
+            <div className="col-sm-5">
+              <div className="row">
+                <div className="col-sm-11">
+                  <div className="data-parent-container">
+                    Top Sites Component
+                     <History />
+                  </div>
+                </div>
+                <div className="col-sm-1"></div>
+              </div>
+            </div>
+
+            <div className="col-sm-5">
+              <div className="row">
+                <div className="col-sm-1"></div>
+                <div className="col-sm-11">
+                  <div className="data-parent-container">
+                    Categories Component
+                    <Categories />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-1"></div>
+          </div>
         </div>
 
         <center className="footer">

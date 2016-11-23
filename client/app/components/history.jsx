@@ -17,7 +17,7 @@ export default class History extends React.Component {
     const h = 700;
     const maxH = 500;
     const minH = 200;
-    const w = 1280;
+    const w = 614;
     const maxW = 1000;
     const minW = 200;
     const color = d3.scaleLinear()

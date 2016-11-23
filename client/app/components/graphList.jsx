@@ -30,7 +30,7 @@ export default class GraphList extends React.Component {
   render() {
     return (
       <div>
-      <div >
+       <div >
         <select class="custom-select">
           <option selected>Compare Website</option>
           <option value="1" graph-line-item=""> </option>
@@ -39,12 +39,11 @@ export default class GraphList extends React.Component {
         </select>
         <br/>
       </div>
-      <div>
         
+      <div>
         <Graph />
-
       </div>
-      </div>
+    </div>
     );
   }
 }
