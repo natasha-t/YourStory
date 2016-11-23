@@ -218,7 +218,7 @@ module.exports = {
         res.json(req.session.chromeID);
       });
   },
-  
+
   getUser: (req, res) => {
     console.log("inside get user");
     req.session.chromeID = req.body.chromeID;
@@ -236,10 +236,10 @@ module.exports = {
     });
   },
 
-  getCatData: (req, res) => {    
-    const getAllUserDomains = () => {      
+  getCatData: (req, res) => {
+    const getAllUserDomains = () => {
       return User.findOne({ where: { chrome_id: req.session.chromeID } })
-      .then((user) => {        
+      .then((user) => {
         return user.getDomains()
         .catch((err) => {
           console.log(err);
@@ -303,7 +303,7 @@ module.exports = {
     domainArr
     .then((domArr) => {
       categoryObj
-      .then((catObj) => {       
+      .then((catObj) => {
         for (let category in catObj) {
           let cat = {};
           cat['id'] = catObj[category];
@@ -453,8 +453,8 @@ module.exports = {
         console.log("ERROR INSIDE PROMISED ARRAY: ", err)
       })
       .then((finalArray) => {
-        console.log('FINAL WEEK DATA ARRAY', finalArray);
-        res.status(200).json(
+
+        res.status(200).send(
           finalArray.map((arr) => {
             const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
             const finalObj = {};
