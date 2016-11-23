@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { connect } from 'react-redux';
 import GraphList from './graphlist';
 import History from './history';
 import Categories from './catData';
@@ -10,7 +11,13 @@ import Container from './nav_container';
 import getToken from '../chrome/auth';
 import Footer from './footer';
 // import Container from './nav_container';
-// import { Button } from 'react-bootstrap';
+
+@connect((store) => {
+  console.log("store from app.jsx", store);
+  return {
+    username: store.username,
+  };
+})
 
 export default class App extends React.Component {
 
@@ -19,6 +26,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    console.log("username in render:", this.props)
     return (
       <div>
         <div className="container-fluid">
@@ -34,7 +42,7 @@ export default class App extends React.Component {
                 </div>
                 <div className="col-sm-5">
                   <div className="nav-greeting">
-                    <span>Welcome back, <span>[username placeholder]</span> !</span>
+                    <span>Welcome back, <span>{ this.props.username }</span>!</span>
                   </div>
                 </div>
                 <div className="col-sm-1"></div>

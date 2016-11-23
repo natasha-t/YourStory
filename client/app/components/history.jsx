@@ -13,11 +13,10 @@ import * as d3 from 'd3';
 export default class History extends React.Component {
 
   componentDidMount() {
-
-    const h = 300;
+    const h = 700;
     const maxH = 500;
     const minH = 200;
-    const w = 400;
+    const w = 614;
     const maxW = 1000;
     const minW = 200;
     const color = d3.scaleLinear()
@@ -39,7 +38,7 @@ export default class History extends React.Component {
       .enter()
       .append('svg:circle')
       .attr('r', (d) => {
-        return (rscale(d.visits));
+        return (rscale(d.visits)) / 2;
       })
       .attr('fill', (d, i) => {
         return (color(i));
