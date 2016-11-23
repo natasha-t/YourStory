@@ -1,8 +1,8 @@
 'use strict';
 
-function catData(state={}, action) {
+function weekData(state={}, action) {
   switch (action.type) {
-    case 'FETCH_CAT_DATA': {
+    case 'FETCH_WEEK_DATA': {
       return action.payload.data;
       break;
     }
@@ -10,4 +10,4 @@ function catData(state={}, action) {
   return state;
 }
 
-export default catData;
+export default weekData;
