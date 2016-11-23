@@ -362,7 +362,8 @@ module.exports = {
     const getUser = () => {
       return User.findOne({ where: { chrome_id: req.session.chromeID } })
       .then((user) => {
-        return user['dataValues']['id'];
+        console.log("-----USER-----", user)
+        return user.dataValues.id;
       })
       .catch((err) => {
           console.log('error getting userId from Users: ', err);
@@ -376,15 +377,14 @@ module.exports = {
   // initial function to be called for each date. Returns a domainId, dateId and count
   promisedUserId
   .then((userID) => {
-    console.log("USERID____", userID)
   const getIds = (day) => {
    return new Promise((resolve, reject) => {
-      console.log("_______USERID____", userID)
+      console.log("_______USERID_____", userID)
      Domain.findOne({ where: { userId: userID } })
      .then((domain) => {
-       console.log("DOMANID_____", domain)
+       console.log("_______DOMAINID_____", domain.dataValues)
        const domainID = domain.dataValues.id
-      DateTable
+       DateTable
         .findOne({
           attributes: ['id'],
           where: {
@@ -392,6 +392,7 @@ module.exports = {
           },
         })
         .then((response) => { // get all domains for specific date and user
+          console.log("-----DATE-----", response)
           const dateID = response.dataValues.id;
           DateDomain
           .findAll({
@@ -400,6 +401,7 @@ module.exports = {
             },
           })
           .then((response) => { // save all domains to array and return them
+            console.log("-----DOMAINS BY DATE-----", response)
             const domainsByDate = response.map((domain) => {
               return domain.dataValues;
             });
@@ -426,13 +428,14 @@ module.exports = {
     // array inside promisedWeek
     const getNameAndDate = (entry) => {
       return new Promise((resolve, reject) => {
-        Domain.findAll({ where: { id: entry.domainId, userID: user.id } })
+        Domain.findAll({ where: { id: entry.domainId } })
         .then((domain) => {
           DateTable.findOne({ where: { id: entry.dateId } })
           .then((date) => {
             DateDomain.findOne({ where: { domainId: entry.domainId } })
             .then((datedDom) => {
-              const nameDateCount = { count : datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
+              console.log("-----DATED VALUES-----", datedDom.dataValues)
+              const nameDateCount = { count: datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
                return resolve(nameDateCount);
             })
             .catch((err) => {
@@ -456,6 +459,7 @@ module.exports = {
     // objects have resolved
     Promise.all(promisedWeek)
     .then((thisWeek) => {
+      console.log("----THIS WEEK----", thisWeek)
       return new Promise((resolve, reject) => {
         const promisedArr = [];
         thisWeek.map((arr) => {
@@ -479,7 +483,7 @@ module.exports = {
         console.log("ERROR INSIDE PROMISED ARRAY: ", err)
       })
       .then((finalArray) => {
-
+        console.log("-----FINAL ARRAY-----", finalArray)
         res.status(200).send(
           finalArray.map((arr) => {
             const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
