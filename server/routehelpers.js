@@ -86,7 +86,7 @@ module.exports = {
             .then(() => {
               const date = new Date();
               DateTable
-              .findOrCreate({ where: { dateOnly: date, dateTime: date } })
+              .findOrCreate({ where: { dateOnly: date } })
               .catch((err) => {
                 console.log('error saving one date: ', err);
               });
@@ -330,6 +330,7 @@ module.exports = {
   },
 
   getWeekData: (req, res) => {
+    console.log("ID:::", req.session.chromeID)
 
     const todayRaw = new Date();
     const today = todayRaw.getDate();
@@ -348,6 +349,7 @@ module.exports = {
 
     // construct an array of dates. We will map over this array, feeding each date into a
     // promised query to the database to return domain information for each day
+
     const getWeek = () => {
       const weekArray = [];
       for(let dia in daysOfTheWeek) {
@@ -407,7 +409,9 @@ module.exports = {
     // array inside promisedWeek
     const getNameAndDate = (entry) => {
       return new Promise((resolve, reject) => {
-        Domain.findOne({ where: { id: entry.domainId } })
+       User.findOne({ where: { chrome_id: req.session.chromeID } })
+        .then((user) => {
+        Domain.findOne({ where: { id: entry.domainId, userId: user.dataValues.id } })
         .then((domain) => {
           console.log("DOMAIN", domain.dataValues)
           DateTable.findOne({ where: { id: entry.dateId } })
@@ -425,13 +429,17 @@ module.exports = {
           })
           .catch((err) => {
             console.log("ERROR MATCHING DATE AND NAME IN GETNAME: ", err)
-          })
+          });
         })
         .catch((err) => {
           console.log("ERROR FINDING DOM IN GETNAME: ", err)
-        })
-      })
-    }
+        });
+       })
+     })
+    .catch((err) => {
+      console.log("ERROR FINDING USER IN GETNAME: ", err)
+    });
+  }
 
     // make all promised arrays inside promisedArray wait to resolve until their promised
     // objects have resolved
