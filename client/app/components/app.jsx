@@ -28,13 +28,13 @@ export default class App extends React.Component {
               <div className="row">
                 <div className="col-sm-1"></div>
                 <div className="col-sm-5">
-                  <div >
-                    [logo placeholder]
+                  <div >                    
+                    <img className="logoImg" alt="Logo" src="../public/assets/logo-yourstory.png" />
                   </div>
                 </div>
                 <div className="col-sm-5">
                   <div className="nav-greeting">
-                    <span>Welcome back, <span>[username placeholder]</span> !</span> 
+                    <span>Welcome back, <span>[username placeholder]</span> !</span>
                   </div>
                 </div>
                 <div className="col-sm-1"></div>
@@ -51,7 +51,7 @@ export default class App extends React.Component {
                   <center>
                     <label className="custom-control custom-radio">
                       <input id="radio1" name="radio" type="radio" className="custom-control-input" />
-                      <span className="custom-control-indicator"></span>
+                      <span className="custom-control-indicator "></span>
                       <span className="custom-control-description">Graph View</span>
                     </label>
                     <label className="custom-control custom-radio">
@@ -64,7 +64,7 @@ export default class App extends React.Component {
               </div>
             </div>
           </div>
-          <br />          
+          <br />
 
           <div className="row">
             <div className="col-sm-12">
@@ -72,14 +72,14 @@ export default class App extends React.Component {
                 <div className="col-sm-1"></div>
                 <div className="col-sm-10">
                   <h5>Sites Visited This Week</h5>
-                  <GraphList />                  
+                  <GraphList />
                 </div>
                 <div className="col-sm-1"></div>
               </div>
             </div>
           </div>
           <br />
-          <br />          
+          <br />
 
           <div className="row">
             <div className="col-sm-1"></div>
