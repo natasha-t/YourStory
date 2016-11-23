@@ -2,20 +2,21 @@
   background-color: #FCFCFC;
 }
 
-.domainsplot {
-      font-size: 100%;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      width: 960px;
-  }
+.domain {
+  font-size: 100%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
 #chart {                                                          
   height: 360px;                                                  
   position: relative;                                             
-  width: 360px;
-  cursor: pointer !important                                              
-}     
+  width: 360px;                                          
+}    
 div{
   margin: 0 auto;
+}
+path{
+  cursor: pointer
 }
 rect {
   stroke-width: 2;
@@ -24,7 +25,8 @@ rect {
   width: 125px
 }
 
-.tooltipD3 {
+/*.tooltipD3 {
+  animation
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;                                                       
   background: #eee;                                               
   box-shadow: -3px 3px 15px #888888;
@@ -39,7 +41,7 @@ rect {
   top: 95px;                                                      
   width: 80px;                                                    
   z-index: 10;                                                    
-}
+}*/
       
 .graph-row {
   width: 15%;
