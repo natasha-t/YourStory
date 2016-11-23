@@ -27,7 +27,7 @@ export default function getToken() {
         .then((response) => {
           const chromeID = JSON.parse(response.config.data).chromeID;
           console.log('CHROME ID', chromeID);
-          //add interval before pushing 
+          //add interval before pushing
             store.dispatch(fetchVisData(response));
             store.dispatch(fetchCatData(response));
             store.dispatch(fetchWeekData(response));
@@ -40,4 +40,3 @@ export default function getToken() {
     x.send();
   });
 }
-
