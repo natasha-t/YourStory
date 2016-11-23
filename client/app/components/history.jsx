@@ -97,6 +97,7 @@ export default class History extends React.Component {
       .on("mouseout", () => {
         tooltip.style("visibility", "hidden");
       });
+
   }
 
   render(data) {
