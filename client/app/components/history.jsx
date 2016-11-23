@@ -31,17 +31,10 @@ export default class History extends React.Component {
 
           color = d3.scaleLinear()
             .domain([0, data.length])
-            .range(["yellow", "pink"]),
-          rscale = d3.scaleLinear()
-            .domain([0, (h-20)])
-            .range([0, (w-20)]);
-          //
-          // force = d3.layout.force()
-          //   .nodes(data)
-          //   .size([w, h])
-          //   .gravity(.02)
-          //   .charge(0)
-          //   .start();
+            .range(["rgb(230, 85, 13)", "rgb(198, 219, 239)"]);
+          // rscale = d3.scaleLinear()
+          //   .domain([0, (h / 4)])
+          //   .range([0, (w / 4)]);
 
     const svg = d3.select('.bubble-container')
     .append('svg:svg')
@@ -62,16 +55,16 @@ export default class History extends React.Component {
       .enter()
       .append('svg:circle')
       .attr('r', (d) => {
-        return rscale(d.visits);
+        return (d.visits / h);
       })
       .attr('fill', (d, i) => {
         return (color(i));
       })
       .attr('cx', (d, i) => {
-        return Math.floor(Math.random() * w)
+        return Math.floor(Math.random() * (w - 100))
       })
       .attr('cy', (d, i) => {
-        return Math.floor(Math.random() * h)
+        return Math.floor(Math.random() * (h - 100))
       })
       .style('z-index', (d) => {
         return 100 - (d.visits);
@@ -106,10 +99,10 @@ export default class History extends React.Component {
       .transition()
       .duration(1000)
       .attr('cx', (d, i) => {
-        return (i * 10) + (i*10) + 'px';
+        return (i * 10) + 'px';
       })
       .attr('cy', (d, i) => {
-        return (i * 10) - (i*10) + 'px';
+        return (i * 10) + 'px';
       })
     };
 
