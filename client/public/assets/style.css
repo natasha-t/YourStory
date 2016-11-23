@@ -7,11 +7,13 @@
 #chart {                                                          
   height: 360px;                                                  
   position: relative;                                             
-  width: 360px;
-  cursor: pointer !important                                              
-}     
+  width: 360px;                                          
+}    
 div{
   margin: 0 auto;
+}
+path{
+  cursor: pointer
 }
 rect {
   stroke-width: 2
@@ -38,12 +40,6 @@ rect {
   color: white;
 }
 
-polyline{
-  opacity: .3;
-  stroke: black;
-  stroke-width: 2px;
-  fill: none;
-}
 .line {
   fill: none;
   stroke: steelblue;

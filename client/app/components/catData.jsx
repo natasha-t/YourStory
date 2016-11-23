@@ -12,8 +12,8 @@ import * as d3 from 'd3';
 export default class Categories extends React.Component {
 
   componentDidMount() {
-    
-    console.log('CAT DATA', this.props.catData)
+
+    console.log('CAT DATA', this.props.catData);
 
     const catParser = {
         "uncategorized": 'Others',
@@ -89,7 +89,7 @@ export default class Categories extends React.Component {
         .cornerRadius(8);
 
       let pie = d3.pie()
-        .value(((d) => { console.log('earlier d', d); return d.count; }))
+        .value(((d) => { return d.count; }))
         .sort(null);
 
       const tooltip = d3.select('#chart')
@@ -124,6 +124,7 @@ export default class Categories extends React.Component {
         });
 
       path.on('mouseover', ((d) => {
+        console.log(d);
         const total = d3.sum(dataset.map((d) => {                
           return d.count;                                           
         }));
@@ -142,7 +143,9 @@ export default class Categories extends React.Component {
       }));
 
       path.on('click', d => {
-        if(!d.data.domains){return};
+        console.log(d);
+        if(!d.data.domains){ console.log('Path.onClick: It should have been redirected'); return };
+        
         let temp = svg.selectAll('path')
         .data(pie(d.data.domains))
 
@@ -168,7 +171,7 @@ export default class Categories extends React.Component {
           })).transition()
           .duration(2000)
           .attrTween('d', function(d) {
-            var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
+            var interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
             return function(t) {
               return arc(interpolate(t));
             };
@@ -184,6 +187,7 @@ export default class Categories extends React.Component {
       .data(color.domain())
       .enter()
       .append('g')
+      .text("")
       .attr('transform', ((d, i) => {
         const height = legendRectSize + legendSpacing;
         const offset =  height * color.domain().length / 2;
