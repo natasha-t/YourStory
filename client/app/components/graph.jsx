@@ -15,56 +15,35 @@ export default class Graph extends React.Component {
   componentDidMount() {
     // let data = this.props.weekData;
 
+    // console.log('WEEK DATA IN GRAPH COMPONENT', data);
+
+
+
      let data = [{
       date: '20161018',
-      domains:[{ domain: 'learn.makerpass.com', visits: 103 },
+      domains: [{ domain: 'learn.makerpass.com', visits: 103 },
                   { domain: 'repl.it', visits: 30 },
-                  { domain: 'haveibeenpwned.com', visits: 21 },
-                  { domain: 'redux.js.org', visits: 73 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 30 },
-                  { domain: 'getbootstrap.com', visits: 25 },
-                  { domain: 'npmjs.com', visits: 29 }],
-      count: 311,
-    },
+                  { domain: 'allData', visits: 311 }],
+      },
       { date: '20161019',
         domains: [{ domain: 'learn.makerpass.com', visits: 17 },
                   { domain: 'repl.it', visits: 4 },
-                  { domain: 'haveibeenpwned.com', visits: 40 },
-                  { domain: 'redux.js.org', visits: 50 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 5 },
-                  { domain: 'getbootstrap.com', visits: 19 },
-                  { domain: 'npmjs.com', visits: 65 }],
-        count: 200,
+                  { domain: 'allData', visits: 200 }],
       },
       { date: '20161020',
         domains: [{ domain: 'learn.makerpass.com', visits: 35 },
                   { domain: 'repl.it', visits: 12 },
-                  { domain: 'haveibeenpwned.com', visits: 12 },
-                  { domain: 'redux.js.org', visits: 13 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 19 },
-                  { domain: 'getbootstrap.com', visits: 10 },
-                  { domain: 'npmjs.com', visits: 40 }],
-        count: 141,
+                  { domain: 'allData', visits: 200 }],
       },
       { date: '20161021',
         domains: [{ domain: 'learn.makerpass.com', visits: 250 },
                   { domain: 'repl.it', visits: 50 },
-                  { domain: 'haveibeenpwned.com', visits: 5 },
-                  { domain: 'redux.js.org', visits: 5 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 5 },
-                  { domain: 'getbootstrap.com', visits: 5 },
-                  { domain: 'npmjs.com', visits: 1 }],
-        count: 321,
+                  { domain: 'allData', visits: 200 }],
       },
       { date: '20161022',
         domains: [{ domain: 'learn.makerpass.com', visits: 45 },
                   { domain: 'repl.it', visits: 20 },
-                  { domain: 'haveibeenpwned.com', visits: 10 },
-                  { domain: 'redux.js.org', visits: 15 },
-                  { domain: 'v4-alpha.getbootstrap.com', visits: 20 },
-                  { domain: 'getbootstrap.com', visits: 17 },
-                  { domain: 'npmjs.com', visits: 10 }],
-        count: 137,
+                 { domain: 'allData', visits: 200 }],
       },
       { date: '20161023',
         domains: [{ domain: 'learn.makerpass.com', visits: 200 },
@@ -87,7 +66,6 @@ export default class Graph extends React.Component {
         count: 122,
       }]  
 
-    console.log('chart data', data);
 
 
     //======== ALL DOMAINS =========

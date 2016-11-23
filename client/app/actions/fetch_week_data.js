@@ -16,6 +16,7 @@ export default function fetchWeekData () {
       url: process.env.HOST + '/api/weekData',
     })
     .then((response) => {
+      console.log('week data from server', response)
       dispatch(loadWeekDataUponResponse(response));
     })
     .catch((err) => {
