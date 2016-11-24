@@ -7,11 +7,23 @@
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-#chart {                                                          
-  height: 360px;                                                  
-  position: relative;                                             
-  width: 360px;                                          
-}    
+#chart {
+  height: 360px;
+  position: relative;
+  width: 360px;
+  cursor: pointer !important
+}
+
+#bubble-container {
+  text-align: center;
+  position:relative;
+}
+
+.hover {
+  opacity: 0.5;
+  stroke: gray;
+}
+
 div{
   margin: 0 auto;
 }
@@ -25,28 +37,10 @@ rect {
   width: 125px
 }
 
-/*.tooltipD3 {
-  animation
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;                                                       
-  background: #eee;                                               
-  box-shadow: -3px 3px 15px #888888;
-  border-radius: 8px 8px 8px 8px;                                    
-  color: #333;                                                    
-  display: none;                                                  
-  font-size: 11px;                                                
-  left: 130px;                                                    
-  padding: 7px;                                                 
-  position: absolute;                                             
-  text-align: center;                                             
-  top: 95px;                                                      
-  width: 80px;                                                    
-  z-index: 10;                                                    
-}*/
-      
 .graph-row {
   width: 15%;
   float: right;
-} 
+}
 
 .legend {
   font-size: 10px;
