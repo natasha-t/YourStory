@@ -155,7 +155,7 @@ export default class Graph extends React.Component {
     const generateLine = () => {
       return d3.line()
             .x((d) => { return x(d.date) })
-            .y((d) => { return y(d.count) })
+            .y((d) => { return y(d.count) });
     }
 
     //APPEND ALL DOMAINS LINE TO GRAPH
@@ -171,6 +171,11 @@ export default class Graph extends React.Component {
        .attr('stroke', color)
        .attr('stroke-width', 2)
        .attr('fill', 'none')
+       .transition()
+       .duration(2000)
+       .ease('linear')
+       .attr('stroke-dashoffset', 0);
+
        
        svg.selectAll('.circle')
        .data(domain)
