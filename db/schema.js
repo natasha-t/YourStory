@@ -149,7 +149,10 @@ db
   //  .catch((err) => {
   //     console.log('error', err);
   //  });
-});
+})
+  .catch((err) => {
+    console.log("error creating tables");
+  })
 
 module.exports = {
   User: User,

@@ -5,6 +5,7 @@ import Graph from './graph';
 import DomainList from './domainList';
 
 @connect((store) => { 
+  console.log("store from graph list",store)
   return {
     weekData: store.weekData,
   };
@@ -13,8 +14,9 @@ import DomainList from './domainList';
 export default class GraphList extends React.Component {
   constructor(props) {
     super(props);
+    console.log("this.props.list", this.props);
     this.state = {
-      selectValue: 'this.props.list',
+      selectValue: this.props.weekData,
     }
     console.log("STATE from GraphList", this.state);
   }
@@ -39,8 +41,8 @@ export default class GraphList extends React.Component {
         }
       });
     });
-    graphData = [uniqueDomains, uniqueDomains, uniqueDomains];
 
+    graphData = [uniqueDomains, uniqueDomains, uniqueDomains];
 
     return (
       <div>
@@ -51,7 +53,7 @@ export default class GraphList extends React.Component {
           <br />
         </div>
         <div className="data-parent-container">
-          <Graph data={this.props.weekData}/>
+          <Graph />
         </div>
       </div>
     );

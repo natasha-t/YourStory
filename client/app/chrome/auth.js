@@ -31,7 +31,7 @@ export default function getToken() {
           //add interval before pushing
             store.dispatch(fetchVisData(response));
             store.dispatch(fetchCatData(response));
-            store.dispatch(fetchUsername(response));
+            store.dispatch(fetchUsername());
             store.dispatch(fetchWeekData(response));
         })
         .catch((error) => {

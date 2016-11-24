@@ -21,7 +21,7 @@ export default class DomainList extends React.Component {
   render() {
     return (
       <select className="custom-select form-control form-control-sm" value={this.state.selectValue} onChange={this.changeWebsite.bind(this)}>
-        <option selected>Compare Website</option>            
+        <option selected>Compare Website</option>
         {this.props.domain.map((listItem) =>
           <OptionsList domain={listItem} />
         )}
