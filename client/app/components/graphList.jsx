@@ -54,14 +54,3 @@ export default class GraphList extends React.Component {
     );
   }
 }
-
-// <select className="custom-select form-control form-control-sm" value={this.props.sample} onChange={this.changeWebsite.bind(this)}>
-
-
-
-          // <select className="custom-select form-control form-control-sm" value={this.state.selectValue} onChange={this.changeWebsite.bind(this)}>
-          //   <option selected>Compare Website</option>            
-          //   {uniqueDomains.map((domain) =>
-          //     <OptionsList domain={domain} />
-          //   )}
-          // </select>

@@ -21,7 +21,7 @@ import Footer from './footer';
 export default class App extends React.Component {
 
   componentWillMount() {
-    // getToken();
+    getToken();
   }
 
   render() {
