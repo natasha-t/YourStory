@@ -10,7 +10,7 @@ function loadVisDataUponResponse (data) {
 }
 
 export default function fetchVisData (id) {
-  console.log('fetch vis data', id);
+  // console.log('fetch vis data', id);
   return function (dispatch) {
     const tenMinutes = 1000 * 60 * 60 * 72;
     const tenMinutesAgo = (new Date).getTime() - tenMinutes;
@@ -19,7 +19,7 @@ export default function fetchVisData (id) {
       'text': '', // Return every history item....
       'startTime': tenMinutesAgo, // that was accessed less than one week ago.
     }, (array) => {
-      console.log('chrome history:', array);
+      // console.log('chrome history:', array);
       axios({
         method: 'post',
         url: process.env.HOST + '/api/history',

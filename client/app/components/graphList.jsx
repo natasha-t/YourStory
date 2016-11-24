@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Graph from './graph';
+import DomainList from './domainList';
 
 @connect((store) => { 
   return {
@@ -10,43 +11,49 @@ import Graph from './graph';
 })
 
 export default class GraphList extends React.Component {
-  componentDidMount() {
-    console.log("data from graphlist", this.props.weekData);
-    const domainOptionsList = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectValue: 'this.props.list',
+    }
+    console.log("STATE from GraphList", this.state);
+  }
+
+  graphChange(graphValue) {
+    console.log("graphValue", graphValue);
+    this.setState({
+      selectValue: graphValue,
+    });
+    console.log("graphValue after changing state", this.state);
+  }
+
+  render() {    
+    const uniqueDomains = [];
     let graphData = [];
 
-    const listItems = this.props.weekData.map((rawDayObj) => {
+    this.props.weekData.map((rawDayObj) => {
       rawDayObj['domains'].map((domain) => {
-        // console.log("domains for listItems:", domain.domain);
-        if(domainOptionsList[domain.domain] !== undefined){
-          domainOptionsList[domain.domain]
+        let url = domain.domain;
+        if ((uniqueDomains.indexOf(url)) === -1) {
+          uniqueDomains.push(url);
         }
       });
     });
+    graphData = [uniqueDomains, uniqueDomains, uniqueDomains];
 
-    console.log('domainOptionsList:', domainOptionsList);
 
-
-      // <li>{ numbers }</li>   
-  }
-
-  render() {
     return (
       <div>
         <div className="graph-row">
-          <select className="custom-select form-control form-control-sm">
-            <option selected>Compare Website</option>
-            <option value="1">google.com</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
+          {graphData.map((domainList) =>
+            <DomainList domain={domainList} getValue={this.graphChange.bind(this)}/>
+          )}
           <br />
         </div>
         <div className="data-parent-container">
-          <Graph />
+          <Graph data={this.props.weekData}/>
         </div>
       </div>
     );
   }
 }
-
