@@ -37,6 +37,23 @@ rect {
   width: 125px
 }
 
+.tooltipD3 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #eee;
+  box-shadow: -3px 3px 15px #888888;
+  border-radius: 8px 8px 8px 8px;
+  color: #333;
+  display: none;
+  font-size: 11px;
+  left: 130px;
+  padding: 7px;
+  position: absolute;
+  text-align: center;
+  top: 95px;
+  width: 80px;
+  z-index: 10;
+}
+
 .graph-row {
   width: 15%;
   float: right;

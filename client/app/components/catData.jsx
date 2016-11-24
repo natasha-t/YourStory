@@ -94,7 +94,7 @@ export default class Categories extends React.Component {
       'rgb(241, 187, 201)',
       'rgb(255, 192, 203)']
     const color = d3.scaleOrdinal(colorArray);
-
+                                                       
     const svg = d3.select('#chart')
       .append('svg')
       .attr('width', width)
