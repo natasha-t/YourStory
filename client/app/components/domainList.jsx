@@ -6,9 +6,9 @@ export default class DomainList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectValue: this.props.domain[0],
+      selectValue: 'Compare Website',
     }
-    console.log("STATE from DomainList");
+    console.log("STATE from DomainList", this.state);
   }
 
   changeWebsite(e) {
@@ -18,7 +18,7 @@ export default class DomainList extends React.Component {
     this.props.getValue(e.target.value);
   }
 
-  render() {    
+  render() {
     return (
       <select className="custom-select form-control form-control-sm" value={this.state.selectValue} onChange={this.changeWebsite.bind(this)}>
         <option selected>Compare Website</option>            

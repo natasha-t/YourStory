@@ -14,14 +14,17 @@ export default class GraphList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectValue: this.props.list,
+      selectValue: 'this.props.list',
     }
-    console.log("STATE from GraphList", props);
+    console.log("STATE from GraphList", this.state);
   }
 
   graphChange(graphValue) {
     console.log("graphValue", graphValue);
-
+    this.setState({
+      selectValue: graphValue,
+    });
+    console.log("graphValue after changing state", this.state);
   }
 
   render() {    
@@ -48,7 +51,7 @@ export default class GraphList extends React.Component {
           <br />
         </div>
         <div className="data-parent-container">
-          <Graph domainName={graphValue}/>
+          <Graph data={this.props.weekData}/>
         </div>
       </div>
     );
