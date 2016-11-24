@@ -19,7 +19,7 @@ export default function getToken() {
     x.open('GET', 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + token);
     x.onload = function () {
       const userInfo = JSON.parse(x.response);
-      console.log('User info from chrome: ', userInfo);
+      // console.log('User info from chrome: ', userInfo);
       axios({
         method: 'post',
         url: process.env.HOST + '/api/users', // 'http://yourstory-app.herokuapp.com/api/history'
@@ -27,11 +27,11 @@ export default function getToken() {
       })
         .then((response) => {
           const chromeID = JSON.parse(response.config.data).chromeID;
-          console.log('CHROME ID', chromeID);
+          // console.log('CHROME ID', chromeID);
           //add interval before pushing
             store.dispatch(fetchVisData(response));
             store.dispatch(fetchCatData(response));
-            store.dispatch(fetchUsername(response));
+            store.dispatch(fetchUsername());
             store.dispatch(fetchWeekData(response));
         })
         .catch((error) => {

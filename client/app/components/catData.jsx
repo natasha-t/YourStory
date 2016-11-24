@@ -10,13 +10,9 @@ import * as d3 from 'd3';
 })
 
 export default class Categories extends React.Component {
-  componentDidUpdate() {
-    console.log("updated")
-  }
-
   componentDidMount() {
 
-    console.log('CAT DATA', this.props.catData);
+    // console.log('CAT DATA', this.props.catData);
 
     const catParser = {
         "uncategorized": 'Others',
@@ -61,9 +57,9 @@ export default class Categories extends React.Component {
         "contentserver": 'Content Servers'
     };
 
-    console.log('cat data from catData.jsx', this.props.catData);
+    // console.log('cat data from catData.jsx', this.props.catData);
 
-    console.log('cat data from catData.jsx', this.props.catData);
+    // console.log('cat data from catData.jsx', this.props.catData);
 
     const datasetCreator = ((data) => {
       return data.map((item) => {

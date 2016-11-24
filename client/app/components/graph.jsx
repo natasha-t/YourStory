@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 
-
+//TODO: REMOVE STORE, ONLY USING PROPS
 @connect((store) => {
   return {
     weekData: store.weekData,
@@ -15,7 +15,7 @@ export default class Graph extends React.Component {
   componentDidMount() {
     // let data = this.props.weekData;
 
-   console.log("GRAPH DATA", this.props.weekData)
+   // console.log("GRAPH DATA", this.props.weekData)
 
      let data = [{
       date: '20161018',
@@ -60,7 +60,7 @@ export default class Graph extends React.Component {
       }]
 
 
-    console.log('chart data', data);
+    // console.log('chart data', data);
 
 
     //======== ALL DOMAINS =========
