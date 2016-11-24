@@ -12,7 +12,7 @@ import * as d3 from 'd3';
 export default class Categories extends React.Component {
 
   componentDidMount() {
-    
+
     console.log('CAT DATA', this.props.catData)
 
     const catParser = {
@@ -73,10 +73,24 @@ export default class Categories extends React.Component {
     const width = 360;
     const height = 360;
     const radius = Math.min(width, height) / 2;
-    const donutWidth = 55;  
-    const legendRectSize = 18;                                  
-    const legendSpacing = 4;                                                             
-    const color = d3.scaleOrdinal(d3.schemeCategory20c);
+    const donutWidth = 55;
+    const legendRectSize = 18;
+    const legendSpacing = 4;
+    const colorArray =[
+      'rgb(84, 135, 182)',
+      'rgb(98, 140, 184)',
+      // 'rgb(113, 144, 185)',
+      // 'rgb(127, 149, 187)',
+      // 'rgb(141, 154, 189)',
+      'rgb(155, 159, 191)',
+      'rgb(170, 163, 192)',
+      // 'rgb(184, 168, 194)',
+      // 'rgb(198, 173, 196)',
+      // 'rgb(212, 178, 198)',
+      'rgb(227, 182, 199)',
+      'rgb(241, 187, 201)',
+      'rgb(255, 192, 203)']
+    const color = d3.scaleOrdinal(colorArray);
 
     const svg = d3.select('#chart')
       .append('svg')
@@ -87,7 +101,7 @@ export default class Categories extends React.Component {
         ',' + (height / 2 ) + ')');
 
       const arc = d3.arc()
-        .innerRadius(radius - donutWidth)             
+        .innerRadius(radius - donutWidth)
         .outerRadius(radius)
         .padAngle(0.013)
         .cornerRadius(8);
@@ -128,8 +142,8 @@ export default class Categories extends React.Component {
         });
 
       path.on('mouseover', ((d) => {
-        const total = d3.sum(dataset.map((d) => {                
-          return d.count;                                           
+        const total = d3.sum(dataset.map((d) => {
+          return d.count;
         }));
         const percent = Math.round(1000 * d.data.count / total) / 10;
         tooltipD3.select('.label').html(d.data.label);
@@ -138,11 +152,11 @@ export default class Categories extends React.Component {
         tooltipD3.style('display', 'block');
         if(!d.data.domains){
           legend.text('HELLO');
-        }  
+        }
       }));
 
-      path.on('mouseout', (() => {                              
-        tooltipD3.style('display', 'none');                 
+      path.on('mouseout', (() => {
+        tooltipD3.style('display', 'none');
       }));
 
       path.on('click', d => {
@@ -193,7 +207,7 @@ export default class Categories extends React.Component {
         const offset =  height * color.domain().length / 2;
         const horz = -3 * legendRectSize;
         const vert = i * height - offset;
-        return 'translate(' + horz + ',' + vert + ')';        
+        return 'translate(' + horz + ',' + vert + ')';
       }));
 
       legend.append('rect')
@@ -209,7 +223,7 @@ export default class Categories extends React.Component {
   }
 
   render() {
-    return (      
+    return (
       <div id="chart"></div>
     );
   }
