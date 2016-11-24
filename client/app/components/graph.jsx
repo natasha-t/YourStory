@@ -161,9 +161,9 @@ export default class Graph extends React.Component {
     //APPEND ALL DOMAINS LINE TO GRAPH
     //+++ add css class to distinguish each line +++
 
-    const makeCircle = () => {
+    // const makeCircle = () => {
 
-    }
+    // }
 
     const generateSVG = (domain, color) => {
       svg.append('path')
