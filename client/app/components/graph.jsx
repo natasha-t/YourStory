@@ -101,11 +101,11 @@ export default class Graph extends React.Component {
 
 
     //======= CREATE SVG ELEMENT =======
-    const svg = d3.select('svg'),
-    margin = { top: 20, right: 80, bottom: 20, left: 50 },
+    const svg = d3.select('#graph-svg'),
+    margin = { top: 0, right: 80, bottom: 20, left: 50 },
     width = svg.attr('width') - margin.left - margin.right,
     height = svg.attr('height') - margin.top - margin.bottom,
-    g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    g = svg.append('g').attr('transform', 'translate(' + 25 + ',' + 0 + ')');
 
 
     //======= CREATE X AND Y SCALES ======
@@ -154,8 +154,8 @@ export default class Graph extends React.Component {
     //MAKE LINE PATH
     const generateLine = () => {
       return d3.line()
-            .x((d) => { return x(d.date) })
-            .y((d) => { return y(d.count) });
+            .x((d) => { return x(d.date); })
+            .y((d) => { return y(d.count); });
     }
 
     //APPEND ALL DOMAINS LINE TO GRAPH
@@ -171,11 +171,6 @@ export default class Graph extends React.Component {
        .attr('stroke', color)
        .attr('stroke-width', 2)
        .attr('fill', 'none')
-       .transition()
-       .duration(2000)
-       .ease('linear')
-       .attr('stroke-dashoffset', 0);
-
        
        svg.selectAll('.circle')
        .data(domain)
@@ -210,7 +205,7 @@ export default class Graph extends React.Component {
 
   render() {
     return (
-      <div id='graph'><svg width='960' height='200'></svg></div>
+      <div id='graph'><svg id='graph-svg' width='960' height='200'></svg></div>
     );
   }
 
