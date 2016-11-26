@@ -220,15 +220,15 @@ module.exports = {
 
   getUser: (req, res) => {
     console.log("inside get user");
-    req.session.chromeID = req.body.chromeID;
+    // req.session.chromeID = req.body.chromeID;
 
     User.findOne({ where: { chrome_id: req.session.chromeID } })
     .then((user) => {
-      console.log("user from getUser", user);
+      console.log("user from getUser", user.username);
       if (user === null) {
         user = 'User';
       }
-      res.status(201).json(user);
+      res.status(201).json(user.username);
     })
     .catch((err) => {
       console.log("error sending username", err);
@@ -420,7 +420,7 @@ module.exports = {
             console.log("DATE", date.dataValues)
             DateDomain.findOne({ where: { domainId: entry.domainId } })
             .then((datedDom) => {
-              console.log("DATEDDOM", domain.dataValues.domain)
+              // console.log("DATEDDOM", domain.dataValues.domain)
               const nameDateCount = { count: datedDom.dataValues.count, domain: domain.dataValues.domain, date: date.dataValues.dateOnly }
                return resolve(nameDateCount);
             })
@@ -487,7 +487,7 @@ module.exports = {
         // }), ((obj) => { return obj.date; })))
         res.status(200).send(
           _.uniq(finalArray.map((arr) => {
-            console.log("FINAL ARRAY", finalArray)
+            // console.log("FINAL ARRAY", finalArray)
             const finalObj = {};
             const date = arr[0].date.toISOString().slice(0, 10).replace(/-/g, '');
               finalObj.date = date;

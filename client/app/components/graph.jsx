@@ -166,27 +166,37 @@ export default class Graph extends React.Component {
     // }
 
     const generateSVG = (domain, color) => {
-      svg.append('path')
+      let path = svg.append('path')
        .attr('d', generateLine()(domain))
        .attr('stroke', color)
        .attr('stroke-width', 2)
        .attr('fill', 'none')
        
-       svg.selectAll('.circle')
-       .data(domain)
-       .enter()
-       .append('svg:circle')
-       .attr('class', 'graph-circle')
-       .attr('fill', color)
-       .attr('r', 3.5)
-       .attr('cx', (d) => {
-         return x(d.date);
-       })
-       .attr('cy', (d) => {
-         return y(d.count);
-       })
+       // const totalLength = path.node().getTotalLength();
 
-       return svg;
+       //  path
+       //    .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+       //    .attr('stroke-dashoffset', totalLength)
+       //    .transition()
+       //      .duration(2000)
+       //      .ease('linear')
+       //      .attr('stroke-dashoffset', 0);
+
+       // svg.selectAll('.circle')
+       // .data(domain)
+       // .enter()
+       // .append('svg:circle')
+       // .attr('class', 'graph-circle')
+       // .attr('fill', color)
+       // .attr('r', 3.5)
+       // .attr('cx', (d) => {
+       //   return x(d.date);
+       // })
+       // .attr('cy', (d) => {
+       //   return y(d.count);
+       // })
+
+       return path;
     };
 
 
